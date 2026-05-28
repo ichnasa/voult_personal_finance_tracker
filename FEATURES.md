@@ -271,7 +271,7 @@ Mengelola data profil pengguna.
 ## Profile Management Features
 
 * profil header card (avatar + info + member sejak)
-* edit profil (nama, email, telepon, alamat)
+* edit profil (nama, email)
 * upload foto profil (avatar)
 * ubah password (lama, baru, konfirmasi)
 * ringkasan akun (member sejak, total transaksi)
@@ -280,8 +280,6 @@ Mengelola data profil pengguna.
 
 * nama
 * email
-* telepon
-* alamat
 * foto profil (avatar)
 
 ---

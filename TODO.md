@@ -350,31 +350,16 @@ chmod -R 775 public/assets/uploads
 ## Views
 
 * [ ] Profile header card (avatar + nama + email + actions)
-* [ ] Stat cards (saldo, pemasukan, pengeluaran, sisa budget)
-* [ ] Financial health card (donut chart + ratios)
-* [ ] Cashflow history card (line chart 6 bulan)
-* [ ] Saving goals card (progress bar tabungan aktif)
-* [ ] Wishlist priority card (badge prioritas + status)
-* [ ] Transaction history card (tabel 10 transaksi terakhir)
+* [ ] Card foto profil + form upload avatar
+* [ ] Card ringkasan akun (member sejak, total transaksi)
+* [ ] Card edit profil (form nama, email)
+* [ ] Card ubah password (form)
 * [ ] Modal edit profil
 * [ ] Modal ubah password
-* [ ] Modal upload avatar
-
-## Profile Dashboard Data
-
-* [ ] Total saldo (pemasukan - pengeluaran all time)
-* [ ] Pemasukan bulan ini + % perubahan vs bulan lalu
-* [ ] Pengeluaran bulan ini + % perubahan vs bulan lalu
-* [ ] Sisa budget + % tersisa
-* [ ] Financial health score (spending ratio, saving ratio, discipline)
-* [ ] Cashflow history data 6 bulan
-* [ ] Tabungan aktif (max 3)
-* [ ] Wishlist prioritas tinggi (max 3)
-* [ ] Transaksi terakhir gabungan (max 10)
 
 ## Profile Management
 
-* [ ] Edit profil (nama, email, telepon, alamat)
+* [ ] Edit profil (nama, email)
 * [ ] Upload foto profil (avatar)
 * [ ] Ubah password (password lama, baru, konfirmasi)
 
@@ -388,8 +373,6 @@ chmod -R 775 public/assets/uploads
 
 ## Database
 
-* [ ] Tambah kolom phone di tabel users
-* [ ] Tambah kolom address di tabel users
 * [ ] Tambah kolom avatar di tabel users
 
 ---

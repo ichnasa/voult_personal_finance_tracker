@@ -105,13 +105,35 @@ Menggunakan:
 
 ---
 
-### Progress Tabungan
+### Financial Health
+
+Menampilkan skor kesehatan finansial:
+
+* spending ratio (pengeluaran / pemasukan)
+* saving ratio (tabungan / pemasukan)
+* budget discipline (kepatuhan budget)
+* overall score (0-100)
+* label: Excellent / Good / Fair / Poor
+* donut chart + progress bars
+
+---
+
+### Saving Goals
 
 Menampilkan:
 
-* target tabungan
-* progress
-* persentase
+* tabungan aktif (max 3)
+* progress bar per tabungan
+* nama + nominal terkumpul/target
+
+---
+
+### Wishlist Priority
+
+Menampilkan:
+
+* wishlist prioritas tinggi (max 3)
+* badge prioritas + status
 
 ---
 
@@ -120,12 +142,6 @@ Menampilkan:
 Menampilkan:
 
 * 5 transaksi terakhir
-
----
-
-### Wishlist Prioritas
-
-Menampilkan wishlist dengan prioritas tinggi.
 
 ---
 
@@ -250,52 +266,20 @@ Menghasilkan laporan keuangan.
 
 # 9. Modul Profile
 
-Mengelola data profil pengguna dan menampilkan ringkasan finansial pribadi.
-
-## Profile Dashboard Widgets
-
-### Stat Cards
-
-* total saldo
-* pemasukan bulan ini (+ % vs bulan lalu)
-* pengeluaran bulan ini (+ % vs bulan lalu)
-* sisa budget (+ % tersisa)
-
-### Financial Health
-
-* spending ratio
-* saving ratio
-* budget discipline
-* overall score (0-100)
-
-### Cashflow History
-
-* line chart 6 bulan terakhir
-
-### Saving Goals
-
-* tabungan aktif + progress bar
-
-### Wishlist Priority
-
-* wishlist prioritas tinggi + badge status
-
-### Transaction History
-
-* 10 transaksi terakhir gabungan
+Mengelola data profil pengguna.
 
 ## Profile Management
 
-* edit profil (nama, email, telepon, alamat) via modal
-* upload foto profil (avatar) via modal
+* profil header card (avatar + info + member sejak)
+* edit profil (nama, email) via modal
+* upload foto profil (avatar)
 * ubah password via modal
+* ringkasan akun (member sejak, total transaksi)
 
 ## Data
 
 * nama
 * email
-* telepon
-* alamat
 * foto profil (avatar)
 
 ---

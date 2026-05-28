@@ -290,7 +290,7 @@ Menggunakan layout Tabler page-center:
 
 | Tabel | Fungsi | Kolom Penting |
 |-------|--------|---------------|
-| `users` | Data pengguna | id, name, email, password, phone, address, avatar |
+| `users` | Data pengguna | id, name, email, password, avatar |
 | `kategori` | Kategori pengeluaran | id, name |
 | `pemasukan` | Catatan pemasukan | user_id, tanggal, nominal, sumber |
 | `pengeluaran` | Catatan pengeluaran | user_id, kategori_id, tanggal, nominal, metode_pembayaran, nota |
@@ -478,7 +478,7 @@ ALUR:
       └── Card ubah password (form)
 
 2. Edit Profil (via Card / Modal):
-   → User ubah nama/email/telepon/alamat
+   → User ubah nama/email
    → Submit → POST /profile/update
    → Controller Profile::update()
    ├── Validasi input (nama min 3, email unik kecuali milik sendiri)

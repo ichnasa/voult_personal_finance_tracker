@@ -532,8 +532,8 @@ const cashflowChart = new Chart(document.getElementById('cashflowChart'), {
 
 ┌─────────────────────┬──────────────────────────────┐
 │ CARD FOTO PROFIL    │ CARD EDIT PROFIL             │
-│ (avatar + upload    │ (form nama, email,           │
-│  foto baru)         │  telepon, alamat + simpan)   │
+│ (avatar + upload    │ (form nama, email            │
+│  foto baru)         │  + simpan)                   │
 ├─────────────────────┼──────────────────────────────┤
 │ CARD RINGKASAN      │ CARD UBAH PASSWORD           │
 │ (member sejak,      │ (password lama, baru,        │

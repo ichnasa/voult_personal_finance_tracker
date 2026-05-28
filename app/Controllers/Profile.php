@@ -56,8 +56,6 @@ class Profile extends BaseController
         $rules = [
             'name'    => 'required|min_length[3]|max_length[100]',
             'email'   => "required|valid_email|max_length[100]|is_unique[users.email,id,{$userId}]",
-            'phone'   => 'permit_empty|max_length[20]',
-            'address' => 'permit_empty|max_length[500]',
         ];
 
         $messages = [
@@ -72,12 +70,6 @@ class Profile extends BaseController
                 'is_unique'   => 'Email sudah digunakan oleh pengguna lain.',
                 'max_length'  => 'Email maksimal 100 karakter.',
             ],
-            'phone' => [
-                'max_length' => 'Nomor telepon maksimal 20 karakter.',
-            ],
-            'address' => [
-                'max_length' => 'Alamat maksimal 500 karakter.',
-            ],
         ];
 
         if (!$this->validate($rules, $messages)) {
@@ -89,8 +81,6 @@ class Profile extends BaseController
         $this->userModel->update($userId, [
             'name'    => $this->request->getPost('name'),
             'email'   => $this->request->getPost('email'),
-            'phone'   => $this->request->getPost('phone'),
-            'address' => $this->request->getPost('address'),
         ]);
 
         // Update session data
