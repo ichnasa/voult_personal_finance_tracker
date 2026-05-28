@@ -20,9 +20,12 @@ class Pemasukan extends BaseController
     {
         $userId  = session()->get('user_id');
         $filters = [
-            'date_from' => $this->request->getGet('date_from'),
-            'date_to'   => $this->request->getGet('date_to'),
-            'search'    => $this->request->getGet('search'),
+            'date_from'   => $this->request->getGet('date_from'),
+            'date_to'     => $this->request->getGet('date_to'),
+            'nominal_min' => $this->request->getGet('nominal_min'),
+            'nominal_max' => $this->request->getGet('nominal_max'),
+            'search'      => $this->request->getGet('search'),
+            'sort_dir'    => $this->request->getGet('sort_dir'),
         ];
 
         $data = [

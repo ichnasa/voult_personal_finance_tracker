@@ -91,16 +91,15 @@
 ## Backend
 
 * PHP 8+
-* CodeIgniter 3
+* CodeIgniter 4
 
 ## Frontend
 
-* AdminLTE 3.2
-* Bootstrap 4
-* jQuery 3.x
+* Tabler (Dashboard Template)
+* Bootstrap 5 (via Tabler)
+* Tabler Icons
 * Chart.js
 * DataTables
-* Font Awesome 5
 
 ## Database
 
@@ -111,6 +110,7 @@
 * MVC Pattern
 * Query Builder
 * Session-based authentication
+* CI4 Filters (middleware)
 
 ## Hosting
 
@@ -148,6 +148,6 @@
 # 6. Constraints
 
 * Sistem berbasis web
-* Menggunakan template AdminLTE 3.2 sebagai fondasi UI
-* Menggunakan Bootstrap 4 (bawaan AdminLTE)
-* Tidak mengubah file core AdminLTE
+* Menggunakan template Tabler sebagai fondasi UI
+* Menggunakan Bootstrap 5 (bawaan Tabler)
+* Tidak mengubah file core Tabler

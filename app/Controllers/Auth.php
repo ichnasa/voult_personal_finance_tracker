@@ -36,22 +36,22 @@ class Auth extends BaseController
     public function processLogin()
     {
         $rules = [
-            'email'    => 'required|valid_email',
+            'email' => 'required|valid_email',
             'password' => 'required',
         ];
 
-        if (! $this->validate($rules)) {
+        if (!$this->validate($rules)) {
             return redirect()->back()
                 ->withInput()
                 ->with('errors', $this->validator->getErrors());
         }
 
-        $email    = $this->request->getPost('email');
+        $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
         $user = $this->userModel->where('email', $email)->first();
 
-        if (! $user || ! password_verify($password, $user['password'])) {
+        if (!$user || !password_verify($password, $user['password'])) {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Email atau password salah.');
@@ -59,10 +59,10 @@ class Auth extends BaseController
 
         // Set session
         session()->set([
-            'user_id'    => $user['id'],
-            'user_name'  => $user['name'],
+            'user_id' => $user['id'],
+            'user_name' => $user['name'],
             'user_email' => $user['email'],
-            'logged_in'  => true,
+            'logged_in' => true,
         ]);
 
         return redirect()->to('/')->with('success', 'Selamat datang, ' . $user['name'] . '!');
@@ -90,41 +90,41 @@ class Auth extends BaseController
     public function processRegister()
     {
         $rules = [
-            'name'             => 'required|min_length[3]|max_length[100]',
-            'email'            => 'required|valid_email|is_unique[users.email]',
-            'password'         => 'required|min_length[6]',
+            'name' => 'required|min_length[3]|max_length[100]',
+            'email' => 'required|valid_email|is_unique[users.email]',
+            'password' => 'required|min_length[8]',
             'password_confirm' => 'required|matches[password]',
         ];
 
         $messages = [
             'name' => [
-                'required'   => 'Nama wajib diisi.',
+                'required' => 'Nama wajib diisi.',
                 'min_length' => 'Nama minimal 3 karakter.',
             ],
             'email' => [
-                'required'    => 'Email wajib diisi.',
+                'required' => 'Email wajib diisi.',
                 'valid_email' => 'Format email tidak valid.',
-                'is_unique'   => 'Email sudah terdaftar.',
+                'is_unique' => 'Email sudah terdaftar.',
             ],
             'password' => [
-                'required'   => 'Password wajib diisi.',
-                'min_length' => 'Password minimal 6 karakter.',
+                'required' => 'Password wajib diisi.',
+                'min_length' => 'Password minimal 8 karakter.',
             ],
             'password_confirm' => [
                 'required' => 'Konfirmasi password wajib diisi.',
-                'matches'  => 'Konfirmasi password tidak cocok.',
+                'matches' => 'Konfirmasi password tidak cocok.',
             ],
         ];
 
-        if (! $this->validate($rules, $messages)) {
+        if (!$this->validate($rules, $messages)) {
             return redirect()->back()
                 ->withInput()
                 ->with('errors', $this->validator->getErrors());
         }
 
         $this->userModel->insert([
-            'name'     => $this->request->getPost('name'),
-            'email'    => $this->request->getPost('email'),
+            'name' => $this->request->getPost('name'),
+            'email' => $this->request->getPost('email'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
         ]);
 

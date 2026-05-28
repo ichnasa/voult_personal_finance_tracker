@@ -31,6 +31,12 @@ class PemasukanModel extends Model
         if (! empty($filters['date_to'])) {
             $builder->where('tanggal <=', $filters['date_to']);
         }
+        if (! empty($filters['nominal_min'])) {
+            $builder->where('nominal >=', (float) $filters['nominal_min']);
+        }
+        if (! empty($filters['nominal_max'])) {
+            $builder->where('nominal <=', (float) $filters['nominal_max']);
+        }
         if (! empty($filters['search'])) {
             $builder->groupStart()
                 ->like('sumber', $filters['search'])
@@ -38,7 +44,8 @@ class PemasukanModel extends Model
                 ->groupEnd();
         }
 
-        return $builder->orderBy('tanggal', 'DESC')->paginate($perPage);
+        $sortDir = ($filters['sort_dir'] ?? 'DESC') === 'ASC' ? 'ASC' : 'DESC';
+        return $builder->orderBy('tanggal', $sortDir)->paginate($perPage);
     }
 
     /**

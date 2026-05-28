@@ -1,40 +1,49 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= esc($title ?? 'Login') ?> — FinTrack</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome 5 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <!-- AdminLTE 3.2 CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+  <!-- Tabler CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 </head>
-<body class="hold-transition login-page">
 
-<?php if (session()->getFlashdata('success')): ?>
-<div class="alert alert-success alert-dismissible" style="position:fixed;top:15px;right:15px;z-index:999;max-width:400px;">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <i class="icon fas fa-check"></i> <?= session()->getFlashdata('success') ?>
-</div>
-<?php endif; ?>
+<body class="d-flex flex-column">
+  <div class="page page-center">
+    <div class="container container-tight py-4">
 
-<?php if (session()->getFlashdata('error')): ?>
-<div class="alert alert-danger alert-dismissible" style="position:fixed;top:15px;right:15px;z-index:999;max-width:400px;">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <i class="icon fas fa-ban"></i> <?= session()->getFlashdata('error') ?>
-</div>
-<?php endif; ?>
+      <!-- Flash Messages -->
+      <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <div class="d-flex">
+            <div><i class="ti ti-check alert-icon me-2"></i></div>
+            <div><?= session()->getFlashdata('success') ?></div>
+          </div>
+          <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div>
+      <?php endif; ?>
 
-<?= $this->renderSection('content') ?>
+      <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <div class="d-flex">
+            <div><i class="ti ti-alert-circle alert-icon me-2"></i></div>
+            <div><?= session()->getFlashdata('error') ?></div>
+          </div>
+          <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div>
+      <?php endif; ?>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+      <?= $this->renderSection('content') ?>
+
+    </div>
+  </div>
+
+  <!-- Tabler Core JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
 </body>
+
 </html>

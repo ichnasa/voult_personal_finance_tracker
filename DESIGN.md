@@ -1,59 +1,45 @@
 # DESIGN.md — Sistem Informasi Keuangan Pribadi
-> Panduan desain visual menggunakan template AdminLTE 3.2. Baca seluruh dokumen ini sebelum menulis satu baris kode pun.
+> Panduan desain visual menggunakan template **Tabler** (https://tabler.io). Baca seluruh dokumen ini sebelum menulis satu baris kode pun.
 
 ---
 
 ## 1. Konsep Visual
 
-**Aesthetic Direction: "Professional Admin Dashboard"**
+**Aesthetic Direction: "Modern Admin Dashboard"**
 
-Desain menggunakan template **AdminLTE 3.2** — admin dashboard template #1 yang dibangun di atas Bootstrap 4. Template ini memberikan tampilan profesional, bersih, dan konsisten tanpa perlu membangun design system dari nol.
+Desain menggunakan template **Tabler** — admin dashboard template open-source modern yang dibangun di atas Bootstrap 5. Template ini memberikan tampilan premium, bersih, dan responsif tanpa perlu membangun design system dari nol.
 
-**Kata kunci:** `clean` · `professional` · `organized` · `admin-panel` · `dashboard`
+**Kata kunci:** `modern` · `clean` · `professional` · `dashboard` · `premium`
 
-Pengguna adalah mahasiswa yang sedang membuat **project skripsi** — desain harus terlihat *profesional dan rapi*, menggunakan template yang sudah teruji dan digunakan secara luas.
+Pengguna adalah mahasiswa yang sedang membuat **project skripsi** — desain harus terlihat *profesional dan modern*, menggunakan template yang sudah teruji dan digunakan secara luas.
 
 ---
 
-## 2. Strategi CSS: AdminLTE 3.2 + Bootstrap 4
+## 2. Strategi CSS: Tabler + Bootstrap 5
 
-AdminLTE 3.2 dibangun di atas **Bootstrap 4** dan menyediakan komponen siap pakai. Pendekatan styling:
+Tabler dibangun di atas **Bootstrap 5** dan menyediakan komponen siap pakai. Pendekatan styling:
 
 | Tanggung Jawab | Teknologi | Contoh |
 |---|---|---|
-| **Layout & Grid** | Bootstrap 4 | `col-md-4`, `row`, `d-flex`, `container-fluid` |
-| **Komponen UI** | AdminLTE 3 + Bootstrap 4 | `.card`, `.info-box`, `.small-box`, `.btn`, `.badge` |
-| **Navigasi** | AdminLTE 3 | `.main-sidebar`, `.main-header`, `.nav-sidebar` |
-| **Tabel Data** | DataTables + AdminLTE | DataTables Bootstrap 4 integration |
-| **Ikon** | Font Awesome 5 | `fas fa-wallet`, `fas fa-chart-bar` |
+| **Layout & Grid** | Bootstrap 5 | `col-md-4`, `row`, `d-flex`, `container-xl` |
+| **Komponen UI** | Tabler + Bootstrap 5 | `.card`, `.card-stamp`, `.btn`, `.badge` |
+| **Navigasi** | Tabler | `.navbar-vertical`, `.navbar`, `.nav-item` |
+| **Tabel Data** | DataTables + Bootstrap 5 | DataTables Bootstrap 5 integration |
+| **Ikon** | Tabler Icons | `ti ti-wallet`, `ti ti-chart-bar` |
 | **Custom styling** | `custom.css` | Override minimal untuk kebutuhan khusus FinTrack |
 
 ### Aturan wajib:
 
-- **AdminLTE** → gunakan komponen bawaan sebanyak mungkin
-- **Bootstrap 4** → gunakan class utilities dan komponen standar
-- **Custom CSS** → hanya untuk kebutuhan spesifik FinTrack yang tidak tersedia di AdminLTE
-- File custom CSS diletakkan di `assets/css/custom.css`
-- **Jangan mengubah** file core AdminLTE (`adminlte.min.css`)
+- **Tabler** → gunakan komponen bawaan sebanyak mungkin
+- **Bootstrap 5** → gunakan class utilities dan komponen standar
+- **Custom CSS** → hanya untuk kebutuhan spesifik FinTrack yang tidak tersedia di Tabler
+- File custom CSS diletakkan di `public/assets/css/custom.css`
+- **Jangan mengubah** file core Tabler
 
 ### Struktur file assets:
 
 ```
-assets/
-├── adminlte/
-│   ├── css/
-│   │   └── adminlte.min.css
-│   ├── js/
-│   │   └── adminlte.min.js
-│   └── img/
-├── plugins/
-│   ├── bootstrap/
-│   ├── jquery/
-│   ├── fontawesome-free/
-│   ├── chart.js/
-│   ├── datatables-bs4/
-│   ├── sweetalert2/
-│   └── ...
+public/assets/
 ├── css/
 │   └── custom.css          ← Override minimal untuk FinTrack
 ├── js/
@@ -62,227 +48,230 @@ assets/
 └── uploads/
 ```
 
-Urutan load di `<head>`:
+### CDN Assets (dimuat di layout `<head>`):
+
 ```html
-<!-- 1. Font Awesome 5 (ikon) -->
-<link rel="stylesheet" href="<?= base_url('assets/plugins/fontawesome-free/css/all.min.css') ?>">
-<!-- 2. AdminLTE CSS -->
-<link rel="stylesheet" href="<?= base_url('assets/adminlte/css/adminlte.min.css') ?>">
-<!-- 3. Google Fonts (opsional) -->
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-<!-- 4. Custom CSS FinTrack -->
+<!-- 1. Tabler CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+<!-- 2. Tabler Icons (webfont) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<!-- 3. Custom CSS FinTrack -->
 <link rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>">
+```
+
+### JS Assets (sebelum `</body>`):
+
+```html
+<!-- 1. Tabler JS (includes Bootstrap 5) -->
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<!-- 2. Custom JS FinTrack -->
+<script src="<?= base_url('assets/js/app.js') ?>"></script>
 ```
 
 ### Contoh penggunaan yang benar:
 
 ```html
-<!-- ✅ BENAR: Komponen AdminLTE standar -->
-<div class="row">
-  <div class="col-lg-3 col-6">
-    <div class="small-box bg-info">
-      <div class="inner">
-        <h3>Rp 4.200.000</h3>
-        <p>Total Saldo</p>
+<!-- ✅ BENAR: Stat card Tabler -->
+<div class="col-sm-6 col-lg-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex align-items-center">
+        <div class="subheader">Total Saldo</div>
       </div>
-      <div class="icon"><i class="fas fa-wallet"></i></div>
+      <div class="h1 mb-0">Rp 4.200.000</div>
     </div>
   </div>
 </div>
 
-<!-- ✅ BENAR: Card AdminLTE -->
-<div class="card card-primary">
+<!-- ✅ BENAR: Card Tabler -->
+<div class="card">
   <div class="card-header">
     <h3 class="card-title">Daftar Pemasukan</h3>
   </div>
   <div class="card-body">
-    <table id="tabel-pemasukan" class="table table-bordered table-striped">
+    <table class="table table-vcenter">
       ...
     </table>
   </div>
 </div>
 
-<!-- ✅ BENAR: Button Bootstrap standar -->
-<button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah</button>
-<button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button>
+<!-- ✅ BENAR: Button Bootstrap 5 -->
+<button class="btn btn-primary"><i class="ti ti-plus"></i> Tambah</button>
+<button class="btn btn-danger"><i class="ti ti-trash"></i> Hapus</button>
 ```
 
 ---
 
 ## 3. Tema & Warna
 
-Menggunakan skin AdminLTE bawaan: **`sidebar-dark-primary`**
+Menggunakan Tabler default theme:
 
 ```html
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="layout-fluid">
 ```
 
 ### Warna yang digunakan:
 
-| Konteks | Class AdminLTE / Bootstrap |
+| Konteks | Class Bootstrap 5 / Tabler |
 |---------|---------------------------|
 | Pemasukan / positif | `bg-success`, `text-success`, `btn-success` |
 | Pengeluaran / negatif | `bg-danger`, `text-danger`, `btn-danger` |
 | Budget warning | `bg-warning`, `text-warning` |
 | Info / netral | `bg-info`, `text-info` |
 | Primary / CTA | `bg-primary`, `btn-primary` |
-| Stat card saldo | `bg-info` |
-| Stat card pemasukan | `bg-success` |
-| Stat card pengeluaran | `bg-danger` |
-| Stat card budget | `bg-warning` |
+| Stat card saldo | `bg-azure` / `bg-info` |
+| Stat card pemasukan | `bg-success` / `bg-green` |
+| Stat card pengeluaran | `bg-danger` / `bg-red` |
+| Stat card budget | `bg-warning` / `bg-yellow` |
 
 ### Aturan warna:
-- Hijau (`success`) untuk pemasukan / hal positif
-- Merah (`danger`) untuk pengeluaran / negatif
-- Kuning (`warning`) untuk budget hampir habis
+- Hijau (`success` / `green`) untuk pemasukan / hal positif
+- Merah (`danger` / `red`) untuk pengeluaran / negatif
+- Kuning (`warning` / `yellow`) untuk budget hampir habis
 - Jangan membalik penggunaan warna
 
 ---
 
 ## 4. Tipografi
 
-AdminLTE menggunakan **Source Sans Pro** sebagai font default:
+Tabler menggunakan **Inter** sebagai font default:
 
 ```css
 body {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 ```
 
 Aturan tipografi:
-- **Semua teks** menggunakan font default AdminLTE
-- **Angka keuangan** di stat cards boleh ditampilkan dengan `<h3>` atau `<h4>` sesuai komponen AdminLTE
-- Jangan mengubah font default AdminLTE kecuali ada kebutuhan khusus
+- **Semua teks** menggunakan font default Tabler (Inter)
+- **Angka keuangan** di stat cards menggunakan class `.h1`, `.h3`, atau elemen heading sesuai komponen Tabler
+- Jangan mengubah font default Tabler kecuali ada kebutuhan khusus
 
 ---
 
 ## 5. Layout Utama
 
-### Struktur AdminLTE
+### Struktur Tabler
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  MAIN HEADER (navbar)                                    │
-│  Logo + Sidebar Toggle | Breadcrumb | User Dropdown      │
+│  NAVBAR (header)                                         │
+│  Logo / Brand | Page Title | User Dropdown               │
 ├──────────┬──────────────────────────────────────────────┤
 │          │                                               │
-│  MAIN    │  CONTENT WRAPPER                              │
-│  SIDEBAR │  ┌──────────────────────────────────────────┐ │
-│          │  │ Content Header (judul + breadcrumb)      │ │
-│  Brand   │  ├──────────────────────────────────────────┤ │
-│  Logo    │  │                                          │ │
-│          │  │ Section Content                           │ │
-│  Nav     │  │ (halaman utama di sini)                  │ │
-│  Menu    │  │                                          │ │
+│ NAVBAR   │  PAGE WRAPPER                                 │
+│ VERTICAL │  ┌──────────────────────────────────────────┐ │
+│          │  │ Page Header (judul + breadcrumb)         │ │
+│ Brand    │  ├──────────────────────────────────────────┤ │
+│ Logo     │  │                                          │ │
+│          │  │ Page Body                                │ │
+│ Nav      │  │ (halaman utama di sini)                  │ │
+│ Items    │  │                                          │ │
 │          │  └──────────────────────────────────────────┘ │
 │          │                                               │
-│          │  MAIN FOOTER                                  │
+│          │  FOOTER                                       │
 ├──────────┴──────────────────────────────────────────────┤
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Struktur HTML AdminLTE:
+### Struktur HTML Tabler:
 
 ```html
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
-
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left: sidebar toggle -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
-    <!-- Right: user menu -->
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item dropdown">...</li>
-    </ul>
-  </nav>
-
-  <!-- Main Sidebar -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="/" class="brand-link">
-      <span class="brand-text font-weight-light">FinTrack</span>
-    </a>
-    <div class="sidebar">
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
+<div class="page">
+  <!-- Navbar Vertical (Sidebar) -->
+  <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <h1 class="navbar-brand navbar-brand-autodark">
+        <a href="/"><span class="fw-bold">FinTrack</span></a>
+      </h1>
+      <div class="collapse navbar-collapse" id="sidebar-menu">
+        <ul class="navbar-nav pt-lg-3">
           <li class="nav-item">
-            <a href="/dashboard" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Dashboard</p>
+            <a class="nav-link active" href="/dashboard">
+              <span class="nav-link-icon"><i class="ti ti-dashboard"></i></span>
+              <span class="nav-link-title">Dashboard</span>
             </a>
           </li>
           <!-- menu lainnya -->
         </ul>
-      </nav>
+      </div>
     </div>
   </aside>
 
-  <!-- Content Wrapper -->
-  <div class="content-wrapper">
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6"><h1>Dashboard</h1></div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-          </div>
+  <!-- Navbar Header -->
+  <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
+    <div class="container-xl">
+      <div class="navbar-nav flex-row order-md-last">
+        <div class="nav-item dropdown">
+          <!-- User dropdown -->
         </div>
       </div>
     </div>
+  </header>
 
-    <section class="content">
-      <div class="container-fluid">
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+    <!-- Page Header -->
+    <div class="page-header d-print-none">
+      <div class="container-xl">
+        <div class="page-pretitle">Overview</div>
+        <h2 class="page-title">Dashboard</h2>
+      </div>
+    </div>
+
+    <!-- Page Body -->
+    <div class="page-body">
+      <div class="container-xl">
         <!-- Konten halaman di sini -->
       </div>
-    </section>
-  </div>
+    </div>
 
-  <!-- Footer -->
-  <footer class="main-footer">
-    <strong>&copy; 2026 FinTrack</strong>
-  </footer>
+    <!-- Footer -->
+    <footer class="footer footer-transparent d-print-none">
+      <div class="container-xl">
+        <span>&copy; 2026 FinTrack</span>
+      </div>
+    </footer>
+  </div>
 </div>
-</body>
 ```
 
 ### Sidebar Menu Items:
 
-| Menu | Ikon | URL |
-|------|------|-----|
-| Dashboard | `fas fa-tachometer-alt` | `/` |
-| Pemasukan | `fas fa-arrow-circle-down` | `/pemasukan` |
-| Pengeluaran | `fas fa-arrow-circle-up` | `/pengeluaran` |
-| Budgeting | `fas fa-wallet` | `/budgeting` |
-| Wishlist | `fas fa-star` | `/wishlist` |
-| Tabungan | `fas fa-piggy-bank` | `/tabungan` |
-| Laporan | `fas fa-file-alt` | `/laporan` |
+| Menu | Ikon Tabler | URL |
+|------|-------------|-----|
+| Dashboard | `ti ti-dashboard` | `/` |
+| Pemasukan | `ti ti-arrow-down-circle` | `/pemasukan` |
+| Pengeluaran | `ti ti-arrow-up-circle` | `/pengeluaran` |
+| Budgeting | `ti ti-wallet` | `/budgeting` |
+| Wishlist | `ti ti-star` | `/wishlist` |
+| Tabungan | `ti ti-pig-money` | `/tabungan` |
+| Laporan | `ti ti-file-text` | `/laporan` |
 
 ---
 
 ## 6. Komponen UI
 
-### Small Box (Stat Card Dashboard)
+### Stat Card (Dashboard)
 
 Digunakan untuk menampilkan ringkasan angka di dashboard:
 
 ```html
-<div class="col-lg-3 col-6">
-  <div class="small-box bg-success">
-    <div class="inner">
-      <h3>Rp 5.000.000</h3>
-      <p>Total Pemasukan</p>
+<div class="col-sm-6 col-lg-3">
+  <div class="card">
+    <div class="card-stamp">
+      <div class="card-stamp-icon bg-success">
+        <i class="ti ti-arrow-down-circle"></i>
+      </div>
     </div>
-    <div class="icon"><i class="fas fa-arrow-circle-down"></i></div>
-    <a href="/pemasukan" class="small-box-footer">
-      Selengkapnya <i class="fas fa-arrow-circle-right"></i>
-    </a>
+    <div class="card-body">
+      <div class="subheader">Total Pemasukan</div>
+      <div class="h1 mb-3">Rp 5.000.000</div>
+      <a href="/pemasukan" class="text-muted">Selengkapnya →</a>
+    </div>
   </div>
 </div>
 ```
@@ -290,13 +279,13 @@ Digunakan untuk menampilkan ringkasan angka di dashboard:
 ### Card
 
 ```html
-<div class="card card-primary">
+<div class="card">
   <div class="card-header">
     <h3 class="card-title">Judul Card</h3>
-    <div class="card-tools">
-      <button type="button" class="btn btn-tool" data-card-widget="collapse">
-        <i class="fas fa-minus"></i>
-      </button>
+    <div class="card-actions">
+      <a href="#" class="btn btn-primary btn-sm">
+        <i class="ti ti-plus"></i> Tambah
+      </a>
     </div>
   </div>
   <div class="card-body">
@@ -308,6 +297,18 @@ Digunakan untuk menampilkan ringkasan angka di dashboard:
 </div>
 ```
 
+### Card dengan Status Border
+
+```html
+<div class="card">
+  <div class="card-status-top bg-danger"></div>
+  <div class="card-body">
+    <h3 class="card-title">Card dengan status</h3>
+    <p class="text-secondary">Konten card</p>
+  </div>
+</div>
+```
+
 ### Tabel dengan DataTables
 
 ```html
@@ -315,8 +316,11 @@ Digunakan untuk menampilkan ringkasan angka di dashboard:
   <div class="card-header">
     <h3 class="card-title">Daftar Pemasukan</h3>
   </div>
-  <div class="card-body">
-    <table id="tabel-pemasukan" class="table table-bordered table-striped">
+  <div class="card-body border-bottom py-3">
+    <!-- Optional: search/filter controls -->
+  </div>
+  <div class="table-responsive">
+    <table id="tabel-pemasukan" class="table table-vcenter card-table">
       <thead>
         <tr>
           <th>No</th>
@@ -334,11 +338,10 @@ Digunakan untuk menampilkan ringkasan angka di dashboard:
 </div>
 
 <script>
-$(function () {
-  $("#tabel-pemasukan").DataTable({
-    "responsive": true,
-    "autoWidth": false,
-    "language": { "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json" }
+document.addEventListener('DOMContentLoaded', function() {
+  new DataTable('#tabel-pemasukan', {
+    responsive: true,
+    language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json' }
   });
 });
 </script>
@@ -347,32 +350,32 @@ $(function () {
 ### Form
 
 ```html
-<div class="card card-primary">
+<div class="card">
   <div class="card-header">
     <h3 class="card-title">Tambah Pemasukan</h3>
   </div>
   <form action="/pemasukan/store" method="post">
     <div class="card-body">
-      <div class="form-group">
-        <label for="tanggal">Tanggal</label>
+      <div class="mb-3">
+        <label class="form-label" for="tanggal">Tanggal</label>
         <input type="date" class="form-control" id="tanggal" name="tanggal" required>
       </div>
-      <div class="form-group">
-        <label for="nominal">Nominal</label>
+      <div class="mb-3">
+        <label class="form-label" for="nominal">Nominal</label>
         <input type="number" class="form-control" id="nominal" name="nominal" required>
       </div>
-      <div class="form-group">
-        <label for="sumber">Sumber</label>
+      <div class="mb-3">
+        <label class="form-label" for="sumber">Sumber</label>
         <input type="text" class="form-control" id="sumber" name="sumber" required>
       </div>
-      <div class="form-group">
-        <label for="catatan">Catatan</label>
+      <div class="mb-3">
+        <label class="form-label" for="catatan">Catatan</label>
         <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
       </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer text-end">
+      <a href="/pemasukan" class="btn btn-ghost-secondary me-2">Batal</a>
       <button type="submit" class="btn btn-primary">Simpan</button>
-      <a href="/pemasukan" class="btn btn-default">Batal</a>
     </div>
   </form>
 </div>
@@ -381,10 +384,10 @@ $(function () {
 ### Badge / Status
 
 ```html
-<span class="badge badge-success">Tercapai</span>
-<span class="badge badge-warning">Menabung</span>
-<span class="badge badge-secondary">Belum Mulai</span>
-<span class="badge badge-danger">Over Budget</span>
+<span class="badge bg-success">Tercapai</span>
+<span class="badge bg-warning">Menabung</span>
+<span class="badge bg-secondary">Belum Mulai</span>
+<span class="badge bg-danger">Over Budget</span>
 ```
 
 ### Progress Bar
@@ -400,26 +403,28 @@ $(function () {
 ```html
 <!-- Menggunakan SweetAlert2 atau Bootstrap Alert -->
 <?php if (session()->getFlashdata('success')): ?>
-<div class="alert alert-success alert-dismissible">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <i class="icon fas fa-check"></i> <?= session()->getFlashdata('success') ?>
+<div class="alert alert-success alert-dismissible" role="alert">
+  <div class="d-flex">
+    <div><i class="ti ti-check alert-icon"></i></div>
+    <div><?= session()->getFlashdata('success') ?></div>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
 </div>
 <?php endif; ?>
 ```
 
-### Modal (Bootstrap 4)
+### Modal (Bootstrap 5)
 
 ```html
-<div class="modal fade" id="modalHapus" tabindex="-1">
-  <div class="modal-dialog">
+<div class="modal modal-blur fade" id="modalHapus" tabindex="-1">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Konfirmasi Hapus</h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <div class="modal-body">
+        <div class="modal-title">Konfirmasi Hapus</div>
+        <div>Yakin ingin menghapus data ini?</div>
       </div>
-      <div class="modal-body">Yakin ingin menghapus data ini?</div>
       <div class="modal-footer">
-        <button class="btn btn-default" data-dismiss="modal">Batal</button>
+        <button class="btn btn-ghost-secondary" data-bs-dismiss="modal">Batal</button>
         <button class="btn btn-danger">Hapus</button>
       </div>
     </div>
@@ -431,28 +436,28 @@ $(function () {
 
 ## 7. Grafik & Chart
 
-Gunakan **Chart.js** (tersedia di plugins AdminLTE):
+Gunakan **Chart.js** (dimuat via CDN):
 
 ```html
-<script src="<?= base_url('assets/plugins/chart.js/Chart.min.js') ?>"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 ```
 
 Contoh konfigurasi chart Cashflow:
 
 ```javascript
-var cashflowChart = new Chart($('#cashflowChart'), {
+const cashflowChart = new Chart(document.getElementById('cashflowChart'), {
   type: 'bar',
   data: {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
     datasets: [
       {
         label: 'Pemasukan',
-        backgroundColor: '#28a745',
+        backgroundColor: tabler.getColor('green'),
         data: [/* data pemasukan */]
       },
       {
         label: 'Pengeluaran',
-        backgroundColor: '#dc3545',
+        backgroundColor: tabler.getColor('red'),
         data: [/* data pengeluaran */]
       }
     ]
@@ -472,8 +477,9 @@ var cashflowChart = new Chart($('#cashflowChart'), {
 
 ```
 ┌──────────┬──────────┬──────────┬──────────┐
-│ SALDO    │ MASUK    │ KELUAR   │ BUDGET   │  ← Small boxes (4 kolom)
-│ bg-info  │bg-success│bg-danger │bg-warning│
+│ SALDO    │ MASUK    │ KELUAR   │ BUDGET   │  ← Stat cards (4 kolom)
+│ card     │ card     │ card     │ card     │
+│ +stamp   │ +stamp   │ +stamp   │ +stamp   │
 └──────────┴──────────┴──────────┴──────────┘
 
 ┌─────────────────────────┬────────────────────┐
@@ -491,15 +497,14 @@ var cashflowChart = new Chart($('#cashflowChart'), {
 
 ```
 ┌──────────────────────────────────────────────┐
-│ Content Header                                │
-│ Judul Halaman              Breadcrumb         │
+│ Page Header                                   │
+│ Judul Halaman              [+ Tambah]         │
 ├──────────────────────────────────────────────┤
 │ Card                                          │
 │ ┌──────────────────────────────────────────┐  │
-│ │ Card Header    [+ Tambah]                │  │
+│ │ Card Header                              │  │
 │ ├──────────────────────────────────────────┤  │
-│ │ DataTable                                │  │
-│ │ Search | Entries per page                │  │
+│ │ Table (table-vcenter card-table)         │  │
 │ │ No | Tanggal | Keterangan | Nominal | Aksi│  │
 │ │ ...                                      │  │
 │ │ Pagination                               │  │
@@ -511,189 +516,182 @@ var cashflowChart = new Chart($('#cashflowChart'), {
 
 ## 9. Login & Register Page
 
-Menggunakan layout AdminLTE khusus login:
+Menggunakan layout Tabler khusus (page-center):
 
 ```html
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <b>Fin</b>Track
-  </div>
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Masuk ke akun Anda</p>
-      <form action="/auth/login" method="post">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+<div class="page page-center">
+  <div class="container container-tight py-4">
+    <div class="text-center mb-4">
+      <a href="/" class="navbar-brand navbar-brand-autodark">
+        <span class="fw-bold fs-1">FinTrack</span>
+      </a>
+    </div>
+    <div class="card card-md">
+      <div class="card-body">
+        <h2 class="h2 text-center mb-4">Masuk ke akun Anda</h2>
+        <form action="/auth/login" method="post" autocomplete="off">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="email@contoh.com" autocomplete="off">
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text"><span class="fas fa-lock"></span></div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Password">
           </div>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Masuk</button>
-      </form>
-      <p class="mb-0 mt-3">
-        <a href="/auth/register">Belum punya akun? Daftar</a>
-      </p>
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary w-100">Masuk</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="text-center text-secondary mt-3">
+      Belum punya akun? <a href="/auth/register" tabindex="-1">Daftar</a>
     </div>
   </div>
 </div>
-</body>
 ```
 
 ---
 
 ## 10. Responsive
 
-AdminLTE sudah responsive secara bawaan:
+Tabler sudah responsive secara bawaan:
 - **Desktop (≥992px):** Sidebar expanded, konten penuh
-- **Tablet/Mobile (<992px):** Sidebar auto-collapse, bisa toggle via hamburger menu
-- Gunakan class `sidebar-mini` di `<body>` untuk auto-collapse behavior
+- **Tablet/Mobile (<992px):** Sidebar collapse menjadi hamburger menu
+- Gunakan class `navbar-vertical navbar-expand-lg` untuk auto-collapse behavior
 
 ---
 
 ## 11. Aturan Wajib (DO & DON'T)
 
 ### ✅ DO
-- Gunakan komponen AdminLTE standar (`.card`, `.small-box`, `.info-box`, `.btn`, dll.)
-- Gunakan Bootstrap 4 utilities (grid, spacing, flex, display)
-- Gunakan Font Awesome 5 untuk semua ikon
-- Gunakan DataTables untuk tabel data
+- Gunakan komponen Tabler standar (`.card`, `.card-stamp`, `.btn`, `.badge`, dll.)
+- Gunakan Bootstrap 5 utilities (grid, spacing, flex, display)
+- Gunakan Tabler Icons (`ti ti-*`) untuk semua ikon
+- Gunakan DataTables (BS5) untuk tabel data
 - Gunakan SweetAlert2 untuk konfirmasi hapus
 - Gunakan Bootstrap Alert untuk flash message
-- Letakkan custom CSS di `assets/css/custom.css`
-- Ikuti struktur layout AdminLTE (`.wrapper` > `.main-sidebar` + `.content-wrapper`)
+- Letakkan custom CSS di `public/assets/css/custom.css`
+- Ikuti struktur layout Tabler (`.page` > `.navbar-vertical` + `.page-wrapper`)
+- Gunakan `data-bs-*` attributes (Bootstrap 5 standard)
 
 ### ❌ DON'T
-- Jangan mengubah file core AdminLTE (`adminlte.min.css`, `adminlte.min.js`)
-- Jangan membuat komponen custom jika sudah tersedia di AdminLTE
+- Jangan mengubah file core Tabler
+- Jangan membuat komponen custom jika sudah tersedia di Tabler
 - Jangan menggunakan framework CSS lain (Tailwind, Bulma, dll.)
-- Jangan menggunakan Bootstrap 5 — AdminLTE 3 menggunakan Bootstrap 4
-- Jangan menghapus jQuery — AdminLTE 3 dan DataTables membutuhkannya
+- Jangan menggunakan Bootstrap 4 — Tabler menggunakan Bootstrap 5
+- Jangan menggunakan jQuery kecuali untuk plugin yang memerlukannya (DataTables)
+- Jangan menggunakan `data-toggle` / `data-dismiss` (itu Bootstrap 4, gunakan `data-bs-toggle` / `data-bs-dismiss`)
 
 ---
 
-## 12. Dependencies (Plugin AdminLTE)
+## 12. Dependencies
 
 | Plugin | Fungsi | Load |
 |--------|--------|------|
-| jQuery 3.x | Library dasar | Wajib |
-| Bootstrap 4 | Framework CSS/JS | Wajib |
-| Font Awesome 5 | Ikon | Wajib |
-| AdminLTE 3.2 | Template dashboard | Wajib |
-| Chart.js | Grafik dashboard | Halaman dashboard |
-| DataTables BS4 | Tabel data interaktif | Halaman list |
+| Tabler Core | Template dashboard (termasuk Bootstrap 5) | Wajib |
+| Tabler Icons | Ikon SVG webfont | Wajib |
+| Chart.js | Grafik dashboard | Halaman dashboard & laporan |
+| DataTables BS5 | Tabel data interaktif | Halaman list |
 | SweetAlert2 | Dialog konfirmasi | Semua halaman CRUD |
-| bs-custom-file-input | Upload file styling | Halaman pengeluaran |
 
 ---
 
-## 13. Template Layout CodeIgniter
+## 13. Template Layout CodeIgniter 4
 
-Buat file `application/views/layout/main.php`:
+Buat file `app/Views/layout/main.php`:
 
 ```php
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title><?= $title ?? 'FinTrack' ?> — Keuangan Pribadi</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url('assets/plugins/fontawesome-free/css/all.min.css') ?>">
-  <!-- AdminLTE -->
-  <link rel="stylesheet" href="<?= base_url('assets/adminlte/css/adminlte.min.css') ?>">
+  <!-- Tabler CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>">
-</head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <span class="nav-link"><?= session('user_name') ?? 'User' ?></span>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/auth/logout"><i class="fas fa-sign-out-alt"></i></a>
-      </li>
-    </ul>
-  </nav>
+  <?= $this->renderSection('styles') ?>
+</head>
+<body class="layout-fluid">
+<div class="page">
 
   <!-- Sidebar -->
-  <?php $this->load->view('layout/sidebar'); ?>
+  <?= $this->include('layout/sidebar') ?>
 
-  <!-- Content Wrapper -->
-  <div class="content-wrapper">
-    <!-- Content Header -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0"><?= $title ?? 'Dashboard' ?></h1>
-          </div>
-        </div>
+  <!-- Navbar Header -->
+  <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
+    <div class="container-xl">
+      <div class="navbar-nav flex-row order-md-last">
+        <span class="nav-link"><?= session('user_name') ?? 'User' ?></span>
+        <a class="nav-link" href="/auth/logout">
+          <i class="ti ti-logout"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+    <!-- Page Header -->
+    <div class="page-header d-print-none">
+      <div class="container-xl">
+        <h2 class="page-title"><?= $title ?? 'Dashboard' ?></h2>
       </div>
     </div>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
+    <!-- Page Body -->
+    <div class="page-body">
+      <div class="container-xl">
         <!-- Flash Messages -->
-        <?php if ($this->session->flashdata('success')): ?>
-        <div class="alert alert-success alert-dismissible">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <i class="icon fas fa-check"></i> <?= $this->session->flashdata('success') ?>
+        <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <div class="d-flex">
+            <div><i class="ti ti-check alert-icon"></i></div>
+            <div><?= session()->getFlashdata('success') ?></div>
+          </div>
+          <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
         </div>
         <?php endif; ?>
 
-        <?php if ($this->session->flashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <i class="icon fas fa-ban"></i> <?= $this->session->flashdata('error') ?>
+        <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <div class="d-flex">
+            <div><i class="ti ti-alert-circle alert-icon"></i></div>
+            <div><?= session()->getFlashdata('error') ?></div>
+          </div>
+          <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
         </div>
         <?php endif; ?>
 
         <!-- Page Content -->
-        <?= $content ?>
+        <?= $this->renderSection('content') ?>
       </div>
-    </section>
-  </div>
+    </div>
 
-  <!-- Footer -->
-  <footer class="main-footer">
-    <strong>&copy; 2026 <a href="#">FinTrack</a>.</strong> Sistem Informasi Keuangan Pribadi.
-  </footer>
+    <!-- Footer -->
+    <footer class="footer footer-transparent d-print-none">
+      <div class="container-xl">
+        <span>&copy; 2026 <a href="#">FinTrack</a>.</span> Sistem Informasi Keuangan Pribadi.
+      </div>
+    </footer>
+  </div>
 </div>
 
-<!-- jQuery -->
-<script src="<?= base_url('assets/plugins/jquery/jquery.min.js') ?>"></script>
-<!-- Bootstrap 4 -->
-<script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
-<!-- AdminLTE App -->
-<script src="<?= base_url('assets/adminlte/js/adminlte.min.js') ?>"></script>
-<!-- Page JS (opsional) -->
-<?php if (isset($page_js)): ?>
-  <script src="<?= base_url('assets/js/' . $page_js) ?>"></script>
-<?php endif; ?>
+<!-- Tabler Core JS (includes Bootstrap 5) -->
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<!-- Custom JS -->
+<script src="<?= base_url('assets/js/app.js') ?>"></script>
+<?= $this->renderSection('scripts') ?>
 </body>
 </html>
 ```
 
 ---
 
-*DESIGN.md — versi 4.0 | Sistem Informasi Keuangan Pribadi | AdminLTE 3.2 Dashboard Template*
+*DESIGN.md — versi 5.0 | Sistem Informasi Keuangan Pribadi | Tabler Dashboard Template*

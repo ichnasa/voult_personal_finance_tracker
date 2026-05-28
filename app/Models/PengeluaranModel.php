@@ -38,14 +38,25 @@ class PengeluaranModel extends Model
         if (! empty($filters['kategori_id'])) {
             $builder->where('pengeluaran.kategori_id', $filters['kategori_id']);
         }
+        if (! empty($filters['metode'])) {
+            $builder->where('pengeluaran.metode_pembayaran', $filters['metode']);
+        }
+        if (! empty($filters['nominal_min'])) {
+            $builder->where('pengeluaran.nominal >=', (float) $filters['nominal_min']);
+        }
+        if (! empty($filters['nominal_max'])) {
+            $builder->where('pengeluaran.nominal <=', (float) $filters['nominal_max']);
+        }
         if (! empty($filters['search'])) {
             $builder->groupStart()
                 ->like('pengeluaran.catatan', $filters['search'])
                 ->orLike('kategori.name', $filters['search'])
+                ->orLike('pengeluaran.metode_pembayaran', $filters['search'])
                 ->groupEnd();
         }
 
-        return $builder->orderBy('pengeluaran.tanggal', 'DESC')->paginate($perPage);
+        $sortDir = ($filters['sort_dir'] ?? 'DESC') === 'ASC' ? 'ASC' : 'DESC';
+        return $builder->orderBy('pengeluaran.tanggal', $sortDir)->paginate($perPage);
     }
 
     /**

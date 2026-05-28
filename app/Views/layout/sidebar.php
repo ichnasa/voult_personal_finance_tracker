@@ -1,81 +1,92 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <!-- Brand Logo -->
-  <a href="<?= base_url('/') ?>" class="brand-link">
-    <i class="fas fa-chart-line brand-image ml-3" style="font-size: 20px; margin-top: 6px;"></i>
-    <span class="brand-text font-weight-light"><b>Fin</b>Track</span>
-  </a>
+<aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+      aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <!-- Sidebar user panel -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="image">
-        <div class="img-circle elevation-2 bg-info text-center" style="width:34px;height:34px;line-height:34px;font-weight:700;color:#fff;font-size:14px;">
-          <?= strtoupper(substr(session()->get('user_name') ?? 'U', 0, 1)) ?>
-        </div>
-      </div>
-      <div class="info">
-        <a href="#" class="d-block"><?= esc(session()->get('user_name') ?? 'User') ?></a>
-      </div>
+    <!-- Brand -->
+    <h1 class="navbar-brand navbar-brand-autodark">
+      <a href="<?= base_url('/') ?>">
+        <i class="ti ti-chart-line me-1"></i>
+        <span class="fw-bold">Fin</span>Track
+      </a>
+    </h1>
+
+    <!-- User (mobile) -->
+    <div class="navbar-nav flex-row d-lg-none">
+      <a class="nav-link px-2" href="<?= base_url('auth/logout') ?>" title="Logout">
+        <i class="ti ti-logout"></i>
+      </a>
     </div>
 
     <!-- Sidebar Menu -->
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-header">MENU UTAMA</li>
+    <div class="collapse navbar-collapse" id="sidebar-menu">
+      <ul class="navbar-nav pt-lg-3">
+
+        <!-- Menu Utama -->
         <li class="nav-item">
-          <a href="<?= base_url('/') ?>" class="nav-link <?= ($active_menu ?? '') === 'dashboard' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+          <a class="nav-link <?= ($active_menu ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= base_url('/') ?>">
+            <span class="nav-link-icon"><i class="ti ti-dashboard"></i></span>
+            <span class="nav-link-title">Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url('pemasukan') ?>" class="nav-link <?= ($active_menu ?? '') === 'pemasukan' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-arrow-circle-down"></i>
-            <p>Pemasukan</p>
+          <a class="nav-link <?= ($active_menu ?? '') === 'pemasukan' ? 'active' : '' ?>"
+            href="<?= base_url('pemasukan') ?>">
+            <span class="nav-link-icon"><i class="ti ti-moneybag-plus"></i></span>
+            <span class="nav-link-title">Pemasukan</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url('pengeluaran') ?>" class="nav-link <?= ($active_menu ?? '') === 'pengeluaran' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-arrow-circle-up"></i>
-            <p>Pengeluaran</p>
+          <a class="nav-link <?= ($active_menu ?? '') === 'pengeluaran' ? 'active' : '' ?>"
+            href="<?= base_url('pengeluaran') ?>">
+            <span class="nav-link-icon"><i class="ti ti-moneybag-minus"></i></span>
+            <span class="nav-link-title">Pengeluaran</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url('budgeting') ?>" class="nav-link <?= ($active_menu ?? '') === 'budgeting' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-wallet"></i>
-            <p>Budgeting</p>
+          <a class="nav-link <?= ($active_menu ?? '') === 'budgeting' ? 'active' : '' ?>"
+            href="<?= base_url('budgeting') ?>">
+            <span class="nav-link-icon"><i class="ti ti-wallet"></i></span>
+            <span class="nav-link-title">Budgeting</span>
           </a>
         </li>
 
-        <li class="nav-header">PERENCANAAN</li>
+        <li class="nav-item mt-2 mb-1"><small class="nav-link-title text-uppercase text-muted ps-3">Perencanaan</small>
+        </li>
+
         <li class="nav-item">
-          <a href="<?= base_url('wishlist') ?>" class="nav-link <?= ($active_menu ?? '') === 'wishlist' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-star"></i>
-            <p>Wishlist</p>
+          <a class="nav-link <?= ($active_menu ?? '') === 'wishlist' ? 'active' : '' ?>"
+            href="<?= base_url('wishlist') ?>">
+            <span class="nav-link-icon"><i class="ti ti-star"></i></span>
+            <span class="nav-link-title">Wishlist</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url('tabungan') ?>" class="nav-link <?= ($active_menu ?? '') === 'tabungan' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-piggy-bank"></i>
-            <p>Tabungan</p>
+          <a class="nav-link <?= ($active_menu ?? '') === 'tabungan' ? 'active' : '' ?>"
+            href="<?= base_url('tabungan') ?>">
+            <span class="nav-link-icon"><i class="ti ti-pig-money"></i></span>
+            <span class="nav-link-title">Tabungan</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url('laporan') ?>" class="nav-link <?= ($active_menu ?? '') === 'laporan' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-file-alt"></i>
-            <p>Laporan</p>
+          <a class="nav-link <?= ($active_menu ?? '') === 'laporan' ? 'active' : '' ?>"
+            href="<?= base_url('laporan') ?>">
+            <span class="nav-link-icon"><i class="ti ti-file-text"></i></span>
+            <span class="nav-link-title">Laporan</span>
           </a>
         </li>
 
-        <li class="nav-header">AKUN</li>
+        <li class="nav-item mt-2 mb-1"><small class="nav-link-title text-uppercase text-muted ps-3">Akun</small></li>
+
         <li class="nav-item">
-          <a href="<?= base_url('auth/logout') ?>" class="nav-link">
-            <i class="nav-icon fas fa-sign-out-alt"></i>
-            <p>Logout</p>
+          <a class="nav-link" href="<?= base_url('auth/logout') ?>">
+            <span class="nav-link-icon"><i class="ti ti-logout"></i></span>
+            <span class="nav-link-title">Logout</span>
           </a>
         </li>
       </ul>
-    </nav>
+    </div>
   </div>
 </aside>

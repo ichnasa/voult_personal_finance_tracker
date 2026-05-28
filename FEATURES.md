@@ -13,10 +13,10 @@ FinTrack adalah sistem informasi keuangan pribadi berbasis web yang membantu pen
 
 Sistem dibangun menggunakan:
 
-* CodeIgniter 3
+* CodeIgniter 4
 * MySQL
-* AdminLTE 3.2
-* Bootstrap 4
+* Tabler (Dashboard Template)
+* Bootstrap 5
 
 ---
 
@@ -252,20 +252,20 @@ Menghasilkan laporan keuangan.
 
 ## Design Style
 
-* AdminLTE 3.2 admin dashboard
-* clean professional layout
+* Tabler admin dashboard
+* clean modern layout
 * responsive design
 
 ## UI Components
 
-* small-box stat cards (AdminLTE)
-* cards (AdminLTE)
+* stat cards with card-stamp (Tabler)
+* cards (Tabler / Bootstrap 5)
 * Chart.js charts
-* Bootstrap progress bars
+* Bootstrap 5 progress bars
 * DataTables
-* Bootstrap forms
-* AdminLTE sidebar navigation
-* Font Awesome 5 icons
+* Bootstrap 5 forms
+* Tabler navbar-vertical navigation
+* Tabler Icons
 * SweetAlert2 dialogs
 
 ---

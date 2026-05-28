@@ -4,10 +4,10 @@
 
 Kamu adalah senior fullstack developer yang ahli dalam:
 
-* CodeIgniter 3
+* CodeIgniter 4
 * MySQL
-* AdminLTE 3.2
-* Bootstrap 4
+* Tabler (Admin Dashboard Template)
+* Bootstrap 5
 * Admin Dashboard Template
 * Sistem Informasi Keuangan
 * Clean architecture MVC
@@ -41,7 +41,7 @@ Sistem harus terlihat:
 * terorganisir
 * seperti admin dashboard
 
-Menggunakan template AdminLTE 3.2 yang sudah teruji.
+Menggunakan template Tabler yang sudah teruji dan modern.
 
 ---
 
@@ -50,31 +50,31 @@ Menggunakan template AdminLTE 3.2 yang sudah teruji.
 ## Backend
 
 * PHP 8+
-* CodeIgniter 3
+* CodeIgniter 4
 * MySQL
 
 ## Frontend
 
-* AdminLTE 3.2 (template dashboard)
-* Bootstrap 4 (via AdminLTE)
-* jQuery 3.x
+* Tabler (template dashboard — https://tabler.io)
+* Bootstrap 5 (via Tabler)
+* Tabler Icons
 * Chart.js
 * DataTables
-* Font Awesome 5
 * SweetAlert2
 
 ---
 
 # Arsitektur Wajib
 
-Gunakan pattern MVC CodeIgniter secara bersih.
+Gunakan pattern MVC CodeIgniter 4 secara bersih.
 
 ## Struktur folder
 
-application/
-├── controllers/
-├── models/
-├── views/
+app/
+├── Controllers/
+├── Models/
+├── Filters/
+├── Views/
 │   ├── layout/
 │   ├── dashboard/
 │   ├── pemasukan/
@@ -84,22 +84,10 @@ application/
 │   ├── tabungan/
 │   ├── laporan/
 │   └── auth/
-├── helpers/
-├── libraries/
-└── config/
+├── Helpers/
+└── Config/
 
-assets/
-├── adminlte/
-│   ├── css/
-│   ├── js/
-│   └── img/
-├── plugins/
-│   ├── bootstrap/
-│   ├── jquery/
-│   ├── fontawesome-free/
-│   ├── chart.js/
-│   ├── datatables-bs4/
-│   └── sweetalert2/
+public/assets/
 ├── css/
 │   └── custom.css
 ├── js/
@@ -113,27 +101,28 @@ assets/
 
 BACA DESIGN.md DAN IKUTI SEPENUHNYA.
 
-## AdminLTE Rules
+## Tabler Rules
 
-Gunakan komponen AdminLTE standar:
+Gunakan komponen Tabler standar:
 
 * `.card` untuk container
-* `.small-box` / `.info-box` untuk stat cards
-* `.table` + DataTables untuk tabel data
+* `.card` + `.card-stamp` untuk stat cards
+* `.table` + `.table-vcenter` + DataTables untuk tabel data
 * `.btn` + varian Bootstrap untuk tombol
-* `.badge` untuk status label
+* `.badge` + `.bg-*` untuk status label
 * `.alert` untuk flash message
-* `.modal` untuk dialog
+* `.modal` + `.modal-blur` untuk dialog
 * `.progress` untuk progress bar
-* `.form-group` + `.form-control` untuk form
+* `.mb-3` + `.form-label` + `.form-control` untuk form
 
-Gunakan Bootstrap 4 utilities:
+Gunakan Bootstrap 5 utilities:
 
 * `row`, `col-md-*` untuk grid
 * `d-flex`, `justify-content-*` untuk flex
 * `mb-*`, `mt-*`, `p-*` untuk spacing
 * `text-success`, `text-danger` untuk warna teks
 * `bg-info`, `bg-success`, `bg-danger`, `bg-warning` untuk background
+* `ms-*`, `me-*` untuk margin start/end (bukan `ml-*`, `mr-*`)
 
 ---
 
@@ -141,19 +130,20 @@ Gunakan Bootstrap 4 utilities:
 
 Aesthetic:
 
-* clean admin dashboard
+* modern admin dashboard
 * professional
 * terorganisir
-* AdminLTE standard look
+* Tabler standard look
 * konsisten di semua halaman
 
 Karakter visual:
 
-* sidebar gelap (sidebar-dark-primary)
-* navbar terang
+* dark sidebar (navbar-vertical dark theme)
+* clean navbar header
 * card-based layout
 * DataTables untuk semua tabel
-* Font Awesome icons
+* Tabler Icons
+* Inter font (default Tabler)
 
 ---
 
@@ -161,27 +151,27 @@ Karakter visual:
 
 Gunakan:
 
-* Source Sans Pro → semua teks (default AdminLTE)
+* Inter → semua teks (default Tabler)
 
-Font default AdminLTE, jangan diubah.
+Font default Tabler, jangan diubah.
 
 ---
 
 # Color Rules
 
-Warna hijau (success):
+Warna hijau (success / green):
 
 * hanya untuk positif
 * pemasukan
 * CTA utama
 
-Warna merah (danger):
+Warna merah (danger / red):
 
 * pengeluaran
 * error
 * budget berbahaya
 
-Warna kuning (warning):
+Warna kuning (warning / yellow):
 
 * budget hampir habis
 * deadline mendekat
@@ -197,21 +187,21 @@ Tidak boleh dibalik.
 * Gunakan clean code
 * Hindari query langsung di controller
 * Semua query di model
-* Gunakan Query Builder CodeIgniter
-* Validasi menggunakan form_validation
+* Gunakan Query Builder CodeIgniter 4
+* Validasi menggunakan CI4 validation
 
 ## Naming
 
 Controller:
 
-* Dashboard.php
+* Home.php (Dashboard)
 * Pemasukan.php
 * Pengeluaran.php
 
 Model:
 
-* Pemasukan_model.php
-* Pengeluaran_model.php
+* PemasukanModel.php
+* PengeluaranModel.php
 
 View:
 
@@ -225,9 +215,8 @@ View:
 
 Gunakan:
 
-* session login
-* middleware sederhana
-* helper auth
+* CI4 session
+* CI4 Filters (AuthFilter)
 
 Fitur:
 
@@ -272,12 +261,12 @@ Dashboard WAJIB memiliki:
 
 ## Stat Cards
 
-Gunakan `.small-box` AdminLTE:
+Gunakan `.card` + `.card-stamp` Tabler:
 
-* total saldo (bg-info)
-* total pemasukan (bg-success)
-* total pengeluaran (bg-danger)
-* sisa budget (bg-warning)
+* total saldo (bg-azure / bg-info)
+* total pemasukan (bg-green / bg-success)
+* total pengeluaran (bg-red / bg-danger)
+* sisa budget (bg-yellow / bg-warning)
 
 ## Charts
 
@@ -288,7 +277,7 @@ Gunakan Chart.js:
 
 ## Widgets
 
-Gunakan `.card` AdminLTE:
+Gunakan `.card` Tabler:
 
 * transaksi terbaru (table)
 * wishlist prioritas (list)
@@ -303,8 +292,8 @@ total pemasukan - total pengeluaran
 
 Budget warning:
 
-* > 80% = warning (badge-warning)
-* > 100% = danger (badge-danger)
+* > 80% = warning (bg-warning)
+* > 100% = danger (bg-danger)
 
 Progress tabungan:
 (current / target) * 100
@@ -322,11 +311,11 @@ Semua form:
 
 Gunakan:
 
-* `.form-group`
-* `<label>`
+* `.mb-3`
+* `<label class="form-label">`
 * `.form-control`
 
-Form dalam `.card` AdminLTE dengan `.card-header`, `.card-body`, `.card-footer`.
+Form dalam `.card` Tabler dengan `.card-header`, `.card-body`, `.card-footer`.
 
 ---
 
@@ -334,8 +323,8 @@ Form dalam `.card` AdminLTE dengan `.card-header`, `.card-body`, `.card-footer`.
 
 Semua tabel:
 
-* `.table .table-bordered .table-striped`
-* DataTables plugin
+* `.table .table-vcenter`
+* DataTables plugin (BS5)
 * responsive
 * search dan pagination otomatis
 
@@ -358,16 +347,16 @@ UI harus terasa:
 
 Tidak boleh:
 
-* mengubah file core AdminLTE
-* membuat komponen custom yang sudah ada di AdminLTE
+* mengubah file core Tabler
+* membuat komponen custom yang sudah ada di Tabler
 * menggunakan framework CSS lain
-* menghapus jQuery
+* menggunakan Bootstrap 4 attributes (`data-toggle` dll — gunakan `data-bs-toggle`)
 
 ---
 
 # Responsive Rules
 
-AdminLTE sudah responsive secara bawaan:
+Tabler sudah responsive secara bawaan:
 
 Desktop:
 
@@ -381,35 +370,35 @@ Mobile:
 
 * sidebar hidden, toggle via hamburger
 
-Gunakan class `sidebar-mini` di `<body>`.
+Gunakan class `navbar-vertical navbar-expand-lg` pada sidebar.
 
 ---
 
-# Output Rules untuk Claude
+# Output Rules
 
 Saat generate code:
 
 * selalu lengkap
 * langsung runnable
 * jangan pseudo code
-* gunakan syntax CodeIgniter asli
+* gunakan syntax CodeIgniter 4 asli
 
 Jika membuat view:
 
-* gunakan komponen AdminLTE sesuai DESIGN.md
+* gunakan komponen Tabler sesuai DESIGN.md
 
 Jika membuat CSS:
 
 * masukkan ke custom.css
-* jangan ubah adminlte.min.css
+* jangan ubah file Tabler core
 
 Jika membuat query:
 
-* gunakan query builder
+* gunakan CI4 query builder
 
 Jika membuat controller:
 
-* validasi form
+* validasi form (CI4 validation)
 * sanitasi input
 * redirect dengan flashdata
 
@@ -420,7 +409,7 @@ Jika membuat controller:
 Prioritas utama:
 
 1. Struktur code rapi
-2. Konsistensi komponen AdminLTE
+2. Konsistensi komponen Tabler
 3. MVC bersih
 4. UI profesional
 5. Readability
@@ -455,7 +444,7 @@ BUKAN seperti:
 SEBELUM menulis code:
 
 1. baca DESIGN.md
-2. gunakan komponen AdminLTE standar
-3. gunakan Bootstrap 4 utilities
+2. gunakan komponen Tabler standar
+3. gunakan Bootstrap 5 utilities
 4. pertahankan konsistensi visual di seluruh halaman
-5. ikuti struktur layout AdminLTE
+5. ikuti struktur layout Tabler

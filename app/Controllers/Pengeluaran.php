@@ -23,7 +23,11 @@ class Pengeluaran extends BaseController
             'date_from'   => $this->request->getGet('date_from'),
             'date_to'     => $this->request->getGet('date_to'),
             'kategori_id' => $this->request->getGet('kategori_id'),
+            'metode'      => $this->request->getGet('metode'),
+            'nominal_min' => $this->request->getGet('nominal_min'),
+            'nominal_max' => $this->request->getGet('nominal_max'),
             'search'      => $this->request->getGet('search'),
+            'sort_dir'    => $this->request->getGet('sort_dir'),
         ];
 
         $data = [

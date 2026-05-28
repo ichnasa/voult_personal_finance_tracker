@@ -6,21 +6,21 @@
 
 ## 1. Arsitektur Aplikasi
 
-FinTrack menggunakan pola **MVC (Model-View-Controller)** di atas framework **CodeIgniter 3** dengan template **AdminLTE 3.2**.
+FinTrack menggunakan pola **MVC (Model-View-Controller)** di atas framework **CodeIgniter 4** dengan template **Tabler**.
 
 ```
 Browser (User)
     │
     ▼
 ┌─────────────────────────────────────────────┐
-│  Routes (application/config/routes.php)     │
+│  Routes (app/Config/Routes.php)             │
 │  Menentukan URL mana masuk ke Controller    │
 │  mana                                       │
 └──────────────────┬──────────────────────────┘
                    │
                    ▼
 ┌─────────────────────────────────────────────┐
-│  Controller (application/controllers/*.php) │
+│  Controller (app/Controllers/*.php)         │
 │  Menerima request, proses logic, panggil    │
 │  Model, kirim data ke View                  │
 └───────┬─────────────────────────┬───────────┘
@@ -28,9 +28,9 @@ Browser (User)
         ▼                         ▼
 ┌───────────────┐         ┌───────────────────┐
 │  Model        │         │  View             │
-│  (models/)    │         │  (views/)         │
+│  (Models/)    │         │  (Views/)         │
 │  Query ke DB  │         │  Render HTML      │
-│  via Query    │         │  dengan AdminLTE  │
+│  via Query    │         │  dengan Tabler    │
 │  Builder      │         │  template         │
 └───────┬───────┘         └───────────────────┘
         │
@@ -48,15 +48,15 @@ Browser (User)
 
 ```
 fintrack/
-├── application/
-│   ├── config/
-│   │   ├── routes.php       ← Semua routing URL
-│   │   ├── database.php     ← Konfigurasi database
-│   │   └── autoload.php     ← Autoload library & helper
+├── app/
+│   ├── Config/
+│   │   ├── Routes.php       ← Semua routing URL
+│   │   ├── Database.php     ← Konfigurasi database
+│   │   └── Filters.php      ← Auth filter
 │   │
-│   ├── controllers/          ← Logic bisnis
+│   ├── Controllers/          ← Logic bisnis
 │   │   ├── Auth.php          ← Login, Register, Logout
-│   │   ├── Dashboard.php     ← Dashboard
+│   │   ├── Home.php          ← Dashboard
 │   │   ├── Pemasukan.php     ← CRUD Pemasukan
 │   │   ├── Pengeluaran.php   ← CRUD Pengeluaran
 │   │   ├── Budgeting.php     ← CRUD Budget
@@ -64,22 +64,23 @@ fintrack/
 │   │   ├── Tabungan.php      ← CRUD Tabungan
 │   │   └── Laporan.php       ← Laporan + Export
 │   │
-│   ├── models/               ← Akses database
-│   │   ├── User_model.php
-│   │   ├── Pemasukan_model.php
-│   │   ├── Pengeluaran_model.php
-│   │   ├── Kategori_model.php
-│   │   ├── Budgeting_model.php
-│   │   ├── Wishlist_model.php
-│   │   └── Tabungan_model.php
+│   ├── Models/               ← Akses database
+│   │   ├── UserModel.php
+│   │   ├── PemasukanModel.php
+│   │   ├── PengeluaranModel.php
+│   │   ├── KategoriModel.php
+│   │   ├── BudgetingModel.php
+│   │   ├── WishlistModel.php
+│   │   └── TabunganModel.php
 │   │
-│   ├── views/
-│   │   ├── layout/           ← Template AdminLTE
-│   │   │   ├── main.php      ← Layout utama (wrapper + sidebar + content)
-│   │   │   ├── auth.php      ← Layout login/register (tanpa sidebar)
-│   │   │   ├── sidebar.php   ← AdminLTE main-sidebar
-│   │   │   ├── header.php    ← AdminLTE main-header navbar
-│   │   │   └── footer.php    ← AdminLTE main-footer
+│   ├── Filters/
+│   │   └── AuthFilter.php    ← Middleware autentikasi
+│   │
+│   ├── Views/
+│   │   ├── layout/           ← Template Tabler
+│   │   │   ├── main.php      ← Layout utama (page + sidebar + content)
+│   │   │   ├── auth.php      ← Layout login/register (page-center)
+│   │   │   └── sidebar.php   ← Tabler navbar-vertical
 │   │   │
 │   │   ├── auth/             ← Halaman login & register
 │   │   ├── dashboard/        ← Halaman dashboard
@@ -90,28 +91,14 @@ fintrack/
 │   │   ├── tabungan/         ← index, create, edit
 │   │   └── laporan/          ← index, print
 │   │
-│   ├── helpers/
-│   └── libraries/
+│   └── Helpers/
 │
-├── assets/
-│   ├── adminlte/              ← AdminLTE core files
-│   │   ├── css/adminlte.min.css
-│   │   ├── js/adminlte.min.js
-│   │   └── img/
-│   ├── plugins/               ← Plugin AdminLTE
-│   │   ├── jquery/
-│   │   ├── bootstrap/
-│   │   ├── fontawesome-free/
-│   │   ├── chart.js/
-│   │   ├── datatables-bs4/
-│   │   ├── sweetalert2/
-│   │   └── bs-custom-file-input/
-│   ├── css/
-│   │   └── custom.css         ← Override minimal FinTrack
-│   ├── js/
-│   │   └── app.js             ← JavaScript custom FinTrack
-│   ├── img/
-│   └── uploads/               ← File nota yang diupload
+├── public/
+│   └── assets/
+│       ├── css/custom.css         ← Override minimal FinTrack
+│       ├── js/app.js              ← JavaScript custom FinTrack
+│       ├── img/
+│       └── uploads/               ← File nota yang diupload
 │
 └── .env
 ```
@@ -123,22 +110,22 @@ fintrack/
 ### Contoh: User membuka halaman Pemasukan
 
 ```
-1. User klik menu "Pemasukan" di sidebar AdminLTE
+1. User klik menu "Pemasukan" di sidebar Tabler
    URL: http://localhost:8080/pemasukan
 
-2. routes.php mencocokkan URL:
-   $route['pemasukan'] = 'pemasukan/index';
+2. Routes.php mencocokkan URL:
+   $routes->get('pemasukan', 'Pemasukan::index');
 
 3. Controller Pemasukan::index() dijalankan:
-   - Cek session login (jika belum → redirect ke auth/login)
+   - AuthFilter cek session login (jika belum → redirect ke auth/login)
    - Ambil user_id dari session
-   - Panggil Pemasukan_model->get_by_user($userId)
+   - Panggil PemasukanModel->getByUser($userId)
    - Kirim data ke view
 
 4. View pemasukan/index.php di-render:
-   - Dimuat dalam layout/main.php (AdminLTE wrapper)
+   - Extends layout/main.php (Tabler page wrapper)
    - Sidebar, header, footer sudah terintegrasi
-   - Tampilkan DataTables dengan data pemasukan
+   - Tampilkan tabel dengan data pemasukan
 
 5. HTML dikirim ke browser → User melihat halaman
 ```
@@ -152,11 +139,11 @@ fintrack/
 ```
 ┌──────────────────────────────────────────────────────┐
 │  1. User buka /auth/register                         │
-│  2. Halaman register AdminLTE (register-page layout) │
+│  2. Halaman register Tabler (page-center layout)     │
 │  3. Isi form: Nama, Email, Password, Konfirmasi      │
-│  4. Submit form → POST /auth/process_register        │
+│  4. Submit form → POST /auth/processRegister         │
 │                                                      │
-│  Controller Auth::process_register():                │
+│  Controller Auth::processRegister():                 │
 │  ├── Validasi input (nama min 3, email unik, dll)    │
 │  ├── Jika GAGAL → redirect back + tampil error       │
 │  ├── Jika BERHASIL:                                  │
@@ -171,11 +158,11 @@ fintrack/
 ```
 ┌──────────────────────────────────────────────────────┐
 │  1. User buka /auth/login                            │
-│  2. Halaman login AdminLTE (login-page layout)       │
+│  2. Halaman login Tabler (page-center layout)        │
 │  3. Isi Email + Password                             │
-│  4. Submit → POST /auth/process_login                │
+│  4. Submit → POST /auth/processLogin                 │
 │                                                      │
-│  Controller Auth::process_login():                   │
+│  Controller Auth::processLogin():                    │
 │  ├── Cari user by email di database                  │
 │  ├── Verifikasi password: password_verify()          │
 │  ├── Jika SALAH → redirect back + "Email/password    │
@@ -193,29 +180,29 @@ fintrack/
 ### Logout
 
 ```
-Auth::logout()  →  session_destroy()  →  redirect ke /auth/login
+Auth::logout()  →  session()->destroy()  →  redirect ke /auth/login
 ```
 
 ---
 
-## 5. Sistem Layout (Template AdminLTE)
+## 5. Sistem Layout (Template Tabler)
 
 FinTrack menggunakan 2 layout:
 
 ### Layout `main.php` — Untuk halaman utama (setelah login)
 
-Menggunakan struktur AdminLTE:
+Menggunakan struktur Tabler:
 
 ```
 ┌──────────────────────────────────────────────────┐
-│ MAIN HEADER (navbar)                              │
-│ [≡] Toggle          User Name  [Logout]           │
+│ NAVBAR HEADER                                     │
+│                          User Name  [Logout]      │
 ├──────────┬───────────────────────────────────────┤
-│          │ CONTENT HEADER                         │
-│ MAIN     │ Judul Halaman        Breadcrumb        │
-│ SIDEBAR  ├───────────────────────────────────────┤
+│          │ PAGE HEADER                            │
+│ NAVBAR   │ Judul Halaman                          │
+│ VERTICAL ├───────────────────────────────────────┤
 │          │                                       │
-│ FinTrack │ SECTION CONTENT                        │
+│ FinTrack │ PAGE BODY                              │
 │          │ (konten halaman di sini)               │
 │ • Dash   │                                       │
 │ • Masuk  │                                       │
@@ -225,25 +212,27 @@ Menggunakan struktur AdminLTE:
 │ • Tabung │                                       │
 │ • Lapor  │                                       │
 │          ├───────────────────────────────────────┤
-│          │ MAIN FOOTER                            │
+│          │ FOOTER                                 │
 │          │ © 2026 FinTrack                        │
 └──────────┴───────────────────────────────────────┘
 ```
 
-Cara kerja:
+Cara kerja (CI4 layout sections):
 ```php
 // Di main.php:
-// Layout AdminLTE wrapper dengan sidebar, header, footer
-// Konten dimuat via $content variable
+// Layout Tabler page dengan sidebar, header, footer
+// Konten dimuat via $this->renderSection('content')
 
-// Di controller:
-$data['content'] = $this->load->view('pemasukan/index', $data, TRUE);
-$this->load->view('layout/main', $data);
+// Di view halaman:
+<?= $this->extend('layout/main') ?>
+<?= $this->section('content') ?>
+  <!-- konten halaman -->
+<?= $this->endSection() ?>
 ```
 
 ### Layout `auth.php` — Untuk halaman login/register (tanpa sidebar)
 
-Menggunakan layout AdminLTE login-page:
+Menggunakan layout Tabler page-center:
 
 ```
 ┌──────────────────────────────────┐
@@ -314,7 +303,7 @@ Menggunakan layout AdminLTE login-page:
 ### 7.1 Dashboard (`/`)
 
 ```
-Controller: Dashboard::index()
+Controller: Home::index()
 │
 ├── Query total saldo (pemasukan - pengeluaran all time)
 ├── Query pemasukan bulan ini
@@ -324,7 +313,7 @@ Controller: Dashboard::index()
 ├── Query 5 transaksi terakhir (gabungan)
 │
 └── Render: dashboard/index.php
-    ├── 4 Small-box AdminLTE (Saldo, Pemasukan, Pengeluaran, Sisa Budget)
+    ├── 4 Stat cards Tabler (Saldo, Pemasukan, Pengeluaran, Sisa Budget)
     ├── Card + Chart.js Bar Chart (Cashflow tahunan)
     ├── Card + Tabel transaksi terakhir
     ├── Card + Budget progress bar
@@ -338,11 +327,11 @@ ALUR CRUD:
 
 LIST (/pemasukan)
   Controller: Pemasukan::index()
-  ├── Pemasukan_model->get_by_user() dengan filter
-  └── Render DataTables dalam card AdminLTE
+  ├── PemasukanModel->getByUser() dengan filter
+  └── Render tabel dalam card Tabler
 
 CREATE (/pemasukan/create → POST /pemasukan/store)
-  1. Tampilkan form dalam card AdminLTE
+  1. Tampilkan form dalam card Tabler
   2. User isi: tanggal, nominal, sumber, catatan
   3. Submit → validasi server-side
   4. Jika valid: INSERT ke DB → redirect + flash alert success
@@ -366,7 +355,7 @@ Sama seperti Pemasukan, PLUS:
 ├── Dropdown kategori (dari tabel kategori)
 ├── Pilihan metode pembayaran (Cash, Transfer, E-Wallet, Debit, Kredit)
 ├── Upload nota (gambar/PDF)
-│   ├── File disimpan ke assets/uploads/
+│   ├── File disimpan ke public/assets/uploads/
 │   ├── Nama file di-random untuk keamanan
 │   └── Saat edit: bisa upload nota baru (lama dihapus)
 └── Filter tambahan: by kategori
@@ -386,9 +375,9 @@ ALUR KHUSUS:
    │   ├── Hitung pengeluaran aktual di kategori itu
    │   ├── Hitung persentase: (spent / budget) × 100
    │   └── Tentukan status:
-   │       ├── ≤ 80%  → Badge "Normal" (badge-success)
-   │       ├── 80-100% → Badge "Warning" (badge-warning)
-   │       └── > 100% → Badge "Over Budget" (badge-danger)
+   │       ├── ≤ 80%  → Badge "Normal" (bg-success)
+   │       ├── 80-100% → Badge "Warning" (bg-warning)
+   │       └── > 100% → Badge "Over Budget" (bg-danger)
    └── Tampilkan Bootstrap progress bar per kategori
 
 3. Filter bulan/tahun: user bisa lihat budget bulan lain
@@ -405,9 +394,9 @@ ALUR:
    └── Catatan (opsional)
 
 2. Status tracking:
-   ├── Belum Mulai → badge-secondary
-   ├── Menabung → badge-warning
-   └── Tercapai → badge-success
+   ├── Belum Mulai → badge bg-secondary
+   ├── Menabung → badge bg-warning
+   └── Tercapai → badge bg-success
 
 3. Sorting: Tinggi → Sedang → Rendah (otomatis)
 
@@ -427,7 +416,7 @@ ALUR:
 
 2. Progress tracking:
    ├── Progress = (terkumpul / target) × 100%
-   ├── Ditampilkan sebagai Bootstrap progress bar
+   ├── Ditampilkan sebagai Bootstrap 5 progress bar
    └── User update nominal_terkumpul via edit
 
 3. Deadline warning:
@@ -449,8 +438,8 @@ ALUR:
    ├── Selisih (surplus/defisit)
    └── Breakdown pengeluaran per kategori
 
-3. Tampilan (dalam card AdminLTE):
-   ├── 3 Summary cards (info-box)
+3. Tampilan (dalam card Tabler):
+   ├── 3 Summary stat cards
    ├── Doughnut chart (pengeluaran per kategori)
    ├── Tabel detail pemasukan
    └── Tabel detail pengeluaran
@@ -466,41 +455,41 @@ ALUR:
 
 ## 8. Sistem Styling
 
-### AdminLTE 3.2 Components
+### Tabler Components
 
-Semua komponen visual menggunakan class AdminLTE dan Bootstrap 4 standar.
+Semua komponen visual menggunakan class Tabler dan Bootstrap 5 standar.
 
 | Komponen | Class | Fungsi |
 |----------|-------|--------|
-| Small Box | `.small-box` | Stat card dashboard |
-| Info Box | `.info-box` | Info card alternatif |
+| Stat Card | `.card` + `.card-stamp` | Stat card dashboard |
 | Card | `.card` | Container utama |
-| Table | `.table .table-bordered .table-striped` | Tabel data |
+| Table | `.table .table-vcenter .card-table` | Tabel data |
 | DataTables | `#id` + JS init | Tabel interaktif |
 | Button | `.btn .btn-primary/danger/success` | Tombol aksi |
-| Badge | `.badge .badge-success/danger/warning` | Label status |
+| Badge | `.badge .bg-success/danger/warning` | Label status |
 | Progress | `.progress .progress-bar` | Progress bar |
 | Alert | `.alert .alert-success/danger` | Flash message |
-| Modal | `.modal` | Dialog konfirmasi |
-| Form | `.form-group .form-control` | Input form |
-| Sidebar | `.main-sidebar .nav-sidebar` | Navigasi samping |
-| Navbar | `.main-header .navbar` | Header atas |
+| Modal | `.modal .modal-blur` | Dialog konfirmasi |
+| Form | `.mb-3 .form-label .form-control` | Input form |
+| Sidebar | `.navbar-vertical` | Navigasi samping |
+| Navbar | `.navbar .navbar-expand-md` | Header atas |
 
 ### Warna Utama
 
 ```
-Primary    : Bootstrap primary (biru)
-Success    : Bootstrap success (hijau) — pemasukan
-Danger     : Bootstrap danger (merah) — pengeluaran
-Warning    : Bootstrap warning (kuning) — budget warning
-Info       : Bootstrap info (cyan) — informasi
+Primary    : Tabler primary (biru)
+Success    : Tabler success / green — pemasukan
+Danger     : Tabler danger / red — pengeluaran
+Warning    : Tabler warning / yellow — budget warning
+Info       : Tabler info / azure — informasi
 ```
 
 ### Ikon
 
 ```
-Font Awesome 5 (bawaan AdminLTE)
-Contoh: fas fa-wallet, fas fa-chart-bar, fas fa-piggy-bank
+Tabler Icons (webfont)
+Contoh: ti ti-wallet, ti ti-chart-bar, ti ti-pig-money
+Docs: https://tabler.io/icons
 ```
 
 ---
@@ -513,7 +502,7 @@ Contoh: User menambah pemasukan Rp 5.000.000
 1. User klik "Tambah Pemasukan" di Dashboard
    → Buka /pemasukan/create
 
-2. User isi form (dalam card AdminLTE):
+2. User isi form (dalam card Tabler):
    Tanggal: 2026-05-18
    Nominal: 5000000
    Sumber: Gaji
@@ -521,17 +510,17 @@ Contoh: User menambah pemasukan Rp 5.000.000
 
 3. Submit → POST /pemasukan/store
    → Controller validasi
-   → Pemasukan_model->insert([...])
+   → PemasukanModel->insert([...])
    → Data masuk ke tabel 'pemasukan'
 
-4. Redirect ke /pemasukan → tampil di DataTables
+4. Redirect ke /pemasukan → tampil di tabel
 
 5. User kembali ke Dashboard (/)
-   → Dashboard::index() query ulang:
-   ├── get_total_all() → Saldo terupdate (small-box)
-   ├── get_total_bulan_ini() → Pemasukan bulan ini terupdate
-   ├── get_monthly_totals() → Chart terupdate
-   └── get_recent() → Transaksi terakhir terupdate
+   → Home::index() query ulang:
+   ├── getTotalAll() → Saldo terupdate (stat card)
+   ├── getTotalBulanIni() → Pemasukan bulan ini terupdate
+   ├── getMonthlyTotals() → Chart terupdate
+   └── getRecent() → Transaksi terakhir terupdate
 
 6. Dashboard menampilkan data terbaru
 ```
@@ -543,12 +532,12 @@ Contoh: User menambah pemasukan Rp 5.000.000
 | Mekanisme | Implementasi |
 |-----------|-------------|
 | Password hashing | `password_hash()` + `password_verify()` |
-| Session-based auth | CI3 Session library |
-| Route protection | Cek session di constructor controller |
+| Session-based auth | CI4 Session library |
+| Route protection | CI4 Filters (AuthFilter) |
 | Data ownership | Setiap query di-filter by `user_id` dari session |
-| CSRF protection | CI3 CSRF token |
-| Input escaping | `htmlspecialchars()` di output view |
-| SQL injection | CI3 Query Builder (parameterized) |
+| CSRF protection | CI4 `csrf_field()` di form |
+| Input escaping | `esc()` helper di output view |
+| SQL injection | CI4 Query Builder (parameterized) |
 
 ---
 
@@ -563,10 +552,10 @@ cd /home/ichawfa/Documents/CodeOnFedora/fintrack
 
 # 3. Import tabel dari DATABASE.md
 
-# 4. Pastikan AdminLTE assets sudah ada di assets/
+# 4. Tabler dimuat via CDN — tidak perlu setup manual
 
 # 5. Jalankan server development
-php -S localhost:8080 -t .
+php spark serve --port 8080
 
 # 6. Buka browser
 #    http://localhost:8080
@@ -598,4 +587,4 @@ php -S localhost:8080 -t .
 
 ---
 
-*Dokumen ini dibuat untuk project FinTrack — Sistem Informasi Keuangan Pribadi menggunakan AdminLTE 3.2.*
+*Dokumen ini dibuat untuk project FinTrack — Sistem Informasi Keuangan Pribadi menggunakan Tabler.*

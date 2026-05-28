@@ -19,7 +19,22 @@ class Tabungan extends BaseController
     public function index()
     {
         $userId = session()->get('user_id');
-        $items  = $this->tabunganModel->getByUser($userId, 10);
+        $limit  = $this->request->getGet('limit') ?? 8;
+
+        $filters = [
+            'date_from'     => $this->request->getGet('date_from'),
+            'date_to'       => $this->request->getGet('date_to'),
+            'terkumpul_min' => $this->request->getGet('terkumpul_min'),
+            'terkumpul_max' => $this->request->getGet('terkumpul_max'),
+            'target_min'    => $this->request->getGet('target_min'),
+            'target_max'    => $this->request->getGet('target_max'),
+            'progress_min'  => $this->request->getGet('progress_min'),
+            'progress_max'  => $this->request->getGet('progress_max'),
+            'status'        => $this->request->getGet('status'),
+            'sort_dir'      => $this->request->getGet('sort_dir'),
+        ];
+
+        $items = $this->tabunganModel->getByUser($userId, (int)$limit, $filters);
 
         // Calculate progress for each
         foreach ($items as &$item) {
@@ -28,11 +43,26 @@ class Tabungan extends BaseController
                 : 0;
         }
 
+        // Post-query filter: progress range (computed field)
+        $pMin = $filters['progress_min'];
+        $pMax = $filters['progress_max'];
+        if ($pMin !== null && $pMin !== '') {
+            $pMin = (int)$pMin;
+            if ($pMax !== null && $pMax !== '') {
+                $pMax = (int)$pMax;
+                $items = array_filter($items, fn($i) => $i['progress'] >= $pMin && $i['progress'] <= $pMax);
+            } else {
+                $items = array_filter($items, fn($i) => $i['progress'] === $pMin);
+            }
+            $items = array_values($items);
+        }
+
         $data = [
             'title'       => 'Tabungan',
             'active_menu' => 'tabungan',
             'items'       => $items,
             'pager'       => $this->tabunganModel->pager,
+            'filters'     => $filters,
         ];
         return view('tabungan/index', $data);
     }

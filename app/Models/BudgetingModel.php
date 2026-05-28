@@ -6,8 +6,8 @@ use CodeIgniter\Model;
 
 class BudgetingModel extends Model
 {
-    protected $table         = 'budgeting';
-    protected $primaryKey    = 'id';
+    protected $table = 'budgeting';
+    protected $primaryKey = 'id';
     protected $useTimestamps = true;
 
     protected $allowedFields = [

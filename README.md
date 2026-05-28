@@ -8,11 +8,11 @@ FinTrack adalah sistem informasi keuangan pribadi berbasis web yang membantu pen
 
 | Komponen | Teknologi |
 |----------|-----------|
-| Backend | PHP 8+ / CodeIgniter 3 |
+| Backend | PHP 8+ / CodeIgniter 4 |
 | Database | MySQL |
-| Template UI | AdminLTE 3.2 |
-| CSS Framework | Bootstrap 4 (via AdminLTE) |
-| Icons | Font Awesome 5 |
+| Template UI | Tabler (https://tabler.io) |
+| CSS Framework | Bootstrap 5 (via Tabler) |
+| Icons | Tabler Icons |
 | Charts | Chart.js |
 | Data Tables | DataTables |
 | Dialogs | SweetAlert2 |
@@ -43,26 +43,26 @@ FinTrack adalah sistem informasi keuangan pribadi berbasis web yang membantu pen
 # 1. Clone atau download project
 cd /path/to/fintrack
 
-# 2. Buat database
+# 2. Install dependencies
+composer install
+
+# 3. Buat database
 mysql -u root -p -e "CREATE DATABASE fintrack_db;"
 
-# 3. Konfigurasi database
-#    Edit application/config/database.php
-#    Sesuaikan hostname, username, password, database
+# 4. Konfigurasi database
+#    Salin env ke .env, sesuaikan konfigurasi database
 
-# 4. Import tabel (atau jalankan SQL dari DATABASE.md)
+# 5. Import tabel (atau jalankan SQL dari DATABASE.md)
 
-# 5. Download AdminLTE 3.2
-#    https://github.com/ColorlibHQ/AdminLTE/releases/tag/v3.2.0
-#    Letakkan di assets/adminlte/ dan assets/plugins/
+# 6. Tabler dimuat via CDN — tidak perlu download manual
 
-# 6. Set permission upload
-chmod -R 775 assets/uploads
+# 7. Set permission upload
+chmod -R 775 public/assets/uploads
 
-# 7. Jalankan server
-php -S localhost:8080 -t .
+# 8. Jalankan server
+php spark serve --port 8080
 
-# 8. Buka browser
+# 9. Buka browser
 #    http://localhost:8080
 ```
 
@@ -70,12 +70,13 @@ php -S localhost:8080 -t .
 
 ```
 fintrack/
-├── application/
-│   ├── config/
-│   ├── controllers/
-│   ├── models/
-│   ├── views/
-│   │   ├── layout/       ← Template AdminLTE
+├── app/
+│   ├── Config/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Filters/
+│   ├── Views/
+│   │   ├── layout/       ← Template Tabler
 │   │   ├── auth/
 │   │   ├── dashboard/
 │   │   ├── pemasukan/
@@ -85,20 +86,19 @@ fintrack/
 │   │   ├── tabungan/
 │   │   └── laporan/
 │   └── ...
-├── assets/
-│   ├── adminlte/          ← AdminLTE core (css, js, img)
-│   ├── plugins/           ← Plugin AdminLTE (jQuery, Bootstrap, dll)
-│   ├── css/custom.css     ← Custom CSS FinTrack
-│   ├── js/app.js          ← Custom JS FinTrack
-│   ├── img/
-│   └── uploads/
+├── public/
+│   └── assets/
+│       ├── css/custom.css     ← Custom CSS FinTrack
+│       ├── js/app.js          ← Custom JS FinTrack
+│       ├── img/
+│       └── uploads/
 └── .env
 ```
 
 ## Dokumentasi
 
 * [DATABASE.md](DATABASE.md) — Skema database
-* [DESIGN.md](DESIGN.md) — Panduan desain UI (AdminLTE)
+* [DESIGN.md](DESIGN.md) — Panduan desain UI (Tabler)
 * [DOCUMENTATION.md](DOCUMENTATION.md) — Alur aplikasi
 * [FEATURES.md](FEATURES.md) — Daftar fitur
 * [REQUIREMENT.md](REQUIREMENT.md) — Requirement system

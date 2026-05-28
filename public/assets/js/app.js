@@ -1,18 +1,15 @@
 /**
  * FinTrack — App JavaScript
- * Minimal JS for AdminLTE integration
+ * Minimal JS for Tabler integration (no jQuery dependency)
  */
 
-// Custom file input label update
-$(document).ready(function() {
-  // Update custom file input label with selected filename
-  $('.custom-file-input').on('change', function() {
-    var fileName = $(this).val().split('\\').pop();
-    $(this).next('.custom-file-label').addClass("selected").html(fileName);
-  });
-
+document.addEventListener('DOMContentLoaded', function() {
   // Auto-dismiss alerts after 5 seconds
-  setTimeout(function() {
-    $('.alert-dismissible').fadeOut('slow');
-  }, 5000);
+  document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
+    setTimeout(function() {
+      alert.style.transition = 'opacity 0.5s ease';
+      alert.style.opacity = '0';
+      setTimeout(function() { alert.remove(); }, 500);
+    }, 5000);
+  });
 });

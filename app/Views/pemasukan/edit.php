@@ -3,7 +3,7 @@
 
 <div class="row">
   <div class="col-md-8">
-    <div class="card card-primary">
+    <div class="card">
       <div class="card-header">
         <h3 class="card-title">Edit Pemasukan</h3>
       </div>
@@ -18,26 +18,26 @@
             </div>
           <?php endif; ?>
 
-          <div class="form-group">
+          <div class="mb-3">
             <label for="tanggal">Tanggal</label>
             <input type="date" id="tanggal" name="tanggal" class="form-control" value="<?= old('tanggal') ?: $item['tanggal'] ?>" required>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="nominal">Nominal (Rp)</label>
             <input type="number" id="nominal" name="nominal" class="form-control" value="<?= old('nominal') ?: $item['nominal'] ?>" min="1" step="1" required>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="sumber">Sumber Pemasukan</label>
             <input type="text" id="sumber" name="sumber" class="form-control" value="<?= old('sumber') ?: esc($item['sumber']) ?>" required>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="catatan">Catatan <small class="text-muted">(opsional)</small></label>
             <textarea id="catatan" name="catatan" class="form-control" rows="3"><?= old('catatan') ?: esc($item['catatan'] ?? '') ?></textarea>
           </div>
         </div>
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Perbarui</button>
-          <a href="<?= base_url('pemasukan') ?>" class="btn btn-default ml-2">Batal</a>
+          <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i> Perbarui</button>
+          <a href="<?= base_url('pemasukan') ?>" class="btn btn-ghost-secondary ms-2">Batal</a>
         </div>
       </form>
     </div>

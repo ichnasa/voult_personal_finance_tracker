@@ -3,25 +3,25 @@
 
 <div class="row mb-3">
   <div class="col-12 d-flex justify-content-between flex-wrap">
-    <form method="get" class="form-inline">
-      <select name="bulan" class="form-control mr-2">
+    <form method="get" class="d-flex gap-2">
+      <select name="bulan" class="form-control me-2">
         <?php for ($m = 1; $m <= 12; $m++): ?>
           <option value="<?= str_pad($m, 2, '0', STR_PAD_LEFT) ?>" <?= $bulan == str_pad($m, 2, '0', STR_PAD_LEFT) ? 'selected' : '' ?>>
             <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
           </option>
         <?php endfor; ?>
       </select>
-      <input type="number" name="tahun" class="form-control mr-2" style="width:90px" value="<?= $tahun ?>">
-      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+      <input type="number" name="tahun" class="form-control me-2" style="width:90px" value="<?= $tahun ?>">
+      <button type="submit" class="btn btn-ghost-secondary"><i class="ti ti-search"></i></button>
     </form>
-    <a href="<?= base_url('budgeting/create') ?>" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Tambah Budget</a>
+    <a href="<?= base_url('budgeting/create') ?>" class="btn btn-primary"><i class="ti ti-plus me-1"></i> Tambah Budget</a>
   </div>
 </div>
 
 <?php if (empty($budgets)): ?>
   <div class="card"><div class="card-body">
     <div class="empty-state">
-      <i class="fas fa-wallet"></i>
+      <i class="ti ti-wallet"></i>
       <p>Belum ada budget untuk bulan ini</p>
       <a href="<?= base_url('budgeting/create') ?>" class="btn btn-primary btn-sm">+ Tambah Budget</a>
     </div>
@@ -33,9 +33,9 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title"><?= esc($b['kategori_name']) ?></h3>
-          <div class="card-tools">
-            <a href="<?= base_url('budgeting/edit/' . $b['id']) ?>" class="btn btn-tool"><i class="fas fa-edit"></i></a>
-            <a href="<?= base_url('budgeting/delete/' . $b['id']) ?>" class="btn btn-tool text-danger" onclick="return confirm('Hapus budget ini?')"><i class="fas fa-trash"></i></a>
+          <div class="card-actions d-flex align-items-center" style="gap: 12px;">
+            <a href="<?= base_url('budgeting/edit/' . $b['id']) ?>" class="btn btn-ghost-secondary btn-sm"><i class="ti ti-edit"></i></a>
+            <a href="<?= base_url('budgeting/delete/' . $b['id']) ?>" class="btn btn-ghost-secondary btn-sm text-danger" onclick="return confirm('Hapus budget ini?')"><i class="ti ti-trash"></i></a>
           </div>
         </div>
         <div class="card-body">
@@ -45,7 +45,7 @@
           </div>
           <?php
             $barColor = $b['percent'] > 100 ? 'bg-danger' : ($b['percent'] > 80 ? 'bg-warning' : 'bg-success');
-            $badgeClass = $b['percent'] > 100 ? 'badge-danger' : ($b['percent'] > 80 ? 'badge-warning' : 'badge-success');
+            $badgeClass = $b['percent'] > 100 ? 'bg-danger text-white' : ($b['percent'] > 80 ? 'bg-warning text-white' : 'bg-success text-white');
             $badgeLabel = $b['percent'] > 100 ? 'Over Budget' : ($b['percent'] > 80 ? 'Warning' : 'Normal');
           ?>
           <div class="progress mb-2" style="height: 10px;">

@@ -5,7 +5,7 @@
 ## Development Environment
 
 * OS: Linux
-* Framework: CodeIgniter 3
+* Framework: CodeIgniter 4
 * Database: MySQL
 * Database Username: root
 * Database Password: Qwerty12!
@@ -15,12 +15,11 @@
 
 * PHP 8+
 * Apache
-* AdminLTE 3.2
-* Bootstrap 4
-* jQuery 3.x
+* Tabler (Admin Dashboard Template)
+* Bootstrap 5 (via Tabler)
 * Chart.js
 * DataTables
-* Font Awesome 5
+* Tabler Icons
 
 ---
 
@@ -31,7 +30,7 @@
 * [ ] Verify PHP installation
 * [ ] Verify Apache installation
 * [ ] Verify MySQL installation
-* [ ] Verify CodeIgniter project running
+* [ ] Verify CodeIgniter 4 project running
 * [ ] Configure base_url
 * [ ] Configure timezone Asia/Jakarta
 
@@ -49,7 +48,7 @@ mysql -u root -p
 CREATE DATABASE fintrack_db;
 ```
 
-* [ ] Configure application/config/database.php
+* [ ] Configure `.env` file (database settings)
 * [ ] Test database connection
 
 ## Linux Permissions
@@ -58,7 +57,7 @@ CREATE DATABASE fintrack_db;
 * [ ] Set upload permission:
 
 ```bash
-chmod -R 775 assets/uploads
+chmod -R 775 public/assets/uploads
 ```
 
 ---
@@ -67,13 +66,11 @@ chmod -R 775 assets/uploads
 
 ## Folder Structure
 
-* [ ] Download AdminLTE 3.2 dari GitHub releases
-* [ ] Setup assets/adminlte/ (css, js, img)
-* [ ] Setup assets/plugins/ (jquery, bootstrap, fontawesome, dll)
-* [ ] Setup assets/css/custom.css
-* [ ] Setup assets/js/app.js
-* [ ] Setup assets/uploads
-* [ ] Setup assets/img
+* [ ] Setup Tabler via CDN (atau download ke public/assets/)
+* [ ] Setup public/assets/css/custom.css
+* [ ] Setup public/assets/js/app.js
+* [ ] Setup public/assets/uploads
+* [ ] Setup public/assets/img
 
 ## View Structure
 
@@ -89,39 +86,37 @@ chmod -R 775 assets/uploads
 
 ## Shared Layout
 
-* [ ] main.php layout (menggunakan struktur AdminLTE)
-* [ ] sidebar.php (AdminLTE main-sidebar)
-* [ ] header.php (AdminLTE main-header navbar)
-* [ ] footer.php (AdminLTE main-footer)
-* [ ] auth.php layout (AdminLTE login-page)
+* [ ] main.php layout (menggunakan struktur Tabler page-wrapper)
+* [ ] sidebar.php (Tabler navbar-vertical)
+* [ ] header.php (Tabler navbar)
+* [ ] footer.php (Tabler footer)
+* [ ] auth.php layout (Tabler page page-center)
 
 ---
 
-# Phase 2 — AdminLTE Integration
+# Phase 2 — Tabler Integration
 
-## Setup AdminLTE
+## Setup Tabler
 
-* [ ] Load AdminLTE CSS di layout
-* [ ] Load AdminLTE JS di layout
-* [ ] Load jQuery
-* [ ] Load Bootstrap 4 JS
-* [ ] Load Font Awesome 5
-* [ ] Test layout AdminLTE berjalan
+* [ ] Load Tabler CSS di layout (CDN atau lokal)
+* [ ] Load Tabler JS di layout
+* [ ] Load Bootstrap 5 JS (bundled dalam Tabler)
+* [ ] Load Tabler Icons (CDN atau webfont)
+* [ ] Test layout Tabler berjalan
 
 ## Layout Components
 
-* [ ] Sidebar navigation (nav-sidebar)
-* [ ] Navbar header (main-header)
-* [ ] Content wrapper
+* [ ] Navbar vertical / sidebar navigation
+* [ ] Navbar header
+* [ ] Page wrapper + page body
 * [ ] Footer
-* [ ] Sidebar toggle (pushmenu)
+* [ ] Responsive sidebar toggle
 
 ## Plugin Integration
 
-* [ ] DataTables Bootstrap 4
+* [ ] DataTables Bootstrap 5
 * [ ] Chart.js
 * [ ] SweetAlert2
-* [ ] bs-custom-file-input (upload nota)
 
 ## Custom Styling
 
@@ -178,15 +173,15 @@ chmod -R 775 assets/uploads
 
 ## Views
 
-* [ ] Login page (AdminLTE login-page layout)
-* [ ] Register page (AdminLTE register-page layout)
-* [ ] Flash message (Bootstrap alert)
+* [ ] Login page (Tabler page-center layout)
+* [ ] Register page (Tabler page-center layout)
+* [ ] Flash message (Bootstrap 5 alert)
 
 ---
 
 # Phase 5 — Main Layout
 
-## Sidebar (AdminLTE main-sidebar)
+## Sidebar (Tabler navbar-vertical)
 
 * [ ] Brand logo
 * [ ] Dashboard menu
@@ -198,34 +193,34 @@ chmod -R 775 assets/uploads
 * [ ] Laporan menu
 * [ ] Logout menu
 
-## Navbar (AdminLTE main-header)
+## Navbar (Tabler navbar)
 
 * [ ] Sidebar toggle button
 * [ ] User info
 * [ ] Logout button
 
-## Content Header
+## Content
 
-* [ ] Page title
-* [ ] Breadcrumb
+* [ ] Page header
+* [ ] Page body
 
 ---
 
 # Phase 6 — Dashboard
 
-## Statistics (small-box AdminLTE)
+## Statistics (Tabler stat card)
 
-* [ ] Total saldo (bg-info)
-* [ ] Total pemasukan (bg-success)
-* [ ] Total pengeluaran (bg-danger)
-* [ ] Sisa budget (bg-warning)
+* [ ] Total saldo
+* [ ] Total pemasukan
+* [ ] Total pengeluaran
+* [ ] Sisa budget
 
 ## Charts (Card + Chart.js)
 
 * [ ] Cashflow chart (bar)
 * [ ] Expense category chart (doughnut)
 
-## Widgets (Card AdminLTE)
+## Widgets (Card Tabler)
 
 * [ ] Recent transactions (table)
 * [ ] Wishlist progress (list)
@@ -369,7 +364,7 @@ chmod -R 775 assets/uploads
 
 ## Responsive
 
-* [ ] Test mobile layout (AdminLTE sidebar-mini)
+* [ ] Test mobile layout (Tabler responsive sidebar)
 * [ ] Test tablet layout
 * [ ] Test responsive DataTables
 * [ ] Test responsive charts
@@ -409,20 +404,19 @@ chmod -R 775 assets/uploads
 
 ## DO
 
-* Use MVC architecture
+* Use MVC architecture (CodeIgniter 4)
 * Use Query Builder
-* Use AdminLTE components
+* Use Tabler components
 * Follow DESIGN.md
-* Use Bootstrap 4 utilities
+* Use Bootstrap 5 utilities
 * Use DataTables for data tables
-* Use Font Awesome 5 for icons
+* Use Tabler Icons for icons
 
 ## DON'T
 
-* Don't modify AdminLTE core files
-* Don't use Bootstrap 5 (AdminLTE 3 uses Bootstrap 4)
-* Don't remove jQuery
-* Don't create custom components if AdminLTE has them
+* Don't modify Tabler core files
+* Don't use Bootstrap 4 (Tabler uses Bootstrap 5)
+* Don't create custom components if Tabler has them
 * Don't use inline CSS
 * Don't use direct query in controller
 
@@ -437,4 +431,4 @@ Build:
 * responsive UI
 * maintainable codebase
 * thesis-ready information system
-* AdminLTE-based professional application
+* Tabler-based professional application
