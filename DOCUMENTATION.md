@@ -62,7 +62,8 @@ fintrack/
 │   │   ├── Budgeting.php     ← CRUD Budget
 │   │   ├── Wishlist.php      ← CRUD Wishlist
 │   │   ├── Tabungan.php      ← CRUD Tabungan
-│   │   └── Laporan.php       ← Laporan + Export
+│   │   ├── Laporan.php       ← Laporan + Export
+│   │   └── Profile.php       ← Profile + Ubah Password
 │   │
 │   ├── Models/               ← Akses database
 │   │   ├── UserModel.php
@@ -89,6 +90,7 @@ fintrack/
 │   │   ├── budgeting/        ← index, create, edit
 │   │   ├── wishlist/         ← index, create, edit
 │   │   ├── tabungan/         ← index, create, edit
+│   │   ├── profile/          ← index (edit profil + ubah password)
 │   │   └── laporan/          ← index, print
 │   │
 │   └── Helpers/
@@ -288,7 +290,7 @@ Menggunakan layout Tabler page-center:
 
 | Tabel | Fungsi | Kolom Penting |
 |-------|--------|---------------|
-| `users` | Data pengguna | id, name, email, password |
+| `users` | Data pengguna | id, name, email, password, phone, address, avatar |
 | `kategori` | Kategori pengeluaran | id, name |
 | `pemasukan` | Catatan pemasukan | user_id, tanggal, nominal, sumber |
 | `pengeluaran` | Catatan pengeluaran | user_id, kategori_id, tanggal, nominal, metode_pembayaran, nota |
@@ -311,13 +313,21 @@ Controller: Home::index()
 ├── Query sisa budget bulan ini
 ├── Query data chart bulanan (12 bulan)
 ├── Query 5 transaksi terakhir (gabungan)
+├── Hitung Financial Health Score:
+│   ├── Spending Ratio = pengeluaran / pemasukan × 100
+│   ├── Saving Ratio = (pemasukan - pengeluaran) / pemasukan × 100
+│   ├── Budget Discipline = (1 - pengeluaran/budget) × 100
+│   └── Overall Score = weighted average (0-100)
+├── Query tabungan aktif (max 3) untuk Saving Goals
+├── Query wishlist prioritas tinggi (max 3) untuk Wishlist Priority
 │
 └── Render: dashboard/index.php
     ├── 4 Stat cards Tabler (Saldo, Pemasukan, Pengeluaran, Sisa Budget)
+    ├── Card Financial Health (donut chart + progress bars)
     ├── Card + Chart.js Bar Chart (Cashflow tahunan)
-    ├── Card + Tabel transaksi terakhir
-    ├── Card + Budget progress bar
-    └── Card + Quick action buttons
+    ├── Card Saving Goals (progress bar tabungan aktif)
+    ├── Card Wishlist Priority (badge prioritas + status)
+    └── Card + Tabel transaksi terakhir
 ```
 
 ### 7.2 Pemasukan (`/pemasukan`)
@@ -449,6 +459,55 @@ ALUR:
    ├── Buka halaman /laporan/export (layout khusus cetak)
    ├── Otomatis trigger window.print()
    └── User bisa save as PDF dari dialog print browser
+```
+
+### 7.8 Profile (`/profile`)
+
+```
+ALUR:
+1. User buka halaman Profile dari sidebar
+   → GET /profile
+   → Controller Profile::index()
+   → Ambil data user dari session user_id
+   → Hitung total transaksi (pemasukan + pengeluaran)
+   → Render: profile/index.php
+      ├── Profile header card (avatar + nama + email)
+      ├── Card foto profil + upload avatar
+      ├── Card ringkasan akun (member sejak, total transaksi)
+      ├── Card edit profil (form)
+      └── Card ubah password (form)
+
+2. Edit Profil (via Card / Modal):
+   → User ubah nama/email/telepon/alamat
+   → Submit → POST /profile/update
+   → Controller Profile::update()
+   ├── Validasi input (nama min 3, email unik kecuali milik sendiri)
+   ├── Jika GAGAL → redirect back + tampil error
+   ├── Jika BERHASIL:
+   │   ├── Update tabel 'users'
+   │   ├── Update session (user_name, user_email)
+   │   └── Redirect ke /profile + flash "Berhasil"
+
+3. Ubah Password (via Card / Modal):
+   → User isi password lama, baru, konfirmasi
+   → Submit → POST /profile/updatePassword
+   → Controller Profile::updatePassword()
+   ├── Validasi input (password baru min 8, konfirmasi cocok)
+   ├── Verifikasi password lama dengan password_verify()
+   ├── Jika SALAH → redirect back + "Password lama tidak sesuai"
+   ├── Jika BENAR:
+   │   ├── Hash password baru
+   │   ├── Update tabel 'users'
+   │   └── Redirect ke /profile + flash "Berhasil"
+
+4. Upload Avatar:
+   → User pilih file foto (JPG/PNG, max 2MB)
+   → Submit → POST /profile/updateAvatar
+   → Controller Profile::updateAvatar()
+   ├── Validasi file (ukuran, tipe)
+   ├── Hapus avatar lama jika ada
+   ├── Upload ke public/assets/uploads/avatars/
+   └── Update kolom avatar di tabel 'users'
 ```
 
 ---
@@ -583,6 +642,11 @@ php spark serve --port 8080
               │  Wishlist  │─────────>│  Tabungan   │          │   Laporan   │
               │ (Impian)   │  link    │  (Progress) │          │ (Export PDF)│
               └────────────┘          └─────────────┘          └─────────────┘
+                                                                      │
+                                                               ┌──────┴──────┐
+                                                               │   Profile   │
+                                                               │ (Edit+Pass) │
+                                                               └─────────────┘
 ```
 
 ---

@@ -55,8 +55,53 @@
   </div>
 </div>
 
-<!-- Charts & Summary Row -->
+<!-- Financial Health + Cashflow Chart -->
 <div class="row row-deck row-cards mb-3">
+  <!-- Financial Health -->
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="ti ti-heart-rate-monitor me-1"></i>Financial Health</h3>
+      </div>
+      <div class="card-body text-center">
+        <div class="mx-auto mb-3" style="width: 140px; height: 140px; position: relative;">
+          <canvas id="healthChart"></canvas>
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="h1 mb-0" style="color: <?= $healthColor ?>"><?= $healthScore ?></div>
+            <div class="text-muted fs-5"><?= $healthLabel ?></div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-secondary">Spending Ratio</span>
+            <span class="fw-medium"><?= $spendingRatio ?>%</span>
+          </div>
+          <div class="progress mb-3" style="height: 6px;">
+            <div class="progress-bar <?= $spendingRatio > 80 ? 'bg-danger' : ($spendingRatio > 60 ? 'bg-warning' : 'bg-success') ?>"
+              style="width: <?= $spendingRatio ?>%"></div>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-secondary">Saving Ratio</span>
+            <span class="fw-medium"><?= $savingRatio ?>%</span>
+          </div>
+          <div class="progress mb-3" style="height: 6px;">
+            <div class="progress-bar <?= $savingRatio >= 30 ? 'bg-success' : ($savingRatio >= 15 ? 'bg-warning' : 'bg-danger') ?>"
+              style="width: <?= $savingRatio ?>%"></div>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-secondary">Discipline</span>
+            <span class="fw-medium"><?= $budgetDiscipline ?>%</span>
+          </div>
+          <div class="progress" style="height: 6px;">
+            <div class="progress-bar <?= $budgetDiscipline >= 60 ? 'bg-success' : ($budgetDiscipline >= 30 ? 'bg-warning' : 'bg-danger') ?>"
+              style="width: <?= $budgetDiscipline ?>%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cashflow Chart -->
   <div class="col-lg-8">
     <div class="card">
       <div class="card-header">
@@ -67,44 +112,108 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-4">
+</div>
+
+<!-- Saving Goals + Wishlist Priority -->
+<div class="row row-deck row-cards mb-3">
+  <!-- Saving Goals -->
+  <div class="col-lg-6">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"><i class="ti ti-list-details me-1"></i> Ringkasan Bulan Ini</h3>
+        <h3 class="card-title"><i class="ti ti-pig-money me-1"></i>Saving Goals</h3>
+        <div class="card-actions">
+          <a href="<?= base_url('tabungan') ?>" class="btn btn-ghost-primary btn-sm">Lihat Semua</a>
+        </div>
       </div>
       <div class="card-body">
-        <?php
-        $pct = $totalBudget > 0 ? min(($totalPengeluaranBulan / $totalBudget) * 100, 100) : 0;
-        $barColor = $pct > 100 ? 'bg-danger' : ($pct > 80 ? 'bg-warning' : 'bg-primary');
-        ?>
-        <div class="d-flex justify-content-between mb-1">
-          <span class="text-secondary">Budget Terpakai</span>
-          <span><?= $totalBudget > 0 ? round(($totalPengeluaranBulan / $totalBudget) * 100) : 0 ?>%</span>
-        </div>
-        <div class="progress mb-3" style="height: 8px;">
-          <div class="progress-bar <?= $barColor ?>" style="width: <?= $pct ?>%"></div>
-        </div>
+        <?php if (empty($savingGoals)): ?>
+          <div class="text-center text-muted py-4">
+            <i class="ti ti-pig-money fs-1 d-block mb-2"></i>
+            Belum ada target tabungan aktif
+          </div>
+        <?php else: ?>
+          <?php foreach ($savingGoals as $sg): ?>
+            <?php
+            $progress = $sg['target_nominal'] > 0
+              ? round(($sg['nominal_terkumpul'] / $sg['target_nominal']) * 100)
+              : 0;
+            $barColor = $progress >= 100 ? 'bg-success' : ($progress >= 50 ? 'bg-primary' : 'bg-warning');
+            ?>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <div class="d-flex align-items-center">
+                  <span class="avatar avatar-sm bg-primary-lt me-2"><i class="ti ti-target"></i></span>
+                  <div>
+                    <div class="fw-medium"><?= esc($sg['nama_tabungan']) ?></div>
+                    <div class="text-muted fs-6">
+                      Rp <?= number_format($sg['nominal_terkumpul'], 0, ',', '.') ?> /
+                      Rp <?= number_format($sg['target_nominal'], 0, ',', '.') ?>
+                    </div>
+                  </div>
+                </div>
+                <span class="fw-bold"><?= $progress ?>%</span>
+              </div>
+              <div class="progress" style="height: 6px;">
+                <div class="progress-bar <?= $barColor ?>" style="width: <?= min($progress, 100) ?>%"></div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
 
-        <div class="d-flex justify-content-between mb-2">
-          <span class="text-secondary">Pemasukan</span>
-          <span class="text-income">+Rp <?= number_format($totalPemasukanBulan, 0, ',', '.') ?></span>
+  <!-- Wishlist Priority -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="ti ti-star me-1"></i>Wishlist Priority</h3>
+        <div class="card-actions">
+          <a href="<?= base_url('wishlist') ?>" class="btn btn-ghost-primary btn-sm">Lihat Semua</a>
         </div>
-        <div class="d-flex justify-content-between mb-3">
-          <span class="text-secondary">Pengeluaran</span>
-          <span class="text-expense">-Rp <?= number_format($totalPengeluaranBulan, 0, ',', '.') ?></span>
-        </div>
-
-        <hr class="my-3">
-        <h4 class="mb-2">Aksi Cepat</h4>
-        <a href="<?= base_url('pemasukan/create') ?>" class="btn btn-success w-100 mb-2">
-          <i class="ti ti-plus me-1"></i> Tambah Pemasukan
-        </a>
-        <a href="<?= base_url('pengeluaran/create') ?>" class="btn btn-danger w-100 mb-2">
-          <i class="ti ti-plus me-1"></i> Tambah Pengeluaran
-        </a>
-        <a href="<?= base_url('budgeting') ?>" class="btn btn-outline-secondary w-100">
-          <i class="ti ti-wallet me-1"></i> Kelola Budget
-        </a>
+      </div>
+      <div class="card-body">
+        <?php if (empty($wishlistPriority)): ?>
+          <div class="text-center text-muted py-4">
+            <i class="ti ti-star fs-1 d-block mb-2"></i>
+            Belum ada wishlist aktif
+          </div>
+        <?php else: ?>
+          <?php foreach ($wishlistPriority as $wl): ?>
+            <?php
+            $prioritasColor = match ($wl['prioritas']) {
+              'tinggi' => 'bg-danger',
+              'sedang' => 'bg-warning',
+              default  => 'bg-secondary',
+            };
+            $statusColor = match ($wl['status']) {
+              'tercapai'    => 'bg-success',
+              'menabung'    => 'bg-primary',
+              default       => 'bg-secondary',
+            };
+            $statusLabel = match ($wl['status']) {
+              'tercapai'    => 'Tercapai',
+              'menabung'    => 'Menabung',
+              default       => 'Belum Mulai',
+            };
+            ?>
+            <div class="d-flex align-items-center mb-3">
+              <span class="avatar avatar-sm <?= $prioritasColor ?> text-white me-3">
+                <i class="ti ti-star"></i>
+              </span>
+              <div class="flex-fill">
+                <div class="fw-medium"><?= esc($wl['nama_barang']) ?></div>
+                <div class="text-muted fs-6">
+                  Rp <?= number_format($wl['harga_target'], 0, ',', '.') ?>
+                </div>
+              </div>
+              <div class="text-end">
+                <span class="badge <?= $prioritasColor ?> text-white mb-1"><?= ucfirst($wl['prioritas']) ?></span><br>
+                <span class="badge <?= $statusColor ?> text-white"><?= $statusLabel ?></span>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -182,6 +291,31 @@
 
 <?= $this->section('scripts') ?>
 <script>
+  // ── Financial Health Donut Chart ──
+  const healthCtx = document.getElementById('healthChart');
+  if (healthCtx) {
+    new Chart(healthCtx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [<?= $healthScore ?>, <?= 100 - $healthScore ?>],
+          backgroundColor: ['<?= $healthColor ?>', '#f0f0f0'],
+          borderWidth: 0,
+          cutout: '80%',
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }
+        }
+      }
+    });
+  }
+
+  // ── Cashflow Bar Chart ──
   const ctx = document.getElementById('cashflowChart');
   if (ctx) {
     new Chart(ctx, {

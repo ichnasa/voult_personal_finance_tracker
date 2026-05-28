@@ -69,14 +69,17 @@ kategori
 
 Menyimpan data pengguna.
 
-| Field      | Type         | Description    |
-| ---------- | ------------ | -------------- |
-| id         | BIGINT       | Primary key    |
-| name       | VARCHAR(100) | Nama pengguna  |
-| email      | VARCHAR(100) | Email pengguna |
-| password   | VARCHAR(255) | Password hash  |
-| created_at | TIMESTAMP    | Waktu dibuat   |
-| updated_at | TIMESTAMP    | Waktu diupdate |
+| Field      | Type         | Description     |
+| ---------- | ------------ | --------------- |
+| id         | BIGINT       | Primary key     |
+| name       | VARCHAR(100) | Nama pengguna   |
+| email      | VARCHAR(100) | Email pengguna  |
+| password   | VARCHAR(255) | Password hash   |
+| phone      | VARCHAR(20)  | Nomor telepon   |
+| address    | TEXT         | Alamat          |
+| avatar     | VARCHAR(255) | Path foto profil|
+| created_at | TIMESTAMP    | Waktu dibuat    |
+| updated_at | TIMESTAMP    | Waktu diupdate  |
 
 ## SQL
 
@@ -86,6 +89,9 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NULL,
+    address TEXT NULL,
+    avatar VARCHAR(255) NULL,
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

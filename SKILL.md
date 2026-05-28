@@ -82,6 +82,7 @@ app/
 │   ├── budgeting/
 │   ├── wishlist/
 │   ├── tabungan/
+│   ├── profile/
 │   ├── laporan/
 │   └── auth/
 ├── Helpers/
@@ -197,6 +198,7 @@ Controller:
 * Home.php (Dashboard)
 * Pemasukan.php
 * Pengeluaran.php
+* Profile.php
 
 Model:
 

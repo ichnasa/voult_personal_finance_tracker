@@ -81,6 +81,13 @@
         <li class="nav-item mt-2 mb-1"><small class="nav-link-title text-uppercase text-muted ps-3">Akun</small></li>
 
         <li class="nav-item">
+          <a class="nav-link <?= ($active_menu ?? '') === 'profile' ? 'active' : '' ?>"
+            href="<?= base_url('profile') ?>">
+            <span class="nav-link-icon"><i class="ti ti-user"></i></span>
+            <span class="nav-link-title">Profile</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="<?= base_url('auth/logout') ?>">
             <span class="nav-link-icon"><i class="ti ti-logout"></i></span>
             <span class="nav-link-title">Logout</span>

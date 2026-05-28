@@ -105,13 +105,35 @@ Menggunakan:
 
 ---
 
-### Progress Tabungan
+### Financial Health
+
+Menampilkan skor kesehatan finansial:
+
+* spending ratio (pengeluaran / pemasukan)
+* saving ratio (tabungan / pemasukan)
+* budget discipline (kepatuhan budget)
+* overall score (0-100)
+* label: Excellent / Good / Fair / Poor
+* donut chart + progress bars
+
+---
+
+### Saving Goals
 
 Menampilkan:
 
-* target tabungan
-* progress
-* persentase
+* tabungan aktif (max 3)
+* progress bar per tabungan
+* nama + nominal terkumpul/target
+
+---
+
+### Wishlist Priority
+
+Menampilkan:
+
+* wishlist prioritas tinggi (max 3)
+* badge prioritas + status
 
 ---
 
@@ -120,12 +142,6 @@ Menampilkan:
 Menampilkan:
 
 * 5 transaksi terakhir
-
----
-
-### Wishlist Prioritas
-
-Menampilkan wishlist dengan prioritas tinggi.
 
 ---
 
@@ -248,7 +264,29 @@ Menghasilkan laporan keuangan.
 
 ---
 
-# 9. UI/UX Features
+# 9. Modul Profile
+
+Mengelola data profil pengguna.
+
+## Profile Management Features
+
+* profil header card (avatar + info + member sejak)
+* edit profil (nama, email, telepon, alamat)
+* upload foto profil (avatar)
+* ubah password (lama, baru, konfirmasi)
+* ringkasan akun (member sejak, total transaksi)
+
+## Data
+
+* nama
+* email
+* telepon
+* alamat
+* foto profil (avatar)
+
+---
+
+# 10. UI/UX Features
 
 ## Design Style
 
@@ -270,7 +308,7 @@ Menghasilkan laporan keuangan.
 
 ---
 
-# 10. Security Features
+# 11. Security Features
 
 ## Authentication
 
@@ -285,7 +323,7 @@ Menghasilkan laporan keuangan.
 
 ---
 
-# 11. Future Features
+# 12. Future Features
 
 Fitur pengembangan:
 

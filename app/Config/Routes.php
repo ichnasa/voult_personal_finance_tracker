@@ -61,4 +61,10 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     // Laporan
     $routes->get('laporan', 'Laporan::index');
     $routes->get('laporan/export', 'Laporan::export');
+
+    // Profile
+    $routes->get('profile', 'Profile::index');
+    $routes->post('profile/update', 'Profile::update');
+    $routes->post('profile/updatePassword', 'Profile::updatePassword');
+    $routes->post('profile/updateAvatar', 'Profile::updateAvatar');
 });

@@ -248,7 +248,59 @@ Menghasilkan laporan keuangan.
 
 ---
 
-# 9. UI/UX Features
+# 9. Modul Profile
+
+Mengelola data profil pengguna dan menampilkan ringkasan finansial pribadi.
+
+## Profile Dashboard Widgets
+
+### Stat Cards
+
+* total saldo
+* pemasukan bulan ini (+ % vs bulan lalu)
+* pengeluaran bulan ini (+ % vs bulan lalu)
+* sisa budget (+ % tersisa)
+
+### Financial Health
+
+* spending ratio
+* saving ratio
+* budget discipline
+* overall score (0-100)
+
+### Cashflow History
+
+* line chart 6 bulan terakhir
+
+### Saving Goals
+
+* tabungan aktif + progress bar
+
+### Wishlist Priority
+
+* wishlist prioritas tinggi + badge status
+
+### Transaction History
+
+* 10 transaksi terakhir gabungan
+
+## Profile Management
+
+* edit profil (nama, email, telepon, alamat) via modal
+* upload foto profil (avatar) via modal
+* ubah password via modal
+
+## Data
+
+* nama
+* email
+* telepon
+* alamat
+* foto profil (avatar)
+
+---
+
+# 10. UI/UX Features
 
 ## Design Style
 
@@ -269,7 +321,7 @@ Menghasilkan laporan keuangan.
 
 ---
 
-# 10. Security Features
+# 11. Security Features
 
 ## Authentication
 
@@ -284,7 +336,7 @@ Menghasilkan laporan keuangan.
 
 ---
 
-# 11. Future Features
+# 12. Future Features
 
 Fitur pengembangan:
 

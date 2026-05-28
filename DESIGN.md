@@ -250,6 +250,7 @@ Aturan tipografi:
 | Wishlist | `ti ti-star` | `/wishlist` |
 | Tabungan | `ti ti-pig-money` | `/tabungan` |
 | Laporan | `ti ti-file-text` | `/laporan` |
+| Profile | `ti ti-user` | `/profile` |
 
 ---
 
@@ -482,15 +483,24 @@ const cashflowChart = new Chart(document.getElementById('cashflowChart'), {
 │ +stamp   │ +stamp   │ +stamp   │ +stamp   │
 └──────────┴──────────┴──────────┴──────────┘
 
-┌─────────────────────────┬────────────────────┐
-│ GRAFIK CASHFLOW         │ PROGRESS TABUNGAN  │
-│ (card + bar chart)      │ (card + progress)  │
-└─────────────────────────┴────────────────────┘
+┌───────────────────────┬──────────────────────────┐
+│ FINANCIAL HEALTH      │ GRAFIK CASHFLOW          │
+│ (donut chart score)   │ (card + bar chart)       │
+│ • Spending Ratio      │                          │
+│ • Saving Ratio        │                          │
+│ • Discipline          │                          │
+└───────────────────────┴──────────────────────────┘
 
-┌─────────────────────────┬────────────────────┐
-│ TRANSAKSI TERAKHIR      │ WISHLIST TERATAS   │
-│ (card + table)          │ (card + list)      │
-└─────────────────────────┴────────────────────┘
+┌───────────────────────┬──────────────────────────┐
+│ SAVING GOALS          │ WISHLIST PRIORITY         │
+│ (progress bar per     │ (badge prioritas +       │
+│  tabungan aktif)      │  badge status)           │
+└───────────────────────┴──────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│ TRANSAKSI TERAKHIR                                │
+│ (card + table 5 transaksi terakhir)              │
+└──────────────────────────────────────────────────┘
 ```
 
 ### Halaman List (Pemasukan, Pengeluaran, dll.)
@@ -510,6 +520,27 @@ const cashflowChart = new Chart(document.getElementById('cashflowChart'), {
 │ │ Pagination                               │  │
 │ └──────────────────────────────────────────┘  │
 └──────────────────────────────────────────────┘
+```
+
+### Halaman Profile
+
+```
+┌──────────────────────────────────────────────────┐
+│ PROFILE HEADER CARD                               │
+│ (avatar + nama + email + tombol edit + ubah pass) │
+└──────────────────────────────────────────────────┘
+
+┌─────────────────────┬──────────────────────────────┐
+│ CARD FOTO PROFIL    │ CARD EDIT PROFIL             │
+│ (avatar + upload    │ (form nama, email,           │
+│  foto baru)         │  telepon, alamat + simpan)   │
+├─────────────────────┼──────────────────────────────┤
+│ CARD RINGKASAN      │ CARD UBAH PASSWORD           │
+│ (member sejak,      │ (password lama, baru,        │
+│  total transaksi)   │  konfirmasi + ubah)          │
+└─────────────────────┴──────────────────────────────┘
+
+Modal: Edit Profil | Ubah Password
 ```
 
 ---

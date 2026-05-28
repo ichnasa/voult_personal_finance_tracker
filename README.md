@@ -27,6 +27,7 @@ FinTrack adalah sistem informasi keuangan pribadi berbasis web yang membantu pen
 * ⭐ Wishlist (Barang impian + prioritas)
 * 🐷 Tabungan (Target + progress tracking)
 * 📄 Laporan Keuangan (Filter + export PDF)
+* 👤 Profile (Edit profil + ubah password + upload avatar)
 
 ## Cara Menjalankan
 
@@ -84,6 +85,7 @@ fintrack/
 │   │   ├── budgeting/
 │   │   ├── wishlist/
 │   │   ├── tabungan/
+│   │   ├── profile/
 │   │   └── laporan/
 │   └── ...
 ├── public/

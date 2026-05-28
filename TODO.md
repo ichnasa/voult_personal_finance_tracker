@@ -82,6 +82,7 @@ chmod -R 775 public/assets/uploads
 * [ ] Create budgeting folder
 * [ ] Create wishlist folder
 * [ ] Create tabungan folder
+* [ ] Create profile folder
 * [ ] Create laporan folder
 
 ## Shared Layout
@@ -190,6 +191,7 @@ chmod -R 775 public/assets/uploads
 * [ ] Budgeting menu
 * [ ] Wishlist menu
 * [ ] Tabungan menu
+* [ ] Profile menu
 * [ ] Laporan menu
 * [ ] Logout menu
 
@@ -340,6 +342,55 @@ chmod -R 775 public/assets/uploads
 
 * [ ] Date filter
 * [ ] Category filter
+
+---
+
+# Phase 12.5 — Profile Module
+
+## Views
+
+* [ ] Profile header card (avatar + nama + email + actions)
+* [ ] Stat cards (saldo, pemasukan, pengeluaran, sisa budget)
+* [ ] Financial health card (donut chart + ratios)
+* [ ] Cashflow history card (line chart 6 bulan)
+* [ ] Saving goals card (progress bar tabungan aktif)
+* [ ] Wishlist priority card (badge prioritas + status)
+* [ ] Transaction history card (tabel 10 transaksi terakhir)
+* [ ] Modal edit profil
+* [ ] Modal ubah password
+* [ ] Modal upload avatar
+
+## Profile Dashboard Data
+
+* [ ] Total saldo (pemasukan - pengeluaran all time)
+* [ ] Pemasukan bulan ini + % perubahan vs bulan lalu
+* [ ] Pengeluaran bulan ini + % perubahan vs bulan lalu
+* [ ] Sisa budget + % tersisa
+* [ ] Financial health score (spending ratio, saving ratio, discipline)
+* [ ] Cashflow history data 6 bulan
+* [ ] Tabungan aktif (max 3)
+* [ ] Wishlist prioritas tinggi (max 3)
+* [ ] Transaksi terakhir gabungan (max 10)
+
+## Profile Management
+
+* [ ] Edit profil (nama, email, telepon, alamat)
+* [ ] Upload foto profil (avatar)
+* [ ] Ubah password (password lama, baru, konfirmasi)
+
+## Validation
+
+* [ ] Nama minimal 3 karakter
+* [ ] Email unik (kecuali milik sendiri)
+* [ ] Password lama harus benar
+* [ ] Password baru minimal 8 karakter
+* [ ] Avatar max 2MB (JPG/PNG)
+
+## Database
+
+* [ ] Tambah kolom phone di tabel users
+* [ ] Tambah kolom address di tabel users
+* [ ] Tambah kolom avatar di tabel users
 
 ---
 

@@ -51,6 +51,19 @@
 * Export laporan PDF
 * Filter laporan berdasarkan tanggal
 
+## Profile
+
+* Melihat data profil pengguna
+* Mengedit data profil (nama, email, telepon, alamat)
+* Mengubah password
+* Mengupload foto profil (avatar)
+* Menampilkan stat cards (saldo, pemasukan, pengeluaran, sisa budget)
+* Menampilkan financial health score
+* Menampilkan cashflow history (6 bulan)
+* Menampilkan saving goals (tabungan aktif)
+* Menampilkan wishlist priority
+* Menampilkan transaksi terakhir
+
 ---
 
 # 2. Non-Functional Requirements
