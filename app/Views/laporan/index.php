@@ -109,7 +109,7 @@
 <!-- Detail Tables -->
 <div class="row">
   <div class="col-md-6">
-    <div class="card">
+    <div class="card" id="pemasukan-card" data-pjax-container>
       <div class="card-header">
         <h3 class="card-title"><i class="ti ti-moneybag-plus me-1"></i> Daftar Pemasukan</h3>
       </div>
@@ -137,10 +137,15 @@
           </table>
         <?php endif; ?>
       </div>
+      <?php if ($pager->getPageCount('pemasukan') > 1): ?>
+        <div class="card-footer d-flex align-items-center">
+          <?= $pager->links('pemasukan', 'tabler_pagination') ?>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
   <div class="col-md-6">
-    <div class="card">
+    <div class="card" id="pengeluaran-card" data-pjax-container>
       <div class="card-header">
         <h3 class="card-title"><i class="ti ti-moneybag-minus me-1"></i> Daftar Pengeluaran</h3>
       </div>
@@ -168,6 +173,11 @@
           </table>
         <?php endif; ?>
       </div>
+      <?php if ($pager->getPageCount('pengeluaran') > 1): ?>
+        <div class="card-footer d-flex align-items-center">
+          <?= $pager->links('pengeluaran', 'tabler_pagination') ?>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>

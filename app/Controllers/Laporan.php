@@ -25,25 +25,41 @@ class Laporan extends BaseController
         $dateFrom = $this->request->getGet('date_from') ?: date('Y-m-01');
         $dateTo   = $this->request->getGet('date_to') ?: date('Y-m-t');
 
-        // Pemasukan in range
+        // Calculate Total Pemasukan first
+        $pemasukanTotalObj = $this->pemasukanModel
+            ->selectSum('nominal')
+            ->where('user_id', $userId)
+            ->where('tanggal >=', $dateFrom)
+            ->where('tanggal <=', $dateTo)
+            ->first();
+        $totalPemasukan = $pemasukanTotalObj['nominal'] ?? 0;
+
+        // Pemasukan in range (Paginated)
         $pemasukan = $this->pemasukanModel
             ->where('user_id', $userId)
             ->where('tanggal >=', $dateFrom)
             ->where('tanggal <=', $dateTo)
-            ->orderBy('tanggal', 'ASC')->findAll();
+            ->orderBy('tanggal', 'ASC')
+            ->paginate(10, 'pemasukan');
 
-        $totalPemasukan = array_sum(array_column($pemasukan, 'nominal'));
+        // Calculate Total Pengeluaran first
+        $pengeluaranTotalObj = $this->pengeluaranModel
+            ->selectSum('nominal')
+            ->where('user_id', $userId)
+            ->where('tanggal >=', $dateFrom)
+            ->where('tanggal <=', $dateTo)
+            ->first();
+        $totalPengeluaran = $pengeluaranTotalObj['nominal'] ?? 0;
 
-        // Pengeluaran in range
+        // Pengeluaran in range (Paginated)
         $pengeluaran = $this->pengeluaranModel
             ->select('pengeluaran.*, kategori.name as kategori_name')
             ->join('kategori', 'kategori.id = pengeluaran.kategori_id', 'left')
             ->where('pengeluaran.user_id', $userId)
             ->where('pengeluaran.tanggal >=', $dateFrom)
             ->where('pengeluaran.tanggal <=', $dateTo)
-            ->orderBy('pengeluaran.tanggal', 'ASC')->findAll();
-
-        $totalPengeluaran = array_sum(array_column($pengeluaran, 'nominal'));
+            ->orderBy('pengeluaran.tanggal', 'ASC')
+            ->paginate(10, 'pengeluaran');
 
         // Pengeluaran per kategori
         $perKategori = $this->pengeluaranModel
@@ -66,6 +82,7 @@ class Laporan extends BaseController
             'totalPengeluaran' => $totalPengeluaran,
             'selisih'          => $totalPemasukan - $totalPengeluaran,
             'perKategori'      => $perKategori,
+            'pager'            => \Config\Services::pager(),
         ];
 
         return view('laporan/index', $data);

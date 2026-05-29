@@ -167,7 +167,7 @@ foreach (['date_from', 'date_to', 'terkumpul_min', 'terkumpul_max', 'target_min'
   </div>
 
   <!-- Content Area -->
-  <div class="flex-grow-1">
+  <div class="flex-grow-1 d-flex flex-column" id="tabungan-content" data-pjax-container>
     <?php if (empty($items)): ?>
       <div class="card">
         <div class="card-body">
@@ -233,11 +233,10 @@ foreach (['date_from', 'date_to', 'terkumpul_min', 'terkumpul_max', 'target_min'
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
-  </div>
-
-  <!-- Pagination (always at bottom) -->
-  <div class="mt-auto">
-    <div class="d-flex justify-content-center w-100"><?= $pager->links('default', 'custom_pagination') ?></div>
+    <!-- Pagination (always at bottom) -->
+    <div class="mt-auto pt-3">
+      <div class="d-flex justify-content-center w-100"><?= $pager->links('default', 'tabler_pagination') ?></div>
+    </div>
   </div>
 
 </div>

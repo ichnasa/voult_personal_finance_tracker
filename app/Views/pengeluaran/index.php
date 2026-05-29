@@ -150,7 +150,7 @@ foreach (['date_from', 'date_to', 'kategori_id', 'metode', 'nominal_min', 'nomin
     </div>
   </div>
 <?php else: ?>
-  <div class="card">
+  <div class="card" id="pengeluaran-table-card" data-pjax-container>
     <div class="table-responsive">
       <table class="table table-vcenter card-table">
         <thead>
@@ -196,7 +196,7 @@ foreach (['date_from', 'date_to', 'kategori_id', 'metode', 'nominal_min', 'nomin
         </tbody>
       </table>
     </div>
-    <div class="card-footer clearfix"><?= $pager->links('default', 'default_full') ?></div>
+    <div class="card-footer d-flex align-items-center"><?= $pager->links('default', 'tabler_pagination') ?></div>
   </div>
 <?php endif; ?>
 

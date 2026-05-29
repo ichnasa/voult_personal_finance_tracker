@@ -20,7 +20,7 @@
     </div>
   </div>
 <?php else: ?>
-  <div class="card">
+  <div class="card" id="wishlist-table-card" data-pjax-container>
     <div class="table-responsive">
       <table class="table table-vcenter card-table">
         <thead>
@@ -66,7 +66,7 @@
         </tbody>
       </table>
     </div>
-    <div class="card-footer clearfix"><?= $pager->links('default', 'default_full') ?></div>
+    <div class="card-footer d-flex align-items-center"><?= $pager->links('default', 'tabler_pagination') ?></div>
   </div>
 <?php endif; ?>
 
