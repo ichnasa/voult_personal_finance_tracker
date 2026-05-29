@@ -75,7 +75,7 @@
 
 <!-- Expense by Category -->
 <?php if (!empty($perKategori)): ?>
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-md-6">
       <div class="card">
         <div class="card-header">
@@ -151,17 +151,17 @@
           <table class="table table-sm table-vcenter">
             <thead>
               <tr>
-                <th>Tanggal</th>
-                <th>Kategori</th>
-                <th class="text-end">Nominal</th>
+                <th class="p-3">Tanggal</th>
+                <th class="p-3">Kategori</th>
+                <th class="p-3 text-end">Nominal</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($pengeluaran as $k): ?>
                 <tr>
-                  <td><?= date('d/m/Y', strtotime($k['tanggal'])) ?></td>
-                  <td><?= esc($k['kategori_name'] ?? '-') ?></td>
-                  <td class="text-end text-expense">-Rp <?= number_format($k['nominal'], 0, ',', '.') ?></td>
+                  <td class="p-3"><?= date('d/m/Y', strtotime($k['tanggal'])) ?></td>
+                  <td class="p-3"><?= esc($k['kategori_name'] ?? '-') ?></td>
+                  <td class="p-3 text-end text-expense">-Rp <?= number_format($k['nominal'], 0, ',', '.') ?></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

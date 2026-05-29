@@ -27,6 +27,13 @@ class Profile extends BaseController
             return redirect()->to('auth/login')->with('error', 'Session tidak valid.');
         }
 
+        // Sync session data to ensure navbar updates instantly
+        session()->set([
+            'user_name'   => $user['name'],
+            'user_email'  => $user['email'],
+            'user_avatar' => $user['avatar'] ?? null,
+        ]);
+
         // Hitung total transaksi untuk ringkasan akun
         $pemasukanModel = new PemasukanModel();
         $pengeluaranModel = new PengeluaranModel();
@@ -180,6 +187,9 @@ class Profile extends BaseController
             $this->userModel->update($userId, [
                 'avatar' => $newName,
             ]);
+
+            // Update session data
+            session()->set('user_avatar', $newName);
 
             return redirect()->to('profile')->with('success', 'Foto profil berhasil diperbarui.');
         }

@@ -10,10 +10,10 @@ class AddAvatarToUsers extends Migration
     {
         $fields = [
             'avatar' => [
-                'type'       => 'VARCHAR',
+                'type' => 'VARCHAR',
                 'constraint' => 255,
-                'null'       => true,
-                'after'      => 'password',
+                'null' => true,
+                'after' => 'password',
             ],
         ];
 

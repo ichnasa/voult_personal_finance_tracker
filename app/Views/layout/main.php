@@ -25,13 +25,25 @@
     <!-- Navbar Header -->
     <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
       <div class="container-xl d-flex justify-content-between align-items-center">
-        <h2 class="page-title mb-0"><?= esc($title ?? 'Dashboard') ?></h2>
+        <div class="d-flex flex-row align-items-center gap-3">
+          <h2 class="page-title mb-0">
+            <?= esc($title ?? 'Dashboard') ?>
+          </h2>
+          <span class="text-muted me-3">
+            <?= date('d M Y') ?>
+          </span>
+        </div>
         <div class="navbar-nav flex-row">
           <div class="d-flex align-items-center">
-            <span class="text-muted me-3"><?= date('d M Y') ?></span>
             <span class="nav-link d-flex align-items-center lh-1 px-0">
-              <span
-                class="avatar avatar-sm bg-primary-lt"><?= strtoupper(substr(session()->get('user_name') ?? 'U', 0, 1)) ?></span>
+              <?php if (!empty(session()->get('user_avatar')) && file_exists(FCPATH . 'assets/uploads/avatars/' . session()->get('user_avatar'))): ?>
+                <span class="avatar avatar-sm rounded"
+                  style="background-image: url(<?= base_url('assets/uploads/avatars/' . esc(session()->get('user_avatar'))) ?>)">
+                </span>
+              <?php else: ?>
+                <span
+                  class="avatar avatar-sm bg-primary-lt"><?= strtoupper(substr(session()->get('user_name') ?? 'U', 0, 1)) ?></span>
+              <?php endif; ?>
               <div class="d-none d-xl-block ps-2">
                 <div><?= esc(session()->get('user_name') ?? 'User') ?></div>
               </div>

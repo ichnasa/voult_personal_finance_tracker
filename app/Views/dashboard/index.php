@@ -77,7 +77,8 @@
             <span class="fw-medium"><?= $spendingRatio ?>%</span>
           </div>
           <div class="progress mb-3" style="height: 6px;">
-            <div class="progress-bar <?= $spendingRatio > 80 ? 'bg-danger' : ($spendingRatio > 60 ? 'bg-warning' : 'bg-success') ?>"
+            <div
+              class="progress-bar <?= $spendingRatio > 80 ? 'bg-danger' : ($spendingRatio > 60 ? 'bg-warning' : 'bg-success') ?>"
               style="width: <?= $spendingRatio ?>%"></div>
           </div>
           <div class="d-flex justify-content-between mb-2">
@@ -85,7 +86,8 @@
             <span class="fw-medium"><?= $savingRatio ?>%</span>
           </div>
           <div class="progress mb-3" style="height: 6px;">
-            <div class="progress-bar <?= $savingRatio >= 30 ? 'bg-success' : ($savingRatio >= 15 ? 'bg-warning' : 'bg-danger') ?>"
+            <div
+              class="progress-bar <?= $savingRatio >= 30 ? 'bg-success' : ($savingRatio >= 15 ? 'bg-warning' : 'bg-danger') ?>"
               style="width: <?= $savingRatio ?>%"></div>
           </div>
           <div class="d-flex justify-content-between mb-2">
@@ -93,7 +95,8 @@
             <span class="fw-medium"><?= $budgetDiscipline ?>%</span>
           </div>
           <div class="progress" style="height: 6px;">
-            <div class="progress-bar <?= $budgetDiscipline >= 60 ? 'bg-success' : ($budgetDiscipline >= 30 ? 'bg-warning' : 'bg-danger') ?>"
+            <div
+              class="progress-bar <?= $budgetDiscipline >= 60 ? 'bg-success' : ($budgetDiscipline >= 30 ? 'bg-warning' : 'bg-danger') ?>"
               style="width: <?= $budgetDiscipline ?>%"></div>
           </div>
         </div>
@@ -142,7 +145,6 @@
             <div class="mb-3">
               <div class="d-flex justify-content-between align-items-center mb-1">
                 <div class="d-flex align-items-center">
-                  <span class="avatar avatar-sm bg-primary-lt me-2"><i class="ti ti-target"></i></span>
                   <div>
                     <div class="fw-medium"><?= esc($sg['nama_tabungan']) ?></div>
                     <div class="text-muted fs-6">
@@ -184,23 +186,20 @@
             $prioritasColor = match ($wl['prioritas']) {
               'tinggi' => 'bg-danger',
               'sedang' => 'bg-warning',
-              default  => 'bg-secondary',
+              default => 'bg-secondary',
             };
             $statusColor = match ($wl['status']) {
-              'tercapai'    => 'bg-success',
-              'menabung'    => 'bg-primary',
-              default       => 'bg-secondary',
+              'tercapai' => 'bg-success',
+              'menabung' => 'bg-primary',
+              default => 'bg-secondary',
             };
             $statusLabel = match ($wl['status']) {
-              'tercapai'    => 'Tercapai',
-              'menabung'    => 'Menabung',
-              default       => 'Belum Mulai',
+              'tercapai' => 'Tercapai',
+              'menabung' => 'Menabung',
+              default => 'Belum Mulai',
             };
             ?>
             <div class="d-flex align-items-center mb-3">
-              <span class="avatar avatar-sm <?= $prioritasColor ?> text-white me-3">
-                <i class="ti ti-star"></i>
-              </span>
               <div class="flex-fill">
                 <div class="fw-medium"><?= esc($wl['nama_barang']) ?></div>
                 <div class="text-muted fs-6">

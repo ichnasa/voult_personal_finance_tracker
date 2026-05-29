@@ -51,7 +51,7 @@ class Budgeting extends BaseController
         $data = [
             'title' => 'Tambah Budget',
             'active_menu' => 'budgeting',
-            'kategoriList' => $this->kategoriModel->getDropdown(),
+            'kategoriList' => $this->kategoriModel->getDropdown(session()->get('user_id')),
         ];
         return view('budgeting/create', $data);
     }
@@ -91,7 +91,7 @@ class Budgeting extends BaseController
             'title' => 'Edit Budget',
             'active_menu' => 'budgeting',
             'item' => $item,
-            'kategoriList' => $this->kategoriModel->getDropdown(),
+            'kategoriList' => $this->kategoriModel->getDropdown(session()->get('user_id')),
         ];
         return view('budgeting/edit', $data);
     }

@@ -88,6 +88,13 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link <?= ($active_menu ?? '') === 'pengaturan' ? 'active' : '' ?>"
+            href="<?= base_url('pengaturan') ?>">
+            <span class="nav-link-icon"><i class="ti ti-settings"></i></span>
+            <span class="nav-link-title">Pengaturan</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="<?= base_url('auth/logout') ?>">
             <span class="nav-link-icon"><i class="ti ti-logout"></i></span>
             <span class="nav-link-title">Logout</span>

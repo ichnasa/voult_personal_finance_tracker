@@ -36,7 +36,7 @@ class Pengeluaran extends BaseController
             'items'       => $this->pengeluaranModel->getByUser($userId, 10, $filters),
             'pager'       => $this->pengeluaranModel->pager,
             'filters'     => $filters,
-            'kategoriList' => $this->kategoriModel->getDropdown(),
+            'kategoriList' => $this->kategoriModel->getDropdown($userId),
         ];
 
         return view('pengeluaran/index', $data);
@@ -47,7 +47,7 @@ class Pengeluaran extends BaseController
         $data = [
             'title'        => 'Tambah Pengeluaran',
             'active_menu'  => 'pengeluaran',
-            'kategoriList' => $this->kategoriModel->getDropdown(),
+            'kategoriList' => $this->kategoriModel->getDropdown(session()->get('user_id')),
         ];
 
         return view('pengeluaran/create', $data);
@@ -105,7 +105,7 @@ class Pengeluaran extends BaseController
             'title'        => 'Edit Pengeluaran',
             'active_menu'  => 'pengeluaran',
             'item'         => $item,
-            'kategoriList' => $this->kategoriModel->getDropdown(),
+            'kategoriList' => $this->kategoriModel->getDropdown($userId),
         ];
 
         return view('pengeluaran/edit', $data);

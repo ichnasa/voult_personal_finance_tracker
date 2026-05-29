@@ -70,7 +70,7 @@
             <input type="file" class="form-control form-control-sm" id="avatar" name="avatar" accept="image/*">
           </div>
           <button type="submit" class="btn btn-outline-primary btn-sm w-100">
-            <i class="ti ti-upload me-1"></i>Ganti Foto
+            <i class="ti ti-device-floppy me-1"></i>Simpan Perubahan Foto
           </button>
           <small class="text-muted d-block mt-2">Format: JPG, JPEG, PNG. Maks: 2MB.</small>
         </form>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\KategoriModel;
 
 class Auth extends BaseController
 {
@@ -62,6 +63,7 @@ class Auth extends BaseController
             'user_id' => $user['id'],
             'user_name' => $user['name'],
             'user_email' => $user['email'],
+            'user_avatar' => $user['avatar'] ?? null,
             'logged_in' => true,
         ]);
 
@@ -127,6 +129,11 @@ class Auth extends BaseController
             'email' => $this->request->getPost('email'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
         ]);
+
+        // Create default kategori for the new user
+        $newUserId = $this->userModel->getInsertID();
+        $kategoriModel = new KategoriModel();
+        $kategoriModel->createDefaultsForUser($newUserId);
 
         return redirect()->to('auth/login')->with('success', 'Registrasi berhasil! Silakan login.');
     }

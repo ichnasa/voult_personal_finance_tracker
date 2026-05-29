@@ -67,4 +67,10 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('profile/update', 'Profile::update');
     $routes->post('profile/updatePassword', 'Profile::updatePassword');
     $routes->post('profile/updateAvatar', 'Profile::updateAvatar');
+
+    // Pengaturan
+    $routes->get('pengaturan', 'Pengaturan::index');
+    $routes->post('pengaturan/kategori/store', 'Pengaturan::storeKategori');
+    $routes->post('pengaturan/kategori/update/(:num)', 'Pengaturan::updateKategori/$1');
+    $routes->get('pengaturan/kategori/delete/(:num)', 'Pengaturan::deleteKategori/$1');
 });
