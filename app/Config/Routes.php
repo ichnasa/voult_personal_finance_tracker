@@ -13,6 +13,10 @@ $routes->get('auth/register', 'Auth::register');
 $routes->post('auth/processRegister', 'Auth::processRegister');
 $routes->get('auth/logout', 'Auth::logout');
 
+// Google OAuth
+$routes->get('auth/google', 'Auth::googleLogin');
+$routes->get('auth/google/callback', 'Auth::googleCallback');
+
 // Protected routes
 $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/', 'Home::index');

@@ -15,12 +15,12 @@ class UserModel extends Model
         'email',
         'password',
         'avatar',
+        'google_id',
     ];
 
     protected $validationRules = [
         'name'     => 'required|min_length[3]|max_length[100]',
         'email'    => 'required|valid_email|max_length[100]|is_unique[users.email,id,{id}]',
-        'password' => 'required|min_length[6]',
     ];
 
     protected $validationMessages = [
@@ -32,10 +32,6 @@ class UserModel extends Model
             'required'    => 'Email wajib diisi.',
             'valid_email' => 'Format email tidak valid.',
             'is_unique'   => 'Email sudah terdaftar.',
-        ],
-        'password' => [
-            'required'   => 'Password wajib diisi.',
-            'min_length' => 'Password minimal 6 karakter.',
         ],
     ];
 }

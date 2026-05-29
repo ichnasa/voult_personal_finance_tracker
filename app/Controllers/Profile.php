@@ -29,8 +29,8 @@ class Profile extends BaseController
 
         // Sync session data to ensure navbar updates instantly
         session()->set([
-            'user_name'   => $user['name'],
-            'user_email'  => $user['email'],
+            'user_name' => $user['name'],
+            'user_email' => $user['email'],
             'user_avatar' => $user['avatar'] ?? null,
         ]);
 
@@ -42,12 +42,12 @@ class Profile extends BaseController
         $totalPengeluaran = $pengeluaranModel->where('user_id', $userId)->countAllResults(false);
 
         $data = [
-            'title'             => 'Profile',
-            'active_menu'       => 'profile',
-            'user'              => $user,
-            'total_pemasukan'   => $totalPemasukan,
+            'title' => 'Profile',
+            'active_menu' => 'profile',
+            'user' => $user,
+            'total_pemasukan' => $totalPemasukan,
             'total_pengeluaran' => $totalPengeluaran,
-            'total_transaksi'   => $totalPemasukan + $totalPengeluaran,
+            'total_transaksi' => $totalPemasukan + $totalPengeluaran,
         ];
 
         return view('profile/index', $data);
@@ -61,21 +61,14 @@ class Profile extends BaseController
         $userId = session()->get('user_id');
 
         $rules = [
-            'name'    => 'required|min_length[3]|max_length[100]',
-            'email'   => "required|valid_email|max_length[100]|is_unique[users.email,id,{$userId}]",
+            'name' => 'required|min_length[3]|max_length[100]',
         ];
 
         $messages = [
             'name' => [
-                'required'   => 'Nama wajib diisi.',
+                'required' => 'Nama wajib diisi.',
                 'min_length' => 'Nama minimal 3 karakter.',
                 'max_length' => 'Nama maksimal 100 karakter.',
-            ],
-            'email' => [
-                'required'    => 'Email wajib diisi.',
-                'valid_email' => 'Format email tidak valid.',
-                'is_unique'   => 'Email sudah digunakan oleh pengguna lain.',
-                'max_length'  => 'Email maksimal 100 karakter.',
             ],
         ];
 
@@ -86,14 +79,12 @@ class Profile extends BaseController
         }
 
         $this->userModel->update($userId, [
-            'name'    => $this->request->getPost('name'),
-            'email'   => $this->request->getPost('email'),
+            'name' => $this->request->getPost('name'),
         ]);
 
         // Update session data
         session()->set([
-            'user_name'  => $this->request->getPost('name'),
-            'user_email' => $this->request->getPost('email'),
+            'user_name' => $this->request->getPost('name'),
         ]);
 
         return redirect()->to('profile')->with('success', 'Profil berhasil diperbarui.');
@@ -105,10 +96,15 @@ class Profile extends BaseController
     public function updatePassword()
     {
         $userId = session()->get('user_id');
+        $user = $this->userModel->find($userId);
+
+        if (!empty($user['google_id'])) {
+            return redirect()->back()->with('error', 'Akun yang tertaut dengan Google tidak dapat mengubah password.');
+        }
 
         $rules = [
             'current_password' => 'required',
-            'new_password'     => 'required|min_length[8]',
+            'new_password' => 'required|min_length[8]',
             'confirm_password' => 'required|matches[new_password]',
         ];
 
@@ -117,12 +113,12 @@ class Profile extends BaseController
                 'required' => 'Password lama wajib diisi.',
             ],
             'new_password' => [
-                'required'   => 'Password baru wajib diisi.',
+                'required' => 'Password baru wajib diisi.',
                 'min_length' => 'Password baru minimal 8 karakter.',
             ],
             'confirm_password' => [
                 'required' => 'Konfirmasi password wajib diisi.',
-                'matches'  => 'Konfirmasi password tidak cocok.',
+                'matches' => 'Konfirmasi password tidak cocok.',
             ],
         ];
 
@@ -132,10 +128,8 @@ class Profile extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        $user = $this->userModel->find($userId);
-
         // Verifikasi password lama
-        if (!password_verify($this->request->getPost('current_password'), $user['password'])) {
+        if (empty($user['password']) || !password_verify($this->request->getPost('current_password'), $user['password'])) {
             return redirect()->back()->with('error', 'Password lama tidak sesuai.');
         }
 
@@ -159,10 +153,10 @@ class Profile extends BaseController
 
         $messages = [
             'avatar' => [
-                'uploaded'  => 'Pilih file foto terlebih dahulu.',
-                'max_size'  => 'Ukuran foto maksimal 2MB.',
-                'is_image'  => 'File harus berupa gambar.',
-                'mime_in'   => 'Format file harus JPG, JPEG, atau PNG.',
+                'uploaded' => 'Pilih file foto terlebih dahulu.',
+                'max_size' => 'Ukuran foto maksimal 2MB.',
+                'is_image' => 'File harus berupa gambar.',
+                'mime_in' => 'Format file harus JPG, JPEG, atau PNG.',
             ],
         ];
 

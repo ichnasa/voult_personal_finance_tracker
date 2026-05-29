@@ -32,9 +32,11 @@
             <a href="#editProfil" class="btn btn-primary" data-bs-toggle="modal">
               <i class="ti ti-edit me-1"></i>Edit Profile
             </a>
-            <a href="#ubahPassword" class="btn btn-outline-secondary ms-1" data-bs-toggle="modal">
-              <i class="ti ti-key me-1"></i>Ubah Password
-            </a>
+            <?php if (empty($user['google_id'])): ?>
+              <a href="#ubahPassword" class="btn btn-outline-secondary ms-1" data-bs-toggle="modal">
+                <i class="ti ti-key me-1"></i>Ubah Password
+              </a>
+            <?php endif; ?>
           </div>
         </div>
       </div>
@@ -154,7 +156,9 @@
                           <div class="mb-3">
                             <label class="form-label" for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email"
-                              value="<?= esc(old('email', $user['email'])) ?>" required>
+                              value="<?= esc(old('email', $user['email'])) ?>" readonly disabled>
+                            <small class="form-hint mt-1 text-muted"><i class="ti ti-lock me-1"></i>Email tidak dapat
+                              diubah setelah terdaftar.</small>
                           </div>
                         </div>
                       </div>
@@ -172,37 +176,50 @@
                   <div class="card-header">
                     <h3 class="card-title"><i class="ti ti-lock me-2"></i>Ubah Password</h3>
                   </div>
-                  <form action="<?= base_url('profile/updatePassword') ?>" method="post">
-                    <?= csrf_field() ?>
+                  <?php if (!empty($user['google_id'])): ?>
                     <div class="card-body">
-                      <div class="mb-3">
-                        <label class="form-label" for="current_password">Password Lama</label>
-                        <input type="password" class="form-control" id="current_password" name="current_password"
-                          placeholder="Masukkan password lama" required>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="mb-3">
-                            <label class="form-label" for="new_password">Password Baru</label>
-                            <input type="password" class="form-control" id="new_password" name="new_password"
-                              placeholder="Minimal 8 karakter" required>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="mb-3">
-                            <label class="form-label" for="confirm_password">Konfirmasi Password Baru</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                              placeholder="Ulangi password baru" required>
+                      <div class="alert alert-info mb-0">
+                        <div class="d-flex align-items-center">
+                          <i class="ti ti-brand-google fs-2 me-2"></i>
+                          <div class="mb-0">
+                            Akun ini terhubung dengan Google. Anda tidak dapat mengubah password.
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="card-footer text-end">
-                      <button type="submit" class="btn btn-warning">
-                        <i class="ti ti-key me-1"></i>Ubah Password
-                      </button>
-                    </div>
-                  </form>
+                  <?php else: ?>
+                    <form action="<?= base_url('profile/updatePassword') ?>" method="post">
+                      <?= csrf_field() ?>
+                      <div class="card-body">
+                        <div class="mb-3">
+                          <label class="form-label" for="current_password">Password Lama</label>
+                          <input type="password" class="form-control" id="current_password" name="current_password"
+                            placeholder="Masukkan password lama" required>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label class="form-label" for="new_password">Password Baru</label>
+                              <input type="password" class="form-control" id="new_password" name="new_password"
+                                placeholder="Minimal 8 karakter" required>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label class="form-label" for="confirm_password">Konfirmasi Password Baru</label>
+                              <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                                placeholder="Ulangi password baru" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-warning">
+                          <i class="ti ti-key me-1"></i>Ubah Password
+                        </button>
+                      </div>
+                    </form>
+                  <?php endif; ?>
                 </div>
 
             </div>
@@ -234,7 +251,9 @@
                         <div class="mb-3">
                           <label class="form-label" for="modal_email">Email</label>
                           <input type="email" class="form-control" id="modal_email" name="email"
-                            value="<?= esc($user['email']) ?>" required>
+                            value="<?= esc($user['email']) ?>" readonly disabled>
+                          <small class="form-hint mt-1 text-muted"><i class="ti ti-lock me-1"></i>Email tidak dapat
+                            diubah.</small>
                         </div>
                       </div>
                     </div>
@@ -251,41 +270,43 @@
           </div>
 
           <!-- Modal: Ubah Password (quick access from header) -->
-          <div class="modal modal-blur fade" id="ubahPassword" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title"><i class="ti ti-lock me-2"></i>Ubah Password</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <?php if (empty($user['google_id'])): ?>
+            <div class="modal modal-blur fade" id="ubahPassword" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"><i class="ti ti-lock me-2"></i>Ubah Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form action="<?= base_url('profile/updatePassword') ?>" method="post">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label" for="modal_current_password">Password Lama</label>
+                        <input type="password" class="form-control" id="modal_current_password" name="current_password"
+                          placeholder="Masukkan password lama" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="modal_new_password">Password Baru</label>
+                        <input type="password" class="form-control" id="modal_new_password" name="new_password"
+                          placeholder="Minimal 8 karakter" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="modal_confirm_password">Konfirmasi Password Baru</label>
+                        <input type="password" class="form-control" id="modal_confirm_password" name="confirm_password"
+                          placeholder="Ulangi password baru" required>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-ghost-secondary" data-bs-dismiss="modal">Batal</button>
+                      <button type="submit" class="btn btn-warning">
+                        <i class="ti ti-key me-1"></i>Ubah Password
+                      </button>
+                    </div>
+                  </form>
                 </div>
-                <form action="<?= base_url('profile/updatePassword') ?>" method="post">
-                  <?= csrf_field() ?>
-                  <div class="modal-body">
-                    <div class="mb-3">
-                      <label class="form-label" for="modal_current_password">Password Lama</label>
-                      <input type="password" class="form-control" id="modal_current_password" name="current_password"
-                        placeholder="Masukkan password lama" required>
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label" for="modal_new_password">Password Baru</label>
-                      <input type="password" class="form-control" id="modal_new_password" name="new_password"
-                        placeholder="Minimal 8 karakter" required>
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label" for="modal_confirm_password">Konfirmasi Password Baru</label>
-                      <input type="password" class="form-control" id="modal_confirm_password" name="confirm_password"
-                        placeholder="Ulangi password baru" required>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-ghost-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-warning">
-                      <i class="ti ti-key me-1"></i>Ubah Password
-                    </button>
-                  </div>
-                </form>
               </div>
             </div>
-          </div>
+          <?php endif; ?>
 
           <?= $this->endSection() ?>
