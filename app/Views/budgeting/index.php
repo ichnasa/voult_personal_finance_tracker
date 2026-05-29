@@ -15,8 +15,8 @@
         onchange="this.form.submit()">
       <?php if (isset($_GET['bulan']) || isset($_GET['tahun'])): ?>
         <button type="button" onclick="window.location.href='<?= base_url('budgeting') ?>'"
-          class="btn btn-icon btn-outline-danger" title="Reset Filter">
-          <i class="ti ti-refresh"></i>
+          class="btn btn-outline-danger" title="Reset Filter">
+          <i class="ti ti-filter-off me-1"></i> Reset Filter
         </button>
       <?php endif; ?>
     </form>

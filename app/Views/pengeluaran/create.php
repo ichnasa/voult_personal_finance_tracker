@@ -38,7 +38,7 @@
                 <select id="kategori_id" name="kategori_id" class="form-control" required>
                   <option value="">Pilih Kategori</option>
                   <?php foreach ($kategoriList as $id => $name): ?>
-                    <option value="<?= $id ?>" <?= old('kategori_id') == $id ? 'selected' : '' ?>><?= esc($name) ?></option>
+                    <option value="<?= $id ?>" <?= old('kategori_id', $userDefaults['kategori_id'] ?? '') == $id ? 'selected' : '' ?>><?= esc($name) ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
@@ -49,16 +49,16 @@
                 <select id="metode_pembayaran" name="metode_pembayaran" class="form-control">
                   <option value="">Pilih Metode</option>
                   <?php foreach (['Cash', 'Transfer', 'E-Wallet', 'Debit', 'Kredit'] as $m): ?>
-                    <option value="<?= $m ?>" <?= old('metode_pembayaran') === $m ? 'selected' : '' ?>><?= $m ?></option>
+                    <option value="<?= $m ?>" <?= old('metode_pembayaran', $userDefaults['metode_pembayaran'] ?? '') === $m ? 'selected' : '' ?>><?= $m ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
             </div>
           </div>
           <div class="mb-3">
-            <label for="catatan" class="form-label">Catatan <small class="text-muted">(opsional)</small></label>
-            <textarea id="catatan" name="catatan" class="form-control" rows="3"
-              placeholder="Catatan tambahan..."><?= old('catatan') ?></textarea>
+            <label for="deskripsi" class="form-label">Deskripsi <small class="text-muted">(opsional)</small></label>
+            <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3"
+              placeholder="Deskripsi tambahan..."><?= old('deskripsi') ?></textarea>
           </div>
           <div class="mb-3">
             <label for="nota" class="form-label">Upload Nota <small class="text-muted">(opsional)</small></label>

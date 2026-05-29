@@ -26,14 +26,14 @@ foreach (['date_from', 'date_to', 'terkumpul_min', 'terkumpul_max', 'target_min'
             <i class="ti ti-list"></i>
           </button>
         </div>
-        <button class="btn btn-white" data-bs-toggle="modal" data-bs-target="#filterModal">
-          <i class="ti ti-filter me-1"></i> Filter
-          <?php if ($activeCount > 0): ?>
-            <span class="badge bg-primary text-white ms-1"><?= $activeCount ?></span>
-          <?php endif; ?>
-        </button>
         <?php if ($activeCount > 0): ?>
-          <a href="<?= base_url('tabungan') ?>" class="btn btn-white text-danger"><i class="ti ti-x me-1"></i> Reset</a>
+          <a href="<?= base_url('tabungan') ?>" class="btn btn-icon btn-outline-danger" title="Reset Filter">
+            <i class="ti ti-filter-off"></i>
+          </a>
+        <?php else: ?>
+          <button class="btn btn-icon btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal" title="Filter">
+            <i class="ti ti-filter"></i>
+          </button>
         <?php endif; ?>
       </div>
       <a href="<?= base_url('tabungan/create') ?>" class="btn btn-primary"><i class="ti ti-plus me-1"></i> Tambah

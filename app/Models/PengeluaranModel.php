@@ -16,7 +16,7 @@ class PengeluaranModel extends Model
         'tanggal',
         'nominal',
         'metode_pembayaran',
-        'catatan',
+        'deskripsi',
         'nota',
     ];
 
@@ -49,7 +49,7 @@ class PengeluaranModel extends Model
         }
         if (! empty($filters['search'])) {
             $builder->groupStart()
-                ->like('pengeluaran.catatan', $filters['search'])
+                ->like('pengeluaran.deskripsi', $filters['search'])
                 ->orLike('kategori.name', $filters['search'])
                 ->orLike('pengeluaran.metode_pembayaran', $filters['search'])
                 ->groupEnd();

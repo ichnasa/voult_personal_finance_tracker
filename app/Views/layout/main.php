@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title><?= esc($title ?? 'FinTrack') ?> — Keuangan Pribadi</title>
+  <title><?= esc($title ?? 'PLOOM') ?> — Keuangan Pribadi</title>
 
   <!-- Tabler CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
@@ -96,7 +96,7 @@
               <b>Version</b> 1.0
             </div>
             <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-              <span>&copy; <?= date('Y') ?> <a href="<?= base_url() ?>">FinTrack</a>.</span> Sistem Informasi Keuangan
+              <span>&copy; <?= date('Y') ?> <a href="<?= base_url() ?>">PLOOM</a>.</span> Sistem Informasi Keuangan
               Pribadi.
             </div>
           </div>

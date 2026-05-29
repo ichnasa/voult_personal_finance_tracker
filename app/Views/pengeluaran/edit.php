@@ -45,8 +45,8 @@
             </div>
           </div>
         </div>
-        <div class="mb-3"><label for="catatan">Catatan</label>
-          <textarea id="catatan" name="catatan" class="form-control" rows="3"><?= old('catatan') ?: esc($item['catatan'] ?? '') ?></textarea>
+        <div class="mb-3"><label for="deskripsi">Deskripsi</label>
+          <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3"><?= old('deskripsi') ?: esc($item['deskripsi'] ?? '') ?></textarea>
         </div>
         <div class="mb-3"><label for="nota">Upload Nota Baru</label>
           <?php if (!empty($item['nota'])): ?>

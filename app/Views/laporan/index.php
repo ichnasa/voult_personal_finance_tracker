@@ -3,11 +3,9 @@
 
 <div class="row mb-3">
   <div class="col-12 d-flex justify-content-between">
-    <div></div>
-    <a href="<?= base_url('laporan/export?date_from=' . $dateFrom . '&date_to=' . $dateTo) ?>" target="_blank"
-      class="btn btn-ghost-secondary">
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalCetak">
       <i class="ti ti-printer me-1"></i> Cetak / Export PDF
-    </a>
+    </button>
   </div>
 </div>
 
@@ -17,18 +15,24 @@
     <form method="get" action="<?= base_url('laporan') ?>">
       <div class="row">
         <div class="col-md-3">
-          <div class="mb-3"><label>Dari Tanggal</label>
-            <input type="date" name="date_from" class="form-control" value="<?= esc($dateFrom) ?>">
+          <div class=""><label>Dari Tanggal</label>
+            <input type="date" name="date_from" class="form-control" value="<?= esc($dateFrom) ?>"
+              onchange="this.form.submit()">
           </div>
         </div>
         <div class="col-md-3">
-          <div class="mb-3"><label>Sampai Tanggal</label>
-            <input type="date" name="date_to" class="form-control" value="<?= esc($dateTo) ?>">
+          <div class=""><label>Sampai Tanggal</label>
+            <input type="date" name="date_to" class="form-control" value="<?= esc($dateTo) ?>"
+              onchange="this.form.submit()">
           </div>
         </div>
         <div class="col-md-2 d-flex align-items-end">
-          <div class="mb-3">
-            <button type="submit" class="btn btn-ghost-secondary"><i class="ti ti-search me-1"></i> Filter</button>
+          <div class="mb-3 d-flex gap-2">
+            <?php if (isset($_GET['date_from']) || isset($_GET['date_to'])): ?>
+              <a href="<?= base_url('laporan') ?>" class="btn btn-icon btn-outline-danger" title="Reset Filter">
+                <i class="ti ti-filter-off"></i>
+              </a>
+            <?php endif; ?>
           </div>
         </div>
       </div>
@@ -41,7 +45,7 @@
   <div class="col-md-4">
     <div class="card">
       <div class="card-stamp">
-        <div class="card-stamp-icon bg-green"><i class="ti ti-moneybag-plus"></i></div>
+        <div class="card-stamp-icon bg-green"><i class="ti ti-moneybag-plus stamp-bg-icon"></i></div>
       </div>
       <div class="card-body">
         <div class="subheader">Total Pemasukan</div>
@@ -52,7 +56,7 @@
   <div class="col-md-4">
     <div class="card">
       <div class="card-stamp">
-        <div class="card-stamp-icon bg-red"><i class="ti ti-moneybag-minus"></i></div>
+        <div class="card-stamp-icon bg-red"><i class="ti ti-moneybag-minus stamp-bg-icon"></i></div>
       </div>
       <div class="card-body">
         <div class="subheader">Total Pengeluaran</div>
@@ -63,7 +67,8 @@
   <div class="col-md-4">
     <div class="card">
       <div class="card-stamp">
-        <div class="card-stamp-icon <?= $selisih >= 0 ? 'bg-azure' : 'bg-yellow' ?>"><i class="ti ti-scale"></i></div>
+        <div class="card-stamp-icon <?= $selisih >= 0 ? 'bg-azure' : 'bg-yellow' ?>"><i
+            class="ti ti-scale stamp-bg-icon"></i></div>
       </div>
       <div class="card-body">
         <div class="subheader">Selisih</div>
@@ -120,17 +125,17 @@
           <table class="table table-sm table-vcenter">
             <thead>
               <tr>
-                <th>Tanggal</th>
-                <th>Sumber</th>
-                <th class="text-end">Nominal</th>
+                <th class="p-3">Tanggal</th>
+                <th class="p-3">Sumber</th>
+                <th class="p-3 text-end">Nominal</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($pemasukan as $p): ?>
                 <tr>
-                  <td><?= date('d/m/Y', strtotime($p['tanggal'])) ?></td>
-                  <td><?= esc($p['sumber']) ?></td>
-                  <td class="text-end text-income">+Rp <?= number_format($p['nominal'], 0, ',', '.') ?></td>
+                  <td class="p-3"><?= date('d/m/Y', strtotime($p['tanggal'])) ?></td>
+                  <td class="p-3"><?= esc($p['sumber']) ?></td>
+                  <td class="p-3 text-end text-income">+Rp <?= number_format($p['nominal'], 0, ',', '.') ?></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
@@ -178,6 +183,37 @@
           <?= $pager->links('pengeluaran', 'tabler_pagination') ?>
         </div>
       <?php endif; ?>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cetak Laporan -->
+<div class="modal modal-blur fade" id="modalCetak" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cetak Laporan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="<?= base_url('laporan/export') ?>" method="get" target="_blank">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Dari Tanggal</label>
+            <input type="date" name="date_from" class="form-control" value="<?= date('Y-m-01') ?>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Sampai Tanggal</label>
+            <input type="date" name="date_to" class="form-control" value="<?= date('Y-m-t') ?>" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary"
+            onclick="setTimeout(() => bootstrap.Modal.getInstance(document.getElementById('modalCetak')).hide(), 500)">
+            <i class="ti ti-printer me-1"></i> Cetak
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

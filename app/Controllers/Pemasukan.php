@@ -78,7 +78,7 @@ class Pemasukan extends BaseController
             'tanggal' => $this->request->getPost('tanggal'),
             'nominal' => $this->request->getPost('nominal'),
             'sumber'  => $this->request->getPost('sumber'),
-            'catatan' => $this->request->getPost('catatan'),
+            'deskripsi' => $this->request->getPost('deskripsi'),
         ]);
 
         return redirect()->to('pemasukan')->with('success', 'Pemasukan berhasil ditambahkan.');
@@ -131,7 +131,7 @@ class Pemasukan extends BaseController
             'tanggal' => $this->request->getPost('tanggal'),
             'nominal' => $this->request->getPost('nominal'),
             'sumber'  => $this->request->getPost('sumber'),
-            'catatan' => $this->request->getPost('catatan'),
+            'deskripsi' => $this->request->getPost('deskripsi'),
         ]);
 
         return redirect()->to('pemasukan')->with('success', 'Pemasukan berhasil diperbarui.');

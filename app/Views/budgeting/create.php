@@ -14,7 +14,7 @@
             <select name="kategori_id" class="form-control" required>
               <option value="">Pilih Kategori</option>
               <?php foreach ($kategoriList as $id => $name): ?>
-                <option value="<?= $id ?>" <?= old('kategori_id') == $id ? 'selected' : '' ?>><?= esc($name) ?></option>
+                <option value="<?= $id ?>" <?= old('kategori_id', $userDefaults['kategori_id'] ?? '') == $id ? 'selected' : '' ?>><?= esc($name) ?></option>
               <?php endforeach; ?>
             </select>
           </div></div>

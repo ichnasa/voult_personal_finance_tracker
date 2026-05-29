@@ -8,8 +8,7 @@
     <!-- Brand -->
     <h1 class="navbar-brand navbar-brand-autodark">
       <a href="<?= base_url('/') ?>">
-        <i class="ti ti-chart-line me-1"></i>
-        <span class="fw-bold">Fin</span>Track
+        <span class="fw-bold">PLOOM</span>
       </a>
     </h1>
 

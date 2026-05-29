@@ -2,6 +2,48 @@
 
 <?= $this->section('content') ?>
 
+<!-- Card: Pengaturan Default -->
+<div class="card mb-3">
+  <div class="card-header">
+    <h3 class="card-title"><i class="ti ti-settings me-2"></i>Pengaturan Default</h3>
+  </div>
+  <form action="<?= base_url('pengaturan/defaults/update') ?>" method="post">
+    <?= csrf_field() ?>
+    <div class="card-body">
+      <p class="text-secondary mb-3">
+        Tentukan kategori dan metode pembayaran bawaan yang akan otomatis terpilih saat Anda menambah transaksi baru.
+      </p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label" for="default_metode_pembayaran">Metode Pembayaran Default</label>
+            <select class="form-select" id="default_metode_pembayaran" name="default_metode_pembayaran">
+              <option value="">Tidak ada default</option>
+              <?php foreach (['Cash', 'Transfer', 'E-Wallet', 'Debit', 'Kredit'] as $m): ?>
+                <option value="<?= $m ?>" <?= ($user['default_metode_pembayaran'] ?? '') === $m ? 'selected' : '' ?>><?= $m ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label" for="default_kategori_id">Kategori Default</label>
+            <select class="form-select" id="default_kategori_id" name="default_kategori_id">
+              <option value="">Tidak ada default</option>
+              <?php foreach ($kategoriList as $kat): ?>
+                <option value="<?= $kat['id'] ?>" <?= ($user['default_kategori_id'] ?? '') == $kat['id'] ? 'selected' : '' ?>><?= esc($kat['name']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>Simpan Pengaturan Default</button>
+    </div>
+  </form>
+</div>
+
 <!-- Card: Kategori Pengeluaran -->
 <div class="card mb-3">
   <div class="card-header">

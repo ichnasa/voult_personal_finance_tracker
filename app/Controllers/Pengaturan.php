@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\KategoriModel;
 use App\Models\PengeluaranModel;
 use App\Models\BudgetingModel;
+use App\Models\UserModel;
 
 class Pengaturan extends BaseController
 {
@@ -22,10 +23,12 @@ class Pengaturan extends BaseController
     {
         $userId = session()->get('user_id');
 
+        $userModel = new UserModel();
         $data = [
             'title'       => 'Pengaturan',
             'active_menu' => 'pengaturan',
             'kategoriList' => $this->kategoriModel->getByUser($userId),
+            'user'         => $userModel->find($userId),
         ];
 
         return view('pengaturan/index', $data);
@@ -142,5 +145,24 @@ class Pengaturan extends BaseController
         $this->kategoriModel->delete($id);
 
         return redirect()->to('pengaturan')->with('success', 'Kategori berhasil dihapus.');
+    }
+
+    /**
+     * Update user default settings
+     */
+    public function updateDefaults()
+    {
+        $userId = session()->get('user_id');
+        $userModel = new UserModel();
+        
+        $kategoriId = $this->request->getPost('default_kategori_id');
+        $metode = $this->request->getPost('default_metode_pembayaran');
+        
+        $userModel->update($userId, [
+            'default_kategori_id' => $kategoriId ?: null,
+            'default_metode_pembayaran' => $metode ?: null,
+        ]);
+        
+        return redirect()->to('pengaturan')->with('success', 'Pengaturan default berhasil disimpan.');
     }
 }

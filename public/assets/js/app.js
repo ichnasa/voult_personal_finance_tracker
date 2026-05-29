@@ -1,5 +1,5 @@
 /**
- * FinTrack — App JavaScript
+ * PLOOM — App JavaScript
  * Minimal JS for Tabler integration (no jQuery dependency)
  */
 
@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Real-time currency formatting & History
-  const nominalInputs = document.querySelectorAll('input[name="nominal"], input[name="target_nominal"], input[name="nominal_terkumpul"]');
+  const nominalInputs = document.querySelectorAll('input[name="nominal"], input[name="target_nominal"], input[name="nominal_terkumpul"], input[name="harga_target"], input[name="nominal_budget"]');
   if (nominalInputs.length > 0) {
-    const HISTORY_KEY = 'fintrack_nominal_history';
+    const HISTORY_KEY = 'ploom_nominal_history';
     const MAX_HISTORY = 5;
 
     let history = [];

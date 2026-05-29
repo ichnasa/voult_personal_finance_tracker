@@ -4,7 +4,7 @@
 
 <div class="text-center mb-4">
   <a href="<?= base_url('/') ?>" class="navbar-brand navbar-brand-autodark">
-    <span class="fs-1 fw-bold">FinTrack</span>
+    <span class="fs-1 fw-bold">PLOOM</span>
   </a>
 </div>
 

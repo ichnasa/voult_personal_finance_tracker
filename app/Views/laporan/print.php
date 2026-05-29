@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Laporan Keuangan — FinTrack</title>
+  <title>Laporan Keuangan — PLOOM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -33,7 +33,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>FINTRACK</h1>
+    <h1>PLOOM</h1>
     <div class="subtitle">Laporan Keuangan Pribadi</div>
   </div>
 
@@ -62,14 +62,14 @@
 
   <h2>Pemasukan</h2>
   <table>
-    <thead><tr><th>No</th><th>Tanggal</th><th>Sumber</th><th>Catatan</th><th style="text-align:right;">Nominal</th></tr></thead>
+    <thead><tr><th>No</th><th>Tanggal</th><th>Sumber</th><th>Deskripsi</th><th style="text-align:right;">Nominal</th></tr></thead>
     <tbody>
       <?php $no = 1; foreach ($pemasukan as $p): ?>
       <tr>
         <td><?= $no++ ?></td>
         <td><?= date('d/m/Y', strtotime($p['tanggal'])) ?></td>
         <td><?= esc($p['sumber']) ?></td>
-        <td><?= esc($p['catatan'] ?? '-') ?></td>
+        <td><?= esc($p['deskripsi'] ?? '-') ?></td>
         <td class="amount positive">+Rp <?= number_format($p['nominal'], 0, ',', '.') ?></td>
       </tr>
       <?php endforeach; ?>
@@ -82,14 +82,14 @@
 
   <h2>Pengeluaran</h2>
   <table>
-    <thead><tr><th>No</th><th>Tanggal</th><th>Kategori</th><th>Catatan</th><th style="text-align:right;">Nominal</th></tr></thead>
+    <thead><tr><th>No</th><th>Tanggal</th><th>Kategori</th><th>Deskripsi</th><th style="text-align:right;">Nominal</th></tr></thead>
     <tbody>
       <?php $no = 1; foreach ($pengeluaran as $k): ?>
       <tr>
         <td><?= $no++ ?></td>
         <td><?= date('d/m/Y', strtotime($k['tanggal'])) ?></td>
         <td><?= esc($k['kategori_name'] ?? '-') ?></td>
-        <td><?= esc($k['catatan'] ?? '-') ?></td>
+        <td><?= esc($k['deskripsi'] ?? '-') ?></td>
         <td class="amount negative">-Rp <?= number_format($k['nominal'], 0, ',', '.') ?></td>
       </tr>
       <?php endforeach; ?>
@@ -101,7 +101,7 @@
   </table>
 
   <div class="footer">
-    FinTrack — Sistem Informasi Keuangan Pribadi | Dicetak otomatis oleh sistem
+    PLOOM — Sistem Informasi Keuangan Pribadi | Dicetak otomatis oleh sistem
   </div>
 
   <script>window.onload = function() { window.print(); }</script>

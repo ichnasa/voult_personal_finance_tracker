@@ -31,8 +31,8 @@
             <input type="text" id="sumber" name="sumber" class="form-control" value="<?= old('sumber') ?: esc($item['sumber']) ?>" required>
           </div>
           <div class="mb-3">
-            <label for="catatan">Catatan <small class="text-muted">(opsional)</small></label>
-            <textarea id="catatan" name="catatan" class="form-control" rows="3"><?= old('catatan') ?: esc($item['catatan'] ?? '') ?></textarea>
+            <label for="deskripsi">Deskripsi <small class="text-muted">(opsional)</small></label>
+            <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3"><?= old('deskripsi') ?: esc($item['deskripsi'] ?? '') ?></textarea>
           </div>
         </div>
         <div class="card-footer">

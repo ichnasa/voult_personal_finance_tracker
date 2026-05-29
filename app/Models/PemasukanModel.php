@@ -15,7 +15,7 @@ class PemasukanModel extends Model
         'tanggal',
         'nominal',
         'sumber',
-        'catatan',
+        'deskripsi',
     ];
 
     /**
@@ -40,7 +40,7 @@ class PemasukanModel extends Model
         if (! empty($filters['search'])) {
             $builder->groupStart()
                 ->like('sumber', $filters['search'])
-                ->orLike('catatan', $filters['search'])
+                ->orLike('deskripsi', $filters['search'])
                 ->groupEnd();
         }
 

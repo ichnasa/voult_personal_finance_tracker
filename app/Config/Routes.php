@@ -77,4 +77,5 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('pengaturan/kategori/store', 'Pengaturan::storeKategori');
     $routes->post('pengaturan/kategori/update/(:num)', 'Pengaturan::updateKategori/$1');
     $routes->get('pengaturan/kategori/delete/(:num)', 'Pengaturan::deleteKategori/$1');
+    $routes->post('pengaturan/defaults/update', 'Pengaturan::updateDefaults');
 });

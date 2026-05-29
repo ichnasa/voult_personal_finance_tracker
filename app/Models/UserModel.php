@@ -16,6 +16,8 @@ class UserModel extends Model
         'password',
         'avatar',
         'google_id',
+        'default_kategori_id',
+        'default_metode_pembayaran',
     ];
 
     protected $validationRules = [

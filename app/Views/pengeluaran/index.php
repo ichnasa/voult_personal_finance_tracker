@@ -18,14 +18,14 @@ foreach (['date_from', 'date_to', 'kategori_id', 'metode', 'nominal_min', 'nomin
 <div class="row mb-3">
   <div class="col-12 d-flex justify-content-between align-items-center">
     <div class="d-flex gap-2">
-      <button class="btn btn-white" data-bs-toggle="modal" data-bs-target="#filterModal">
-        <i class="ti ti-filter me-1"></i> Filter
-        <?php if ($activeCount > 0): ?>
-          <span class="badge bg-primary text-white ms-1"><?= $activeCount ?></span>
-        <?php endif; ?>
-      </button>
       <?php if ($activeCount > 0): ?>
-        <a href="<?= base_url('pengeluaran') ?>" class="btn btn-white text-danger"><i class="ti ti-x me-1"></i> Reset</a>
+        <a href="<?= base_url('pengeluaran') ?>" class="btn btn-icon btn-outline-danger" title="Reset Filter">
+          <i class="ti ti-filter-off"></i>
+        </a>
+      <?php else: ?>
+        <button class="btn btn-icon btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal" title="Filter">
+          <i class="ti ti-filter"></i>
+        </button>
       <?php endif; ?>
     </div>
     <a href="<?= base_url('pengeluaran/create') ?>" class="btn btn-primary"><i class="ti ti-plus me-1"></i> Tambah
@@ -111,7 +111,7 @@ foreach (['date_from', 'date_to', 'kategori_id', 'metode', 'nominal_min', 'nomin
           <!-- Search -->
           <div class="mb-4">
             <label class="form-label fw-bold">Cari Keyword</label>
-            <input type="text" name="search" class="form-control" placeholder="Cari catatan, kategori, metode..."
+            <input type="text" name="search" class="form-control" placeholder="Cari deskripsi, kategori, metode..."
               value="<?= esc($filters['search'] ?? '') ?>">
           </div>
 
@@ -164,7 +164,7 @@ foreach (['date_from', 'date_to', 'kategori_id', 'metode', 'nominal_min', 'nomin
             </th>
             <th>Kategori</th>
             <th>Metode</th>
-            <th>Catatan</th>
+            <th>Deskripsi</th>
             <th class="text-end">Nominal</th>
             <th class="text-center" style="width:120px">Aksi</th>
           </tr>
@@ -177,7 +177,7 @@ foreach (['date_from', 'date_to', 'kategori_id', 'metode', 'nominal_min', 'nomin
               <td><?= date('d M Y', strtotime($item['tanggal'])) ?></td>
               <td><span class="badge bg-secondary text-white"><?= esc($item['kategori_name'] ?? '-') ?></span></td>
               <td class="text-muted"><?= esc($item['metode_pembayaran'] ?? '-') ?></td>
-              <td class="text-muted"><?= esc($item['catatan'] ?? '-') ?></td>
+              <td class="text-muted"><?= esc($item['deskripsi'] ?? '-') ?></td>
               <td class="text-end text-expense">-Rp <?= number_format($item['nominal'], 0, ',', '.') ?></td>
               <td>
                 <div class="d-flex justify-content-center" style="gap: 12px;">

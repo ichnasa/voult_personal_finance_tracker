@@ -48,10 +48,18 @@ class Budgeting extends BaseController
 
     public function create()
     {
+        $userId = session()->get('user_id');
+        $userModel = new \App\Models\UserModel();
+        $user = $userModel->find($userId);
+
         $data = [
             'title' => 'Tambah Budget',
             'active_menu' => 'budgeting',
-            'kategoriList' => $this->kategoriModel->getDropdown(session()->get('user_id')),
+            'kategoriList' => $this->kategoriModel->getDropdown($userId),
+            'userDefaults' => [
+                'kategori_id' => $user['default_kategori_id'] ?? '',
+                'metode_pembayaran' => $user['default_metode_pembayaran'] ?? '',
+            ],
         ];
         return view('budgeting/create', $data);
     }

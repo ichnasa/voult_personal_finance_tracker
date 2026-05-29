@@ -17,14 +17,14 @@
 <div class="row mb-3">
   <div class="col-12 d-flex justify-content-between align-items-center">
     <div class="d-flex gap-2">
-      <button class="btn btn-white" data-bs-toggle="modal" data-bs-target="#filterModal">
-        <i class="ti ti-filter me-1"></i> Filter
-        <?php if ($activeCount > 0): ?>
-          <span class="badge bg-primary text-white ms-1"><?= $activeCount ?></span>
-        <?php endif; ?>
-      </button>
       <?php if ($activeCount > 0): ?>
-        <a href="<?= base_url('pemasukan') ?>" class="btn btn-white text-danger"><i class="ti ti-x me-1"></i> Reset</a>
+        <a href="<?= base_url('pemasukan') ?>" class="btn btn-icon btn-outline-danger" title="Reset Filter">
+          <i class="ti ti-filter-off"></i>
+        </a>
+      <?php else: ?>
+        <button class="btn btn-icon btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal" title="Filter">
+          <i class="ti ti-filter"></i>
+        </button>
       <?php endif; ?>
     </div>
     <a href="<?= base_url('pemasukan/create') ?>" class="btn btn-primary"><i class="ti ti-plus me-1"></i> Tambah Pemasukan</a>
@@ -83,7 +83,7 @@
           <!-- Search -->
           <div class="mb-4">
             <label class="form-label fw-bold">Cari Keyword</label>
-            <input type="text" name="search" class="form-control" placeholder="Cari sumber atau catatan..." value="<?= esc($filters['search'] ?? '') ?>">
+            <input type="text" name="search" class="form-control" placeholder="Cari sumber atau deskripsi..." value="<?= esc($filters['search'] ?? '') ?>">
           </div>
 
           <hr class="my-3">
@@ -133,7 +133,7 @@
               </a>
             </th>
             <th>Sumber</th>
-            <th>Catatan</th>
+            <th>Deskripsi</th>
             <th class="text-end">Nominal</th>
             <th class="text-center" style="width:100px">Aksi</th>
           </tr>
@@ -145,7 +145,7 @@
               <td><?= $no++ ?></td>
               <td><?= date('d M Y', strtotime($item['tanggal'])) ?></td>
               <td><?= esc($item['sumber']) ?></td>
-              <td class="text-muted"><?= esc($item['catatan'] ?? '-') ?></td>
+              <td class="text-muted"><?= esc($item['deskripsi'] ?? '-') ?></td>
               <td class="text-end text-income">+Rp <?= number_format($item['nominal'], 0, ',', '.') ?></td>
               <td>
                 <div class="d-flex justify-content-center" style="gap: 12px;">

@@ -44,10 +44,18 @@ class Pengeluaran extends BaseController
 
     public function create()
     {
+        $userId = session()->get('user_id');
+        $userModel = new \App\Models\UserModel();
+        $user = $userModel->find($userId);
+
         $data = [
             'title'        => 'Tambah Pengeluaran',
             'active_menu'  => 'pengeluaran',
-            'kategoriList' => $this->kategoriModel->getDropdown(session()->get('user_id')),
+            'kategoriList' => $this->kategoriModel->getDropdown($userId),
+            'userDefaults' => [
+                'kategori_id' => $user['default_kategori_id'] ?? '',
+                'metode_pembayaran' => $user['default_metode_pembayaran'] ?? '',
+            ],
         ];
 
         return view('pengeluaran/create', $data);
@@ -85,7 +93,7 @@ class Pengeluaran extends BaseController
             'tanggal'           => $this->request->getPost('tanggal'),
             'nominal'           => $this->request->getPost('nominal'),
             'metode_pembayaran' => $this->request->getPost('metode_pembayaran'),
-            'catatan'           => $this->request->getPost('catatan'),
+            'deskripsi'         => $this->request->getPost('deskripsi'),
             'nota'              => $notaPath,
         ]);
 
@@ -135,7 +143,7 @@ class Pengeluaran extends BaseController
             'tanggal'           => $this->request->getPost('tanggal'),
             'nominal'           => $this->request->getPost('nominal'),
             'metode_pembayaran' => $this->request->getPost('metode_pembayaran'),
-            'catatan'           => $this->request->getPost('catatan'),
+            'deskripsi'         => $this->request->getPost('deskripsi'),
         ];
 
         $nota = $this->request->getFile('nota');
