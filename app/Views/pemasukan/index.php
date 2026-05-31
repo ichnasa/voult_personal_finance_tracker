@@ -2,32 +2,35 @@
 <?= $this->section('content') ?>
 
 <?php
-  $sortDir = $filters['sort_dir'] ?? 'DESC';
-  $nextDir = $sortDir === 'ASC' ? 'DESC' : 'ASC';
-  $sortIcon = $sortDir === 'ASC' ? 'ti-sort-ascending' : 'ti-sort-descending';
-  $qs = http_build_query(array_filter(array_merge($filters, ['sort_dir' => $nextDir])));
+$sortDir = $filters['sort_dir'] ?? 'DESC';
+$nextDir = $sortDir === 'ASC' ? 'DESC' : 'ASC';
+$sortIcon = $sortDir === 'ASC' ? 'ti-sort-ascending' : 'ti-sort-descending';
+$qs = http_build_query(array_filter(array_merge($filters, ['sort_dir' => $nextDir])));
 
-  // Count active filters
-  $activeCount = 0;
-  foreach (['date_from','date_to','nominal_min','nominal_max','search'] as $k) {
-    if (!empty($filters[$k])) $activeCount++;
-  }
+// Count active filters
+$activeCount = 0;
+foreach (['date_from', 'date_to', 'nominal_min', 'nominal_max', 'search'] as $k) {
+  if (!empty($filters[$k]))
+    $activeCount++;
+}
 ?>
 
 <div class="row mb-3">
-  <div class="col-12 d-flex justify-content-between align-items-center">
+  <div class="col-12 d-flex gap-2 align-items-center">
+    <a href="<?= base_url('pemasukan/create') ?>" class="btn btn-primary"><i class="ti ti-plus me-1"></i> Tambah
+      Pemasukan</a>
     <div class="d-flex gap-2">
       <?php if ($activeCount > 0): ?>
         <a href="<?= base_url('pemasukan') ?>" class="btn btn-icon btn-outline-danger" title="Reset Filter">
           <i class="ti ti-filter-off"></i>
         </a>
       <?php else: ?>
-        <button class="btn btn-icon btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal" title="Filter">
+        <button class="btn btn-icon btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal"
+          title="Filter">
           <i class="ti ti-filter"></i>
         </button>
       <?php endif; ?>
     </div>
-    <a href="<?= base_url('pemasukan/create') ?>" class="btn btn-primary"><i class="ti ti-plus me-1"></i> Tambah Pemasukan</a>
   </div>
 </div>
 
@@ -50,7 +53,8 @@
             <div class="row g-2">
               <div class="col-6">
                 <label class="form-label text-muted small">Dari</label>
-                <input type="date" name="date_from" class="form-control" value="<?= esc($filters['date_from'] ?? '') ?>">
+                <input type="date" name="date_from" class="form-control"
+                  value="<?= esc($filters['date_from'] ?? '') ?>">
               </div>
               <div class="col-6">
                 <label class="form-label text-muted small">Sampai</label>
@@ -69,11 +73,13 @@
             <div class="row g-2">
               <div class="col-6">
                 <label class="form-label text-muted small">Min (Rp)</label>
-                <input type="number" name="nominal_min" class="form-control" placeholder="0" value="<?= esc($filters['nominal_min'] ?? '') ?>" min="0">
+                <input type="number" name="nominal_min" class="form-control" placeholder="0"
+                  value="<?= esc($filters['nominal_min'] ?? '') ?>" min="0">
               </div>
               <div class="col-6">
                 <label class="form-label text-muted small">Max (Rp)</label>
-                <input type="number" name="nominal_max" class="form-control" placeholder="0" value="<?= esc($filters['nominal_max'] ?? '') ?>" min="0">
+                <input type="number" name="nominal_max" class="form-control" placeholder="0"
+                  value="<?= esc($filters['nominal_max'] ?? '') ?>" min="0">
               </div>
             </div>
           </div>
@@ -83,7 +89,8 @@
           <!-- Search -->
           <div class="mb-4">
             <label class="form-label fw-bold">Cari Keyword</label>
-            <input type="text" name="search" class="form-control" placeholder="Cari sumber atau deskripsi..." value="<?= esc($filters['search'] ?? '') ?>">
+            <input type="text" name="search" class="form-control" placeholder="Cari sumber atau deskripsi..."
+              value="<?= esc($filters['search'] ?? '') ?>">
           </div>
 
           <hr class="my-3">
@@ -128,7 +135,8 @@
           <tr>
             <th style="width:50px">No</th>
             <th>
-              <a href="<?= base_url('pemasukan?' . $qs) ?>" class="text-decoration-none text-reset d-inline-flex align-items-center">
+              <a href="<?= base_url('pemasukan?' . $qs) ?>"
+                class="text-decoration-none text-reset d-inline-flex align-items-center">
                 Tanggal <i class="ti <?= $sortIcon ?> ms-1"></i>
               </a>
             </th>
@@ -149,8 +157,10 @@
               <td class="text-end text-income">+Rp <?= number_format($item['nominal'], 0, ',', '.') ?></td>
               <td>
                 <div class="d-flex justify-content-center" style="gap: 12px;">
-                  <a href="<?= base_url('pemasukan/edit/' . $item['id']) ?>" class="btn btn-sm btn-ghost-secondary" title="Edit"><i class="ti ti-edit"></i></a>
-                  <a href="<?= base_url('pemasukan/delete/' . $item['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data ini?')" title="Hapus"><i class="ti ti-trash"></i></a>
+                  <a href="<?= base_url('pemasukan/edit/' . $item['id']) ?>" class="btn btn-sm btn-ghost-secondary"
+                    title="Edit"><i class="ti ti-edit"></i></a>
+                  <a href="<?= base_url('pemasukan/delete/' . $item['id']) ?>" class="btn btn-sm btn-danger"
+                    onclick="return confirm('Yakin hapus data ini?')" title="Hapus"><i class="ti ti-trash"></i></a>
                 </div>
               </td>
             </tr>

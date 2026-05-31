@@ -133,9 +133,15 @@
             <tbody>
               <?php foreach ($pemasukan as $p): ?>
                 <tr>
-                  <td class="p-3"><?= date('d/m/Y', strtotime($p['tanggal'])) ?></td>
-                  <td class="p-3"><?= esc($p['sumber']) ?></td>
-                  <td class="p-3 text-end text-income">+Rp <?= number_format($p['nominal'], 0, ',', '.') ?></td>
+                  <td class="p-3">
+                    <?= date('d/m/Y', strtotime($p['tanggal'])) ?>
+                  </td>
+                  <td class="p-3">
+                    <?= esc($p['sumber']) ?>
+                  </td>
+                  <td class="p-3 text-end text-income">+Rp
+                    <?= number_format($p['nominal'], 0, ',', '.') ?>
+                  </td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
@@ -169,9 +175,15 @@
             <tbody>
               <?php foreach ($pengeluaran as $k): ?>
                 <tr>
-                  <td class="p-3"><?= date('d/m/Y', strtotime($k['tanggal'])) ?></td>
-                  <td class="p-3"><?= esc($k['kategori_name'] ?? '-') ?></td>
-                  <td class="p-3 text-end text-expense">-Rp <?= number_format($k['nominal'], 0, ',', '.') ?></td>
+                  <td class="p-3">
+                    <?= date('d/m/Y', strtotime($k['tanggal'])) ?>
+                  </td>
+                  <td class="p-3">
+                    <?= esc($k['kategori_name'] ?? '-') ?>
+                  </td>
+                  <td class="p-3 text-end text-expense">-Rp
+                    <?= number_format($k['nominal'], 0, ',', '.') ?>
+                  </td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

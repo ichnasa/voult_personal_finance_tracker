@@ -20,7 +20,8 @@
             <select class="form-select" id="default_metode_pembayaran" name="default_metode_pembayaran">
               <option value="">Tidak ada default</option>
               <?php foreach (['Cash', 'Transfer', 'E-Wallet', 'Debit', 'Kredit'] as $m): ?>
-                <option value="<?= $m ?>" <?= ($user['default_metode_pembayaran'] ?? '') === $m ? 'selected' : '' ?>><?= $m ?></option>
+                <option value="<?= $m ?>" <?= ($user['default_metode_pembayaran'] ?? '') === $m ? 'selected' : '' ?>>
+                  <?= $m ?></option>
               <?php endforeach; ?>
             </select>
           </div>
@@ -39,7 +40,8 @@
       </div>
     </div>
     <div class="card-footer text-end">
-      <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>Simpan Pengaturan Default</button>
+      <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>Simpan Pengaturan
+        Default</button>
     </div>
   </form>
 </div>
@@ -49,7 +51,9 @@
   <div class="card-header">
     <h3 class="card-title"><i class="ti ti-category me-2"></i>Kategori Pengeluaran</h3>
     <div class="card-actions">
-      <span class="badge bg-primary text-white"><?= count($kategoriList) ?> kategori</span>
+      <span class="badge bg-primary text-white">
+        <?= count($kategoriList) ?> kategori
+      </span>
     </div>
   </div>
   <div class="card-body">
@@ -105,8 +109,7 @@
                   <?= esc($kat['name']) ?>
                 </td>
                 <td class="text-end">
-                  <a href="#editKategori<?= $kat['id'] ?>" class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal">
+                  <a href="#editKategori<?= $kat['id'] ?>" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal">
                     <i class="ti ti-edit me-1"></i>Edit
                   </a>
                   <a href="#hapusKategori<?= $kat['id'] ?>" class="btn btn-sm btn-outline-danger ms-1"

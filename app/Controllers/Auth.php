@@ -71,7 +71,84 @@ class Auth extends BaseController
                 ->with('error', 'Email atau password salah.');
         }
 
-        // Set session
+        // Generate OTP using Mersenne Twister Method
+        $otpCode = sprintf("%06d", mt_rand(1, 999999));
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+5 minutes'));
+
+        // Save OTP to user
+        $this->userModel->update($user['id'], [
+            'otp_code' => $otpCode,
+            'otp_expires_at' => $expiresAt
+        ]);
+
+        // Send OTP via Email
+        if (!$this->sendOtpEmail($user['email'], $otpCode)) {
+            return redirect()->back()->with('error', 'Gagal mengirimkan email OTP. Silakan periksa konfigurasi SMTP Anda.');
+        }
+
+        // Set temp session
+        session()->set('temp_user_id', $user['id']);
+
+        return redirect()->to('auth/otp')->with('success', 'Kode OTP telah dikirimkan. Silakan periksa email Anda.');
+    }
+
+    /**
+     * Show OTP verification page
+     */
+    public function otp()
+    {
+        if (!session()->get('temp_user_id')) {
+            return redirect()->to('auth/login');
+        }
+
+        $data = [
+            'title' => 'Verifikasi OTP',
+        ];
+
+        return view('auth/otp', $data);
+    }
+
+    /**
+     * Process OTP verification
+     */
+    public function processOtp()
+    {
+        if (!session()->get('temp_user_id')) {
+            return redirect()->to('auth/login');
+        }
+
+        $rules = [
+            'otp_code' => 'required|exact_length[6]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()
+                ->with('error', 'Kode OTP harus 6 digit.');
+        }
+
+        $otpCode = $this->request->getPost('otp_code');
+        $userId = session()->get('temp_user_id');
+
+        $user = $this->userModel->find($userId);
+
+        if (!$user || $user['otp_code'] !== $otpCode) {
+            return redirect()->back()->with('error', 'Kode OTP tidak valid.');
+        }
+
+        if (strtotime($user['otp_expires_at']) < time()) {
+            return redirect()->back()->with('error', 'Kode OTP sudah kadaluarsa. Silakan kirim ulang.');
+        }
+
+        // Clear OTP
+        $this->userModel->update($userId, [
+            'otp_code' => null,
+            'otp_expires_at' => null
+        ]);
+
+        // Remove temp session
+        session()->remove('temp_user_id');
+
+        // Set full login session
         session()->set([
             'user_id' => $user['id'],
             'user_name' => $user['name'],
@@ -81,6 +158,264 @@ class Auth extends BaseController
         ]);
 
         return redirect()->to('/')->with('success', 'Selamat datang, ' . $user['name'] . '!');
+    }
+
+    /**
+     * Resend OTP
+     */
+    public function resendOtp()
+    {
+        if (!session()->get('temp_user_id')) {
+            return redirect()->to('auth/login');
+        }
+
+        $userId = session()->get('temp_user_id');
+        $user = $this->userModel->find($userId);
+
+        if (!$user) {
+            return redirect()->to('auth/login');
+        }
+
+        // Generate new OTP
+        $otpCode = sprintf("%06d", mt_rand(1, 999999));
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+5 minutes'));
+
+        // Save new OTP
+        $this->userModel->update($user['id'], [
+            'otp_code' => $otpCode,
+            'otp_expires_at' => $expiresAt
+        ]);
+
+        // Send OTP via Email
+        if (!$this->sendOtpEmail($user['email'], $otpCode)) {
+            return redirect()->back()->with('error', 'Gagal mengirim ulang email OTP.');
+        }
+
+        return redirect()->back()->with('success', 'Kode OTP baru telah dikirim.');
+    }
+
+    /**
+     * Send OTP via Email
+     */
+    private function sendOtpEmail(string $email, string $otpCode, string $context = 'login'): bool
+    {
+        $emailService = \Config\Services::email();
+
+        $subject = $context === 'reset' ? 'Kode OTP Reset Password Anda - PLOOM' : 'Kode OTP Login Anda - PLOOM';
+        $title = $context === 'reset' ? 'Reset Password' : 'Kode OTP Anda';
+        $message = $context === 'reset' ? 'Gunakan kode berikut untuk me-reset password Anda:' : 'Gunakan kode berikut untuk masuk ke akun Anda:';
+
+        $emailService->setTo($email);
+        $emailService->setSubject($subject);
+        $emailService->setMessage("
+            <h2>{$title}</h2>
+            <p>{$message}</p>
+            <h1 style='letter-spacing: 5px; color: #0054a6;'>{$otpCode}</h1>
+            <p>Kode ini hanya berlaku selama 5 menit. Jangan berikan kode ini kepada siapapun.</p>
+        ");
+
+        // Log OTP for development/demo purposes
+        log_message('info', "OTP Code for {$email}: {$otpCode}");
+
+        if ($emailService->send()) {
+            return true;
+        } else {
+            log_message('error', 'Email OTP failed: ' . $emailService->printDebugger(['headers']));
+            return false;
+        }
+    }
+
+    /**
+     * Show Forgot Password page
+     */
+    public function forgotPassword()
+    {
+        return view('auth/forgot_password', ['title' => 'Lupa Password']);
+    }
+
+    /**
+     * Process Forgot Password
+     */
+    public function processForgotPassword()
+    {
+        $rules = [
+            'email' => 'required|valid_email',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->with('error', 'Silakan masukkan email yang valid.');
+        }
+
+        $email = $this->request->getPost('email');
+        $user = $this->userModel->where('email', $email)->first();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email tidak terdaftar.');
+        }
+
+        // Generate OTP
+        $otpCode = sprintf("%06d", mt_rand(1, 999999));
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+5 minutes'));
+
+        // Save OTP to user
+        $this->userModel->update($user['id'], [
+            'reset_otp_code' => $otpCode,
+            'reset_otp_expires_at' => $expiresAt
+        ]);
+
+        // Send OTP via Email (context: reset)
+        if (!$this->sendOtpEmail($user['email'], $otpCode, 'reset')) {
+            return redirect()->back()->with('error', 'Gagal mengirimkan email OTP.');
+        }
+
+        // Set temp reset session
+        session()->set('temp_reset_user_id', $user['id']);
+        session()->set('reset_otp_verified', false);
+
+        return redirect()->to('auth/reset-otp')->with('success', 'Kode OTP untuk reset password telah dikirimkan ke email Anda.');
+    }
+
+    /**
+     * Show Reset Password OTP verification page
+     */
+    public function resetOtp()
+    {
+        if (!session()->get('temp_reset_user_id')) {
+            return redirect()->to('auth/login');
+        }
+
+        return view('auth/reset_otp', ['title' => 'Verifikasi OTP Reset Password']);
+    }
+
+    /**
+     * Process Reset Password OTP
+     */
+    public function processResetOtp()
+    {
+        if (!session()->get('temp_reset_user_id')) {
+            return redirect()->to('auth/login');
+        }
+
+        $rules = [
+            'otp_code' => 'required|exact_length[6]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->with('error', 'Kode OTP harus 6 digit.');
+        }
+
+        $otpCode = $this->request->getPost('otp_code');
+        $userId = session()->get('temp_reset_user_id');
+        $user = $this->userModel->find($userId);
+
+        if (!$user || $user['reset_otp_code'] !== $otpCode) {
+            return redirect()->back()->with('error', 'Kode OTP tidak valid.');
+        }
+
+        if (strtotime($user['reset_otp_expires_at']) < time()) {
+            return redirect()->back()->with('error', 'Kode OTP sudah kadaluarsa. Silakan kirim ulang.');
+        }
+
+        // Clear OTP
+        $this->userModel->update($userId, [
+            'reset_otp_code' => null,
+            'reset_otp_expires_at' => null
+        ]);
+
+        // Verified!
+        session()->set('reset_otp_verified', true);
+
+        return redirect()->to('auth/reset-password')->with('success', 'OTP Terverifikasi! Silakan masukkan password baru Anda.');
+    }
+
+    /**
+     * Resend Reset OTP
+     */
+    public function resendResetOtp()
+    {
+        if (!session()->get('temp_reset_user_id')) {
+            return redirect()->to('auth/login');
+        }
+
+        $userId = session()->get('temp_reset_user_id');
+        $user = $this->userModel->find($userId);
+
+        if (!$user) {
+            return redirect()->to('auth/login');
+        }
+
+        // Generate new OTP
+        $otpCode = sprintf("%06d", mt_rand(1, 999999));
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+5 minutes'));
+
+        // Save new OTP
+        $this->userModel->update($user['id'], [
+            'reset_otp_code' => $otpCode,
+            'reset_otp_expires_at' => $expiresAt
+        ]);
+
+        // Send OTP via Email (context: reset)
+        if (!$this->sendOtpEmail($user['email'], $otpCode, 'reset')) {
+            return redirect()->back()->with('error', 'Gagal mengirim ulang email OTP.');
+        }
+
+        return redirect()->back()->with('success', 'Kode OTP baru telah dikirim.');
+    }
+
+    /**
+     * Show new password form
+     */
+    public function resetPassword()
+    {
+        if (!session()->get('temp_reset_user_id') || !session()->get('reset_otp_verified')) {
+            return redirect()->to('auth/login');
+        }
+
+        return view('auth/reset_password', ['title' => 'Buat Password Baru']);
+    }
+
+    /**
+     * Process new password
+     */
+    public function processResetPassword()
+    {
+        if (!session()->get('temp_reset_user_id') || !session()->get('reset_otp_verified')) {
+            return redirect()->to('auth/login');
+        }
+
+        $rules = [
+            'password' => 'required|min_length[8]',
+            'password_confirm' => 'required|matches[password]',
+        ];
+
+        $messages = [
+            'password' => [
+                'required' => 'Password baru wajib diisi.',
+                'min_length' => 'Password minimal 8 karakter.',
+            ],
+            'password_confirm' => [
+                'required' => 'Konfirmasi password wajib diisi.',
+                'matches' => 'Konfirmasi password tidak cocok.',
+            ],
+        ];
+
+        if (!$this->validate($rules, $messages)) {
+            return redirect()->back()->with('errors', $this->validator->getErrors());
+        }
+
+        $userId = session()->get('temp_reset_user_id');
+        $newPassword = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
+
+        // Update password
+        $this->userModel->update($userId, [
+            'password' => $newPassword
+        ]);
+
+        // Cleanup sessions
+        session()->remove('temp_reset_user_id');
+        session()->remove('reset_otp_verified');
+
+        return redirect()->to('auth/login')->with('success', 'Password berhasil diubah! Silakan login dengan password baru Anda.');
     }
 
     /**

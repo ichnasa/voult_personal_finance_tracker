@@ -33,7 +33,12 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Password</label>
+        <label class="form-label">
+          Password
+          <span class="form-label-description">
+            <a href="<?= base_url('auth/forgot-password') ?>">Lupa password?</a>
+          </span>
+        </label>
         <div class="input-group input-group-flat">
           <span class="input-group-text"><i class="ti ti-lock"></i></span>
           <input type="password" name="password" class="form-control" placeholder="Password" required

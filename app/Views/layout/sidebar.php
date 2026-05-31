@@ -7,9 +7,9 @@
 
     <!-- Brand -->
     <h1 class="navbar-brand navbar-brand-autodark">
-      <a href="<?= base_url('/') ?>">
+      <div class="text-decoration-none mt-2">
         <span class="fw-bold">PLOOM</span>
-      </a>
+      </div>
     </h1>
 
     <!-- User (mobile) -->

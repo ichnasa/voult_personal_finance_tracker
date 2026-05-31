@@ -50,7 +50,8 @@
               <td class="text-center">
                 <?php
                 $sClass = match ($item['status']) { 'tercapai' => 'bg-success text-white', 'menabung' => 'bg-warning text-white', default => 'bg-secondary text-white'};
-                $sLabel = str_replace('_', ' ', ucfirst($item['status']));
+                $statusText = empty($item['status']) ? 'belum_mulai' : $item['status'];
+                $sLabel = ucwords(str_replace('_', ' ', $statusText));
                 ?>
                 <span class="badge <?= $sClass ?>"><?= $sLabel ?></span>
               </td>

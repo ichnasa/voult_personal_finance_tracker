@@ -11,6 +11,16 @@ $routes->get('auth/login', 'Auth::login');
 $routes->post('auth/processLogin', 'Auth::processLogin');
 $routes->get('auth/register', 'Auth::register');
 $routes->post('auth/processRegister', 'Auth::processRegister');
+$routes->get('auth/otp', 'Auth::otp');
+$routes->post('auth/processOtp', 'Auth::processOtp');
+$routes->get('auth/resendOtp', 'Auth::resendOtp');
+$routes->get('auth/forgot-password', 'Auth::forgotPassword');
+$routes->post('auth/processForgotPassword', 'Auth::processForgotPassword');
+$routes->get('auth/reset-otp', 'Auth::resetOtp');
+$routes->post('auth/processResetOtp', 'Auth::processResetOtp');
+$routes->get('auth/resendResetOtp', 'Auth::resendResetOtp');
+$routes->get('auth/reset-password', 'Auth::resetPassword');
+$routes->post('auth/processResetPassword', 'Auth::processResetPassword');
 $routes->get('auth/logout', 'Auth::logout');
 
 // Google OAuth

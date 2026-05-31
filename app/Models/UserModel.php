@@ -18,6 +18,10 @@ class UserModel extends Model
         'google_id',
         'default_kategori_id',
         'default_metode_pembayaran',
+        'otp_code',
+        'otp_expires_at',
+        'reset_otp_code',
+        'reset_otp_expires_at',
     ];
 
     protected $validationRules = [
