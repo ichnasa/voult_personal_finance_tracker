@@ -1,0 +1,119 @@
+services:
+  # ─────────────────────────────────────────
+  # PHP-FPM Application
+  # ─────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ploom_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ./writable:/var/www/html/writable
+    environment:
+      CI_ENVIRONMENT: ${CI_ENVIRONMENT:-development}
+      app.baseURL: ${APP_BASE_URL:-http://localhost:8080/}
+      app.appTimezone: ${APP_TIMEZONE:-Asia/Jakarta}
+      database.default.hostname: db
+      database.default.database: ${DB_DATABASE:-fintrack_db}
+      database.default.username: ${DB_USERNAME:-ploom}
+      database.default.password: ${DB_PASSWORD:-ploom_secret}
+      database.default.DBDriver: MySQLi
+      database.default.port: 3306
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8080/auth/google/callback}
+      email.fromEmail: ${MAIL_FROM_EMAIL:-}
+      email.fromName: ${MAIL_FROM_NAME:-PLOOM Auth}
+      email.protocol: smtp
+      email.SMTPHost: ${MAIL_SMTP_HOST:-smtp.googlemail.com}
+      email.SMTPUser: ${MAIL_SMTP_USER:-}
+      email.SMTPPass: ${MAIL_SMTP_PASS:-}
+      email.SMTPPort: ${MAIL_SMTP_PORT:-587}
+      email.SMTPCrypto: tls
+      email.mailType: html
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ploom_network
+
+  # ─────────────────────────────────────────
+  # Nginx Web Server
+  # ─────────────────────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: ploom_nginx
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - .:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - ploom_network
+
+  # ─────────────────────────────────────────
+  # MySQL Database
+  # ─────────────────────────────────────────
+  db:
+    image: mysql:8.4
+    container_name: ploom_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_secret}
+      MYSQL_DATABASE: ${DB_DATABASE:-fintrack_db}
+      MYSQL_USER: ${DB_USERNAME:-ploom}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ploom_secret}
+    volumes:
+      - ploom_db_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "${DB_PORT:-3307}:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root_secret}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - ploom_network
+
+  # ─────────────────────────────────────────
+  # phpMyAdmin (Development only)
+  # ─────────────────────────────────────────
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: ploom_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-root_secret}
+      UPLOAD_LIMIT: 100M
+    ports:
+      - "${PMA_PORT:-8081}:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ploom_network
+    profiles:
+      - dev
+
+# ─────────────────────────────────────────
+# Volumes & Networks
+# ─────────────────────────────────────────
+volumes:
+  ploom_db_data:
+    driver: local
+
+networks:
+  ploom_network:
+    driver: bridge

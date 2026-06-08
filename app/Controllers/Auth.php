@@ -201,9 +201,19 @@ class Auth extends BaseController
     {
         $emailService = \Config\Services::email();
 
-        $subject = $context === 'reset' ? 'Kode OTP Reset Password Anda - PLOOM' : 'Kode OTP Login Anda - PLOOM';
-        $title = $context === 'reset' ? 'Reset Password' : 'Kode OTP Anda';
-        $message = $context === 'reset' ? 'Gunakan kode berikut untuk me-reset password Anda:' : 'Gunakan kode berikut untuk masuk ke akun Anda:';
+        if ($context === 'reset') {
+            $subject = 'Kode OTP Reset Password Anda - PLOOM';
+            $title   = 'Reset Password';
+            $message = 'Gunakan kode berikut untuk me-reset password Anda:';
+        } elseif ($context === 'register') {
+            $subject = 'Verifikasi Akun PLOOM Anda';
+            $title   = 'Verifikasi Akun';
+            $message = 'Gunakan kode berikut untuk menyelesaikan pendaftaran akun Anda:';
+        } else {
+            $subject = 'Kode OTP Login Anda - PLOOM';
+            $title   = 'Kode OTP Anda';
+            $message = 'Gunakan kode berikut untuk masuk ke akun Anda:';
+        }
 
         $emailService->setTo($email);
         $emailService->setSubject($subject);
@@ -435,34 +445,34 @@ class Auth extends BaseController
     }
 
     /**
-     * Process registration
+     * Process registration — simpan ke session dulu, kirim OTP, akun dibuat setelah OTP terverifikasi
      */
     public function processRegister()
     {
         $rules = [
-            'name' => 'required|min_length[3]|max_length[100]',
-            'email' => 'required|valid_email|is_unique[users.email]',
-            'password' => 'required|min_length[8]',
+            'name'             => 'required|min_length[3]|max_length[100]',
+            'email'            => 'required|valid_email|is_unique[users.email]',
+            'password'         => 'required|min_length[8]',
             'password_confirm' => 'required|matches[password]',
         ];
 
         $messages = [
             'name' => [
-                'required' => 'Nama wajib diisi.',
+                'required'   => 'Nama wajib diisi.',
                 'min_length' => 'Nama minimal 3 karakter.',
             ],
             'email' => [
-                'required' => 'Email wajib diisi.',
+                'required'    => 'Email wajib diisi.',
                 'valid_email' => 'Format email tidak valid.',
-                'is_unique' => 'Email sudah terdaftar.',
+                'is_unique'   => 'Email sudah terdaftar.',
             ],
             'password' => [
-                'required' => 'Password wajib diisi.',
+                'required'   => 'Password wajib diisi.',
                 'min_length' => 'Password minimal 8 karakter.',
             ],
             'password_confirm' => [
                 'required' => 'Konfirmasi password wajib diisi.',
-                'matches' => 'Konfirmasi password tidak cocok.',
+                'matches'  => 'Konfirmasi password tidak cocok.',
             ],
         ];
 
@@ -472,18 +482,120 @@ class Auth extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        $this->userModel->insert([
-            'name' => $this->request->getPost('name'),
-            'email' => $this->request->getPost('email'),
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+        // Generate OTP
+        $otpCode   = sprintf("%06d", mt_rand(1, 999999));
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+5 minutes'));
+
+        // Simpan data pendaftaran SEMENTARA di session (belum insert ke DB)
+        session()->set('temp_register_data', [
+            'name'           => $this->request->getPost('name'),
+            'email'          => $this->request->getPost('email'),
+            'password'       => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'otp_code'       => $otpCode,
+            'otp_expires_at' => $expiresAt,
         ]);
 
-        // Create default kategori for the new user
+        // Kirim OTP verifikasi ke email
+        if (!$this->sendOtpEmail($this->request->getPost('email'), $otpCode, 'register')) {
+            session()->remove('temp_register_data');
+            return redirect()->back()->withInput()->with('error', 'Gagal mengirimkan email verifikasi. Silakan periksa konfigurasi SMTP Anda.');
+        }
+
+        return redirect()->to('auth/register-otp')->with('success', 'Kode verifikasi telah dikirim ke email Anda. Silakan periksa inbox atau folder spam.');
+    }
+
+    /**
+     * Tampilkan halaman OTP verifikasi pendaftaran
+     */
+    public function registerOtp()
+    {
+        if (!session()->get('temp_register_data')) {
+            return redirect()->to('auth/register');
+        }
+
+        return view('auth/register_otp', ['title' => 'Verifikasi Email']);
+    }
+
+    /**
+     * Proses verifikasi OTP pendaftaran — baru insert akun jika OTP valid
+     */
+    public function processRegisterOtp()
+    {
+        $registerData = session()->get('temp_register_data');
+
+        if (!$registerData) {
+            return redirect()->to('auth/register');
+        }
+
+        $rules = [
+            'otp_code' => 'required|exact_length[6]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->with('error', 'Kode OTP harus 6 digit.');
+        }
+
+        $otpCode = $this->request->getPost('otp_code');
+
+        // Validasi OTP
+        if ($registerData['otp_code'] !== $otpCode) {
+            return redirect()->back()->with('error', 'Kode OTP tidak valid.');
+        }
+
+        if (strtotime($registerData['otp_expires_at']) < time()) {
+            return redirect()->back()->with('error', 'Kode OTP sudah kadaluarsa. Silakan kirim ulang.');
+        }
+
+        // Cek lagi apakah email sudah dipakai orang lain selama proses OTP berlangsung
+        if ($this->userModel->where('email', $registerData['email'])->first()) {
+            session()->remove('temp_register_data');
+            return redirect()->to('auth/register')->with('error', 'Email sudah terdaftar. Silakan gunakan email lain.');
+        }
+
+        // OTP valid — baru buat akun di database
+        $this->userModel->insert([
+            'name'     => $registerData['name'],
+            'email'    => $registerData['email'],
+            'password' => $registerData['password'],
+        ]);
+
         $newUserId = $this->userModel->getInsertID();
+
+        // Buat default kategori untuk user baru
         $kategoriModel = new KategoriModel();
         $kategoriModel->createDefaultsForUser($newUserId);
 
-        return redirect()->to('auth/login')->with('success', 'Registrasi berhasil! Silakan login.');
+        // Hapus session sementara
+        session()->remove('temp_register_data');
+
+        return redirect()->to('auth/login')->with('success', 'Akun berhasil dibuat! Silakan login.');
+    }
+
+    /**
+     * Kirim ulang OTP verifikasi pendaftaran
+     */
+    public function resendRegisterOtp()
+    {
+        $registerData = session()->get('temp_register_data');
+
+        if (!$registerData) {
+            return redirect()->to('auth/register');
+        }
+
+        // Generate OTP baru
+        $otpCode   = sprintf("%06d", mt_rand(1, 999999));
+        $expiresAt = date('Y-m-d H:i:s', strtotime('+5 minutes'));
+
+        // Update OTP di session
+        $registerData['otp_code']       = $otpCode;
+        $registerData['otp_expires_at'] = $expiresAt;
+        session()->set('temp_register_data', $registerData);
+
+        if (!$this->sendOtpEmail($registerData['email'], $otpCode, 'register')) {
+            return redirect()->back()->with('error', 'Gagal mengirim ulang email verifikasi.');
+        }
+
+        return redirect()->back()->with('success', 'Kode verifikasi baru telah dikirim.');
     }
 
     // ─── Google OAuth ─────────────────────────────────────────────
